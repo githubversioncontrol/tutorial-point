@@ -1,0 +1,202 @@
+<div class="panel panel-primary"><div class="panel-heading">About java.util.function.Function</div><div class="panel-body">
+<ul>
+	<li>java.util.function.Function&lt;T, R&gt; => T -> R. Takes T as input and generates R output. Determines output values based on input value</li>
+	<li>Common use case is converting map to list or where we want to convert one object type to another object. 
+	Since this is functional interface we can use lambda expressions</li>
+	<li>If we want to apply function instance to any object we need to call apply() method by passing input object - apply(employee)</li>
+	<li>If we pass function instance to stream.map() method then by default apply method will be applied</li>
+	<li>default methods in Function interface - apply(T t), andThen(), compose()</li>
+	<li>andThen() : function1.andThen(function2) -> first function1 will be executed then function2 will be executed in sequence. More at implementation</li>
+	<li>compose() : function1.compose(function2).compose(function3): execution sequence: function3 -&gt; function2 -&gt; function1. More at implementation</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Examples</div><div class="panel-body">
+<ul>
+	<li><a ng-click="navigate(1)">Using java.util.Function in collection streams</a></li>
+	<li><a ng-click="navigate(2)">Convert one object using Function.apply() method</a></li>
+	<li><a ng-click="navigate(3)">Convert List of objects using Function.apply() method</a></li>
+	<li><a ng-click="navigate(4)">Using andThen() method</a></li>
+	<li><a ng-click="navigate(5)">Using compose() method</a></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Using java.util.Function in collection streams</div><div class="panel-body">
+<pre><code>
+<em>
+/** Using java.util.function.Function to convert Employee object Job object*/
+</em>
+public void convertEmployeeToJob() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;firstName1&quot;, &quot;lastName1&quot;, 30000L),
+				new Employee(&quot;firstName2&quot;, &quot;lastName2&quot;, 40000L), new Employee(&quot;firstName3&quot;, &quot;lastName3&quot;,
+						50000L));
+
+		Function&lt;Employee, Job&gt; mapEmployeeToJob = (Employee e) -&gt; {
+			Job job = new Job(e.getFirstName(), &quot;description1&quot;);
+			return job;
+		};
+
+		// mapEmployeeToJob is instance of java.util.function.Function which will be applied to each object in Stream
+		List&lt;Job&gt; jobs = employees.stream().map(mapEmployeeToJob).collect(Collectors.toList());
+		System.out.println(&quot;jobs: &quot; + jobs);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+jobs: [{name=firstName1, description=description1}, {name=firstName2, description=description1}, {name=firstName3, description=description1}]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Convert one object using Function.apply() method</div><div class="panel-body">
+<pre><code>
+<em>
+/** Using java.util.function.Function.apply() method to convert one object to another object */
+</em>
+public void convertOneObject() {
+		Employee employee = new Employee(&quot;firstName1&quot;, &quot;lastName1&quot;, 30000L);
+
+		Function&lt;Employee, Job&gt; employeeToJob = (Employee e) -&gt; {
+			return new Job(e.getFirstName(), &quot;description1&quot;);
+		};
+
+		Job job = employeeToJob.apply(employee);
+		System.out.println(&quot;job: &quot; + job);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+job: {name=firstName1, description=description1}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Convert List of objects using Function.apply() method</div><div class="panel-body">
+<pre><code>
+<em>
+/** Using java.util.function.Function.apply() method to convert list of objects */
+</em>
+public void getEmployeeNames() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;firstName1&quot;, &quot;lastName1&quot;, 30000L),
+				new Employee(&quot;firstName2&quot;, &quot;lastName2&quot;, 40000L), new Employee(&quot;firstName3&quot;, &quot;lastName3&quot;,
+						50000L));
+
+		Function&lt;Employee, String&gt; employeeNameFunction = (Employee e) -&gt; {
+			return e.getFirstName();
+		};
+
+		List&lt;String&gt; names = new ArrayList&lt;&gt;();
+		for (Employee employee : employees) {
+			names.add(employeeNameFunction.apply(employee));
+		}
+
+		System.out.println(&quot;names: &quot; + names);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+names: [firstName1, firstName2, firstName3]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Using andThen() method</div><div class="panel-body">
+<pre><code>
+<em>
+/** andThen() is a default method in Function interface.
+* This default method combines the current Function instance with another one and 
+* returns a combined Function instance which applies the two functions in sequence with the function passed 
+* as parameter to andThen() being invoked after the current function.
+* function1.andThen(function2) -> first function1 will be executed then function2 will be executed in sequence	 */
+</em>
+public void andThenPractice() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;john&quot;, &quot;lastName1&quot;, 30000L), new Employee(
+				&quot;jack&quot;, &quot;lastName2&quot;, 40000L), new Employee(&quot;tom&quot;, &quot;lastName3&quot;, 50000L));
+
+		Function&lt;Employee, String&gt; employeeNameFunction = (Employee e) -&gt; {
+			System.out.println(&quot;employeeNameFunction&quot;);
+			return e.getFirstName();
+		};
+
+		Function&lt;String, String&gt; capitalizeName = (String s) -&gt; {
+			System.out.println(&quot;capitalizeName&quot;);
+			return s.toUpperCase();
+		};
+
+		Function&lt;String, String&gt; reverseName = (String s) -&gt; {
+			System.out.println(&quot;reverseName&quot;);
+			return new StringBuffer(s).reverse().toString();
+		};
+
+		List&lt;String&gt; reverseNames = new ArrayList&lt;&gt;();
+		for (Employee employee : employees) {
+			reverseNames.add(employeeNameFunction.andThen(capitalizeName).andThen(reverseName)
+					.apply(employee));
+		}
+
+		System.out.println(&quot;reverseNames: &quot; + reverseNames);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+employeeNameFunction
+capitalizeName
+reverseName
+employeeNameFunction
+capitalizeName
+reverseName
+employeeNameFunction
+capitalizeName
+reverseName
+reverseNames: [NHOJ, KCAJ, MOT]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Using compose() method</div><div class="panel-body">
+<pre><code>
+<em>
+/** compose() is a default method in Function interface.
+* compose() default method combines the current Function instance with another one and 
+* returns a combined Function instance which applies the two functions in sequence with the parameter function 
+* to compose() being invoked before the current function 
+* function1.compose(function2).compose(function3): execution sequence: function3 -&gt; function2 -&gt; function1	 */
+</em>
+public void composePractice() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;john&quot;, &quot;lastName1&quot;, 30000L), new Employee(
+				&quot;jack&quot;, &quot;lastName2&quot;, 40000L), new Employee(&quot;tom&quot;, &quot;lastName3&quot;, 50000L));
+
+		Function&lt;Employee, String&gt; employeeNameFunction = (Employee e) -&gt; {
+			System.out.println(&quot;employeeNameFunction&quot;);
+			return e.getFirstName();
+		};
+
+		Function&lt;String, String&gt; capitalizeName = (String s) -&gt; {
+			System.out.println(&quot;capitalizeName&quot;);
+			return s.toUpperCase();
+		};
+
+		Function&lt;String, String&gt; reverseName = (String s) -&gt; {
+			System.out.println(&quot;reverseName&quot;);
+			return new StringBuffer(s).reverse().toString();
+		};
+
+		List&lt;String&gt; reverseNames = new ArrayList&lt;&gt;();
+		for (Employee employee : employees) {
+			reverseNames.add(reverseName.compose(capitalizeName).compose(employeeNameFunction)
+					.apply(employee));
+		}
+
+		System.out.println(&quot;reverseNames: &quot; + reverseNames);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+employeeNameFunction
+capitalizeName
+reverseName
+employeeNameFunction
+capitalizeName
+reverseName
+employeeNameFunction
+capitalizeName
+reverseName
+reverseNames: [NHOJ, KCAJ, MOT]
+</code></pre>
+</div></div>

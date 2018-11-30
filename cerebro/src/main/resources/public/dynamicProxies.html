@@ -1,0 +1,243 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create an interface named IVehicle.java</li>
+	<li>Create an implementation class Car.java implements IVehicle created above</li>
+	<li>Create an interface named IShape.java</li>
+	<li>Create an implementation class Circle.java implements IShape created above</li>
+	<li>Create an invocation handler MyInvocationHandler.java</li>
+	<li>Create a test class</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">IVehicle.java</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies.model;
+
+public interface IVehicle {
+
+    public abstract void start();
+
+    public abstract void stop();
+
+    public abstract void forward();
+
+    public abstract void reverse();
+
+    public abstract String getName();
+}  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Car.java</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies.model;
+
+public class Car implements IVehicle {
+
+    private String name;
+
+    public Car(String name) {
+	this.name = name;
+    }
+
+    @Override
+    public void start() {
+	System.out.println(&quot;Car -&gt; start()&quot;);
+    }
+
+    @Override
+    public void stop() {
+	System.out.println(&quot;Car -&gt; stop()&quot;);
+    }
+
+    @Override
+    public void forward() {
+	System.out.println(&quot;Car -&gt; forward()&quot;);
+    }
+
+    @Override
+    public void reverse() {
+	System.out.println(&quot;Car -&gt; reverse()&quot;);
+    }
+
+    @Override
+    public String getName() {
+	System.out.println(&quot;Car -&gt; getName(): &quot; + name);
+	return name;
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">IShape.java</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies.model;
+
+public interface IShape {
+
+    public void draw(int xCoordinate, int yCoordinate);
+
+    public void move();
+
+    public void resize();
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Circle.java</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies.model;
+
+public class Circle implements IShape {
+
+    @Override
+    public void draw(int xCoordinate, int yCoordinate) {
+	System.out.println(&quot;Circle -&gt; draw(&quot; + xCoordinate + &quot;, &quot; + yCoordinate + &quot;)&quot;);
+    }
+
+    @Override
+    public void move() {
+	System.out.println(&quot;Circle -&gt; move()&quot;);
+    }
+
+    @Override
+    public void resize() {
+	System.out.println(&quot;Circle -&gt; resize()&quot;);
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">MyInvocationHandler.java</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies.model;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class MyInvocationHandler implements InvocationHandler {
+
+    private Object object;
+
+    public MyInvocationHandler(Object object) {
+	this.object = object;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	System.out.println(object.getClass().getName() + &quot;: calling method: &quot; + method.getName());
+	Object obj = method.invoke(object, args);
+	System.out.println(method.getName() + &quot; execution completed&quot;);
+	return obj;
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Proxy implementation for IVehicle</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies;
+
+import java.lang.reflect.Proxy;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.dynamic.proxies.model.Car;
+import core.java.dynamic.proxies.model.Circle;
+import core.java.dynamic.proxies.model.IShape;
+import core.java.dynamic.proxies.model.IVehicle;
+import core.java.dynamic.proxies.model.MyInvocationHandler;
+
+public class DynamicProxyPractice {
+
+    @Test
+    public void carProxy() {
+	Car car = new Car(&quot;BMW&quot;);
+	IVehicle iVehicleProxy = (IVehicle) Proxy.newProxyInstance(IVehicle.class.getClassLoader(), new Class[] { IVehicle.class },
+		new MyInvocationHandler(car));
+	iVehicleProxy.start();
+	iVehicleProxy.forward();
+	iVehicleProxy.reverse();
+	iVehicleProxy.stop();
+	String carName = iVehicleProxy.getName();
+	System.out.println(&quot;carName: &quot; + carName);
+	System.out.println(&quot;Proxy interface: &quot; + iVehicleProxy.getClass().getInterfaces()[0]);
+	System.out.println(&quot;Proxy invocation handler: &quot; + Proxy.getInvocationHandler(iVehicleProxy));
+    }
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+core.java.dynamic.proxies.model.Car: calling method: start
+Car -&gt; start()
+start execution completed
+core.java.dynamic.proxies.model.Car: calling method: forward
+Car -&gt; forward()
+forward execution completed
+core.java.dynamic.proxies.model.Car: calling method: reverse
+Car -&gt; reverse()
+reverse execution completed
+core.java.dynamic.proxies.model.Car: calling method: stop
+Car -&gt; stop()
+stop execution completed
+core.java.dynamic.proxies.model.Car: calling method: getName
+Car -&gt; getName(): BMW
+getName execution completed
+carName: BMW
+Proxy interface: interface core.java.dynamic.proxies.model.IVehicle
+Proxy invocation handler: core.java.dynamic.proxies.model.MyInvocationHandler@21b8d17c
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Proxy implementation for IShape</div><div class="panel-body">
+<pre ><code>
+package core.java.dynamic.proxies;
+
+import java.lang.reflect.Proxy;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.dynamic.proxies.model.Car;
+import core.java.dynamic.proxies.model.Circle;
+import core.java.dynamic.proxies.model.IShape;
+import core.java.dynamic.proxies.model.IVehicle;
+import core.java.dynamic.proxies.model.MyInvocationHandler;
+
+public class DynamicProxyPractice {
+
+    @Test
+    public void circleProxy() {
+	Circle circle = new Circle();
+	IShape iShapeProxy = (IShape) Proxy.newProxyInstance(IShape.class.getClassLoader(), new Class[] { IShape.class }, new MyInvocationHandler(
+		circle));
+	iShapeProxy.draw(10, 20);
+	iShapeProxy.move();
+	iShapeProxy.resize();
+    }
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+core.java.dynamic.proxies.model.Circle: calling method: draw
+Circle -&gt; draw(10, 20)
+draw execution completed
+core.java.dynamic.proxies.model.Circle: calling method: move
+Circle -&gt; move()
+move execution completed
+core.java.dynamic.proxies.model.Circle: calling method: resize
+Circle -&gt; resize()
+resize execution completed
+</code></pre>
+</div></div>

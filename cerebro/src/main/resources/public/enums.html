@@ -1,0 +1,168 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Accessing Enum</a></li>
+	<li><a ng-click="navigate(2)">Enum in if condition</a></li>
+	<li><a ng-click="navigate(3)">Enum in switch condition</a></li>
+	<li><a ng-click="navigate(4)">Iterate Enum</a></li>
+	<li><a ng-click="navigate(5)">Iterate Enum which has argumented constructor</a></li>
+	<li><a ng-href="#enumLookupMap" ng-click="buildBreadCrumbs('Reading enum using lookup map', '#enumLookupMap')">Reading enum using lookup map</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+	
+<div class="panel panel-primary" id="1"><div class="panel-heading">Accessing Enum</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+public enum DaysEnum {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+</code></pre>
+<pre><code>
+public void accessEnum() {
+	DaysEnum monday = DaysEnum.MONDAY;
+	System.out.println(&quot;EnumsPractice -&gt; method1() -&gt; monday: &quot; + monday);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+EnumsPractice -> method1() -> monday: MONDAY
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Enum in if condition</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+public enum DaysEnum {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+</code></pre>
+<pre><code>
+public void enumInIf() {
+	DaysEnum monday = DaysEnum.MONDAY;
+	DaysEnum tuesday = DaysEnum.TUESDAY;
+
+	if (DaysEnum.MONDAY == monday) {
+	    System.out.println("1. EnumsPractice -> enumInIfStatement() -> monday");
+	} else {
+	    System.out.println("1. EnumsPractice -> enumInIfStatement() -> tueday");
+	}
+
+	if (DaysEnum.MONDAY == tuesday) {
+	    System.out.println("2. EnumsPractice -> enumInIfStatement() -> monday");
+	} else {
+	    System.out.println("2. EnumsPractice -> enumInIfStatement() -> tueday");
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+1. EnumsPractice -> enumInIfStatement() -> monday
+2. EnumsPractice -> enumInIfStatement() -> tueday
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Enum in switch condition</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+public enum DaysEnum {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+</code></pre>
+<pre><code>
+public void enumInSwitch() {
+	DaysEnum monday = DaysEnum.MONDAY;
+
+	switch (monday) {
+	case MONDAY:
+	    System.out.println(&quot;monday&quot;);
+	    break;
+	case TUESDAY:
+	    System.out.println(&quot;tuesday&quot;);
+	    break;
+	default:
+	    System.out.println(&quot;other&quot;);
+	    break;
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+monday
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Iterate Enum</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+public enum DaysEnum {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+</code></pre>
+<pre><code>
+public void iterateEnum() {
+	DaysEnum[] days = DaysEnum.values();
+	for (DaysEnum day : days) {
+	    System.out.println(day);
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+MONDAY
+TUESDAY
+WEDNESDAY
+THURSDAY
+FRIDAY
+SATURDAY
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Iterate Enum which has argumented constructor</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+public enum DaysEnum2 {
+    MONDAY(1), TUESDAY(2), WEDNESDAY(3), THURSDAY(4), FRIDAY(5), SATURDAY(6);
+
+    private final int value;
+
+    private DaysEnum2(int value) {
+	this.value = value;
+    }
+
+    public int getValue() {
+	return value;
+    }
+}
+</code></pre>
+<pre><code>
+public void iterateEnumWithArgumentedConstructor() {
+	DaysEnum2[] days = DaysEnum2.values();
+	for (DaysEnum2 day : days) {
+	    System.out.println(day.getValue());
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+1
+2
+3
+4
+5
+6
+</code></pre>
+</div></div>
+
+</div>

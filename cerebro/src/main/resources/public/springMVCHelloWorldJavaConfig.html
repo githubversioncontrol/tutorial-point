@@ -1,0 +1,242 @@
+<div class="page-header">
+    <h3>Spring MVC Hello World Java Config</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Create web project using maven</li>
+		<li>Delete src/main/webapp/WEB-INF/web.xml file</li>
+		<li>Add spring mvc dependencies in pom.xml
+			<ul>
+				<li>spring-webmvc</li>
+				<li>javaee-api</li>
+				<li>jstl</li>
+			</ul>
+		</li>
+		<li>Create Spring configuration class</li>
+		<li>Create Spring MVC initializer class</li>
+		<li>Create Controller class</li>
+		<li>Create a folder src/main/webapp/WEB-INF/jsp</li>
+		<li>Create 2 jsp files - file1.jsp, file2.jsp</li>
+		<li>Deploy into tomcat</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Web project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=springmvc.hello.world -DartifactId=SpringMVCHelloWorld -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/spring/1-mvc-hello-world-java-config.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;springmvc.hello.world&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringMVCHelloWorld&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringMVCHelloWorld&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+		&lt;spring.version&gt;4.3.5.RELEASE&lt;/spring.version&gt;
+		&lt;jdk.version&gt;1.8&lt;/jdk.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- javaee jar file for HttpServletRequest etc --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax&lt;/groupId&gt;
+			&lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+			&lt;version&gt;7.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+			&lt;artifactId&gt;jstl&lt;/artifactId&gt;
+			&lt;version&gt;1.2&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- Spring dependencies --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringMVCHelloWorld&lt;/finalName&gt;
+
+		&lt;pluginManagement&gt;
+			&lt;plugins&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+					&lt;version&gt;3.5.1&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;source&gt;${jdk.version}&lt;/source&gt;
+						&lt;target&gt;${jdk.version}&lt;/target&gt;
+						&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+						&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+						&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+						&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+
+				<em>&lt;!-- mvn package will be failed if web.xml is not found for web app. So add this plugin to create war without web.xml--&gt;</em>
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+					&lt;version&gt;2.4&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;warSourceDirectory&gt;src/main/webapp&lt;/warSourceDirectory&gt;
+						&lt;warName&gt;SpringMVCHelloWorld&lt;/warName&gt;
+						&lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+			&lt;/plugins&gt;
+		&lt;/pluginManagement&gt;
+
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MVCConfig.java</div><div class="panel-body">
+<pre><code>
+package springmvc.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = { &quot;springmvc&quot; })
+public class MVCConfig {
+
+    @Bean
+    public ViewResolver viewResolver() {
+	InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver(&quot;/WEB-INF/jsp/&quot;, &quot;.jsp&quot;);
+	internalResourceViewResolver.setViewClass(JstlView.class);
+	return internalResourceViewResolver;
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MVCInitializer.java</div><div class="panel-body">
+<pre><code>
+package springmvc.config;
+
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class MVCInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+	return new Class[] { MVCConfig.class };
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+	return null;
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+	return new String[] { &quot;/&quot; };
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MVCController.java</div><div class="panel-body">
+<pre><code>
+package springmvc.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class MVCController {
+
+    @RequestMapping(value = &quot;/file1&quot;, method = RequestMethod.GET)
+    public String file1() {
+	System.out.println(&quot;MVCController -&gt; file1()&quot;);
+	return &quot;file1&quot;;
+    }
+
+    @RequestMapping(value = &quot;/file2&quot;, method = RequestMethod.GET)
+    public ModelAndView file2() {
+	System.out.println(&quot;MVCController -&gt; file2()&quot;);
+	ModelAndView modelAndView = new ModelAndView();
+	modelAndView.addObject(&quot;greetings&quot;, &quot;file2.jsp -&gt; Welcome to Spring MVC Hello World&quot;);
+	modelAndView.setViewName(&quot;file2&quot;);
+	return modelAndView;
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">file1.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;file1&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h2&gt;file1.jsp -&gt; Welcome to Spring MVC Hello World&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">file2.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;file2&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h2&gt;${greetings}&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringMVCHelloWorld/file1</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/spring/2-mvc-hello-world-java-config.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringMVCHelloWorld/file2</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/spring/3-mvc-hello-world-java-config.jpg"/>
+</div></div>

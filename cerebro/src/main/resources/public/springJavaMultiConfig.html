@@ -1,0 +1,276 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">About this example</div><div class="panel-body">
+<ul>
+<li>Using multiple java configuration classes</li>
+<li><em>There are 2 ways</em>
+	<ul>
+		<li>Adding the packages of other configuration classes to @ComponentScan annotation</li>
+		<li>Import other configuration classes to main configration class</li>
+	</ul>
+</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Create Core Java Project using Maven from cmd</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.java.multi.config -DartifactId=SpringJavaMultiConfig -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-spring-java-multi-config.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.java.multi.config&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringJavaMultiConfig&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringJavaMultiConfig&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;4.3.7.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+			&lt;version&gt;4.3.7.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+		<em>&lt;!-- Spring test --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+			&lt;version&gt;4.3.7.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">AppConfig1.java</div><div class="panel-body">
+<pre><code>
+package com.config1;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+import spring.controller.MyController;
+
+@Configuration
+@ComponentScan(basePackages = { &quot;spring&quot;, &quot;com&quot; })
+public class AppConfig1 {
+	@Bean
+	public MyController myController() {
+		return new MyController();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">AppConfig2.java</div><div class="panel-body">
+<pre><code>
+package com.config2;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import spring.repository.MyRepository;
+import spring.service.MyService;
+
+@Configuration
+public class AppConfig2 {
+
+	@Bean
+	public MyService myService() {
+		return new MyService();
+	}
+
+	@Bean
+	public MyRepository myRepository() {
+		return new MyRepository();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">AppConfig3.java</div><div class="panel-body">
+<pre><code>
+package com.config3;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import com.config1.AppConfig1;
+
+@Configuration
+@Import(value = { AppConfig1.class })
+public class AppConfig3 {
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyRepository.java</div><div class="panel-body">
+<pre><code>
+package spring.repository;
+
+public class MyRepository {
+
+	public void method1() {
+		System.out.println(&quot;MyRepository -&gt; method1()&quot;);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyService.java</div><div class="panel-body">
+<pre><code>
+package spring.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import spring.repository.MyRepository;
+
+public class MyService {
+
+	@Autowired
+	private MyRepository myRepository;
+
+	public void method1() {
+		System.out.println(&quot;MyService -&gt; method1()&quot;);
+		myRepository.method1();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyController.java</div><div class="panel-body">
+<pre><code>
+package spring.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import spring.service.MyService;
+
+public class MyController {
+
+	@Autowired
+	private MyService myService;
+
+	public void method1() {
+		System.out.println(&quot;MyController -&gt; method1()&quot;);
+		myService.method1();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyTest.java</div><div class="panel-body">
+<pre><code>
+package spring.java.multi.config;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.config1.AppConfig1;
+
+import spring.controller.MyController;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { AppConfig1.class })
+public class MyTest {
+	@Autowired
+	private MyController myController;
+
+	@Test
+	public void method1() {
+		myController.method1();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyTest.java - Output</div><div class="panel-body">
+<pre><code>
+MyController -&gt; method1()
+MyService -&gt; method1()
+MyRepository -&gt; method1()
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyTest2.java</div><div class="panel-body">
+<pre><code>
+package spring.java.multi.config;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.config3.AppConfig3;
+
+import spring.controller.MyController;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { AppConfig3.class })
+public class MyTest2 {
+	@Autowired
+	private MyController myController;
+
+	@Test
+	public void method1() {
+		myController.method1();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyTest2.java - Output</div><div class="panel-body">
+<pre><code>
+MyController -&gt; method1()
+MyService -&gt; method1()
+MyRepository -&gt; method1()
+</code></pre>
+</div></div>

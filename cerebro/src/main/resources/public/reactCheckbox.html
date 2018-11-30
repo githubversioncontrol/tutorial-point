@@ -1,0 +1,192 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create project using create-react-app
+<em>cmd&gt; create-react-app react-checkbox</em>
+3. Go inside above project
+<em>cmd&gt; cd react-checkbox</em>
+4. Install react, react-dom and bootstrap into application and save to package.json
+<em>react-checkbox&gt; npm install --save react react-dom 
+react-checkbox&gt; npm install --save bootstrap</em>
+5. write Checkbox component
+6. Update App component to include check box
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactCheckbox.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.js</div><div class="panel-body">
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+registerServiceWorker();
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Checkbox.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+
+class Checkbox extends Component{
+  state = {
+    isChecked: false
+  }
+
+  toggleCheckboxChange = () =&gt; {
+    const{handleCheckboxChange, label} = this.props;
+
+    this.setState(({isChecked}) =&gt; ({
+      isChecked : !isChecked
+    }));
+
+     handleCheckboxChange(label);
+  }
+
+  render() {
+      const {label} = this.props;
+      const {isChecked} = this.state
+    return(
+      &lt;div className=&quot;checkbox&quot;&gt;
+        &lt;label&gt;
+          &lt;input type=&quot;checkbox&quot; value={label} checked={isChecked} onChange={this.toggleCheckboxChange} /&gt;
+          {label}
+        &lt;/label&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default Checkbox;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Checkbox from './Checkbox'
+
+const items = [&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;];
+
+class App extends Component {
+  state = {
+    buttonDisabled: true,
+    isGoing: true
+  }
+
+  componentWillMount = () =&gt; {
+    this.selectedCheckboxes = new Set();
+  }
+
+  toggleCheckbox = (lable) =&gt; {
+    if (this.selectedCheckboxes.has(lable)) {
+      this.selectedCheckboxes.delete(lable);
+    } else {
+      this.selectedCheckboxes.add(lable);
+    }
+
+    console.log(this.selectedCheckboxes.size);
+    if (this.selectedCheckboxes.size &gt; 0) {
+      this.setState({
+        buttonDisabled: false
+      });
+    } else {
+      this.setState({
+        buttonDisabled: true
+      });
+    }
+  }
+
+  handleFormSubmit = event =&gt; {
+    event.preventDefault();
+
+    for (const checkbox of this.selectedCheckboxes) {
+      console.log(checkbox, &quot; is selected&quot;);
+    }
+  }
+
+  createCheckbox = (label) =&gt; (
+    &lt;Checkbox label={label} handleCheckboxChange={this.toggleCheckbox} key={label} /&gt;
+  );
+
+  createCheckboxes = () =&gt; (
+    items.map(this.createCheckbox)
+  )
+
+  handleCheckBoxchange = () =&gt; {
+    this.setState(({ isGoing }) =&gt; ({
+      isGoing: !isGoing
+    }));
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;div className=&quot;App&quot;&gt;
+          &lt;header className=&quot;App-header&quot;&gt;
+            &lt;img src={logo} className=&quot;App-logo&quot; alt=&quot;logo&quot; /&gt;
+            &lt;h1 className=&quot;App-title&quot;&gt;React + Checkboxes&lt;/h1&gt;
+          &lt;/header&gt;
+        &lt;/div&gt;
+
+        &lt;div className=&quot;container&quot;&gt;
+          &lt;h3&gt;React Checkboxes &lt;/h3&gt;
+          &lt;div className=&quot;row&quot;&gt;
+            &lt;div className=&quot;col-sm-12&quot;&gt;
+              &lt;form onSubmit={this.handleFormSubmit}&gt;{this.createCheckboxes()}
+                &lt;button type=&quot;submit&quot; className=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt;
+              &lt;/form&gt;
+              &lt;hr /&gt;
+
+              &lt;form onSubmit={this.handleFormSubmit}&gt;{this.createCheckboxes()}
+                &lt;button disabled={this.state.buttonDisabled} type=&quot;submit&quot; className=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt; &amp;nbsp;
+              &lt;/form&gt;
+              &lt;hr /&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Initial page</div><div class="panel-body">
+<pre>
+1. First Save button is enabled
+2. Second Save button is disabled
+</pre>
+<img class="img-responsive" ng-src="images/react/4-reactCheckbox.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">First set of check boxes: Select any check box - click on Save</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactCheckbox.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Second set of check boxes</div><div class="panel-body">
+<pre>
+1. Initially button is disabled
+2. Button will be enabled on selecting any check box
+</pre>
+<img class="img-responsive" ng-src="images/react/3-reactCheckbox.jpg"/>
+</div></div>

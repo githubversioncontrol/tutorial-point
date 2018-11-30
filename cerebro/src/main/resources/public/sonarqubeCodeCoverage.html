@@ -1,0 +1,57 @@
+<div class="page-header">
+    <h3>Code Coverage report in Sonarqube with Jacoco</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Configure Maven with Jacoco. Please refer this <a ng-href="#mavenJacoco" target="_blank">link</a></li>
+		<li>Setup Sonarqube with Sonar scanner. Please refer this <a ng-href="#sonarSetup" target="_blank">link</a></li>
+		<li>Configure Sonar scanner to refer to the project to generate code coverage report</li>
+		<li>Run sonarqube</li>
+		<li>Run sonar scanner</li>
+		<li>Open report in the browser</li> 
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Configure Sonar scanner to refer to the project to generate code coverage report</div><div class="panel-body">
+<ul>
+	<li>I am configuring maven project</li>
+	<li> Go to unzipped sonar-scanner-3.0.1.733/conf, open sonar-scanner.properties using any editor</li>
+	<li>Give the following properties to configure the project:
+	<pre><code>
+sonar.projectKey=MavenJacocoIntegration
+sonar.projectName=MavenJacoco
+sonar.projectVersion=1.0
+sonar.language=java
+sonar.projectBaseDir=E:/Backup/JavaPrep/practiceProjects/Maven/MavenJacocoIntegration
+sonar.sources=src/main/java
+sonar.java.binaries=target/classes
+sonar.tests=src/test/java
+sonar.java.test.binaries=target/test-classes
+sonar.junit.reportsPath=target/surefire-reports
+sonar.jacoco.reportPaths=target/coverage-reports/jacoco-ut.exec
+sonar.verbose=true
+</code></pre>
+</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Run sonarqube</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/tools/sonarqubeCodeCoverage1.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Run sonar scanner</div><div class="panel-body">
+<ul>
+	<li>Starting the sonar scanner</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarqubeCodeCoverage2.jpg"/></li>
+	<li>Sonar scanner completed and generated the report at <em>http://localhost:9000/dashboard/index/MavenJacocoIntegration</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarqubeCodeCoverage3.jpg"/></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Open report in the browser</div><div class="panel-body">
+<ul>
+	<li>Open <em>http://localhost:9000/dashboard/index/MavenJacocoIntegration</em> URL in the browser</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarqubeCodeCoverage4.jpg"/></li>
+</ul>
+</div></div>

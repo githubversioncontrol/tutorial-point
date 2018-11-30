@@ -1,0 +1,11 @@
+<!-- <div class="page-header">
+    <h3>Search Results</h3>      
+</div> -->
+
+<table class="table table-hover table-bordered table-striped" ng-controller="searchController">
+	<tbody>
+		<tr ng-repeat="searchResult in searchResults">
+			<td><a ng-href="#{{searchResult}}" target="_blank">{{searchResult}}</a></td>
+		</tr>
+	</tbody>
+</table>

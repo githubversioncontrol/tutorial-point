@@ -1,0 +1,46 @@
+<div class="page-header">
+    <h3>Create Java Project using Maven and Import into Eclipse</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Install Maven : refer <a ng-href="#installMaven" target="_blank">Install Maven tutorial</a>
+		<li>Create Core Java Project using Maven</li>
+		<li>Import that project into Eclipse</li>
+		<li><a ng-href="#compilerPlugin" target="_blank">Update compiler version of project</a>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using Maven</div><div class="panel-body">
+<ul>
+<li>Open Command Prompt </li>
+<li>Navigate to folder where you want to create java project</li>
+<li>Run following command</li>
+</ul> 
+<pre ><code>
+mvn archetype:generate -DgroupId=com.maven.practice -DartifactId=MavenHelloWorld -Dversion=1.0-SNAPSHOT -Dpackage=maven.hello.world -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+<pre><code>
+<img class="img-responsive" ng-src="images/maven/mavenJavaProject.jpg"/>
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Import project into Eclipse</div><div class="panel-body">
+<ul>
+<li>Go to the location where project is created </li>
+<li>Import projec to Eclipse</li>
+<li>Open Eclipse -&gt; Right click in Project Explorer -&gt; Import -&gt; Import -&gt; Maven -&gt; Existing Maven Projects -&gt; Next -&gt; Browse to Maven project location -&gt; Finish</li>
+</ul>
+<pre ><code>
+<img class="img-responsive" ng-src="images/maven/importToEclipse1.jpg" />
+</code></pre>
+<pre ><code>
+<img class="img-responsive" ng-src="images/maven/importToEclipse2.jpg" />
+</code></pre>
+<pre ><code>
+<img class="img-responsive" ng-src="images/maven/importToEclipse3.jpg" />
+</code></pre>
+<pre ><code>
+<img class="img-responsive" ng-src="images/maven/importToEclipse4.jpg" />
+</code></pre>
+</div></div>

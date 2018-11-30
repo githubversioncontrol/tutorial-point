@@ -1,0 +1,72 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Display Button that increment the counter</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Below example is done in <a href="https://jscomplete.com/repl/" target="_blank">jscomplete</a>
+</pre>
+<pre>
+<em>// Button component to display button</em>
+class Button extends React.Component{
+	
+  <em>// to handle button click</em>
+  handleClick = () =&gt; {
+  	this.props.onClickIncrementCounter(this.props.amountIncrementValue);
+  }
+  
+  render(){
+  	return(
+      	&lt;button onClick={this.handleClick}&gt; 
+        	+{this.props.amountIncrementValue} 
+        &lt;/button&gt;
+    );
+  }
+
+}
+
+<em>// component to display result</em>
+class Result extends React.Component{
+	render(){
+  	return(
+    	&lt;div&gt;Counter Value: {this.props.counterValue}&lt;/div&gt;
+    );
+  }
+}
+
+<em>// app component - container for Button, Result components</em>
+class App extends React.Component{
+	state = {
+  	counter: 0
+  }
+  
+  incrementCounter = (incrementValue) =&gt; {
+  	this.setState((prevState) =&gt; ({
+    	counter: prevState.counter + incrementValue
+    }));
+  }
+  
+	render(){
+  	return(
+    	&lt;div&gt;
+      	&lt;Button amountIncrementValue={1} onClickIncrementCounter={this.incrementCounter}/&gt;
+        &lt;Button amountIncrementValue={5} onClickIncrementCounter={this.incrementCounter}/&gt;
+        &lt;Button amountIncrementValue={10} onClickIncrementCounter={this.incrementCounter}/&gt;
+        &lt;Button amountIncrementValue={100} onClickIncrementCounter={this.incrementCounter}/&gt;
+        &lt;Result counterValue={this.state.counter}/&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(&lt;App /&gt;, mountNode);
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactIncrementButton.jpg"/>
+</div></div>

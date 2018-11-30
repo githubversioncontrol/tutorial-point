@@ -1,0 +1,355 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create web project using maven</li>
+	<li>Add these dependencies
+		<ul>
+			<li>spring-core</li>
+			<li>spring-web</li> 
+			<li>spring-webmvc</li>
+			<li>jackson-mapper-asl</li>
+			<li>jackson-databind</li>
+		</ul>
+	</li>
+	<li>Add org.springframework.web.servlet.DispatcherServlet to web.xml</li>
+	<li>Create spring config file</li>
+	<li>Create Rest Services with POST method</li>
+	<li>Deploy into tomcat</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create web project using Maven from cmd</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.rest -DartifactId=SpringRest -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Add these dependencies in pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.rest&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringRest&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringRest Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;properties&gt;
+		&lt;spring.version&gt;4.3.2.RELEASE&lt;/spring.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax&lt;/groupId&gt;
+			&lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+			&lt;version&gt;7.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- Spring --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-mapper-asl&lt;/artifactId&gt;
+			&lt;version&gt;1.9.13&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+			&lt;version&gt;2.5.0&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringRest&lt;/finalName&gt;
+		&lt;pluginManagement&gt;
+			&lt;plugins&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+					&lt;version&gt;3.5.1&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;source&gt;1.8&lt;/source&gt;
+						&lt;target&gt;1.8&lt;/target&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+			&lt;/plugins&gt;
+		&lt;/pluginManagement&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre><code>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+    	version=&quot;3.0&quot;&gt;
+  &lt;display-name&gt;Spring REST&lt;/display-name&gt;
+  &lt;servlet&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">springREST-servlet.xml</div><div class="panel-body">
+<pre><code>
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;   xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;   xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+   xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;&gt;
+   
+   &lt;context:component-scan base-package=&quot;spring.rest&quot;/&gt;
+   &lt;mvc:annotation-driven/&gt;
+   
+   &lt;bean name=&quot;objectMapper&quot; class=&quot;com.fasterxml.jackson.databind.ObjectMapper&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+package spring.rest.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Employee {
+
+    private String id;
+    private String name;
+    private String address;
+
+    public Employee() {
+
+    }
+
+    public Employee(String name, String address) {
+	this.name = name;
+	this.address = address;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    public String getAddress() {
+	return address;
+    }
+
+    public void setAddress(String address) {
+	this.address = address;
+    }
+
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;Employee [id=&quot; + id + &quot;, name=&quot; + name + &quot;, address=&quot; + address + &quot;]&quot;;
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">PostRequest.java</div><div class="panel-body">
+<pre><code>
+package spring.rest.post;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import spring.rest.model.Employee;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@RestController
+public class PostRequests {
+
+    @Autowired
+    @Qualifier(&quot;objectMapper&quot;)
+    private ObjectMapper mapper;
+
+    <em>/**
+     * POST request with JSON input body return JSON response. URL:
+     * http://localhost:9091/SpringRest/method1 method: POST body: { &quot;id&quot;: &quot;10&quot;,
+     * &quot;name&quot;: &quot;testing1&quot;, &quot;address&quot;: &quot;testing2&quot; }
+     * 
+     * @param inputJson
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method1&quot;, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method1(@RequestBody String inputJson) {
+	Employee employee;
+	List&lt;Employee&gt; list = new ArrayList&lt;&gt;();
+	try {
+	    employee = mapper.readValue(inputJson, Employee.class);
+	    Employee employee1 = new Employee(&quot;test1&quot;, &quot;address1&quot;);
+	    list.add(employee1);
+	    list.add(employee);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return list;
+    }
+
+    <em>/**
+     * POST method with input JSON and path variables. URL:
+     * http://localhost:9091/SpringRest/method2/testing2/testing2 body: { &quot;id&quot;:
+     * &quot;10&quot;, &quot;name&quot;: &quot;testing1&quot;, &quot;address&quot;: &quot;testing2&quot; }
+     * 
+     * @param inputJson
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method2/{name}/{address}&quot;, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method2(@RequestBody String inputJson, @PathVariable(value = &quot;name&quot;) String name,
+	    @PathVariable(value = &quot;address&quot;) String address) {
+	List&lt;Employee&gt; list = new ArrayList&lt;&gt;();
+	try {
+	    Employee employee1 = mapper.readValue(inputJson, Employee.class);
+	    Employee employee2 = new Employee(name, address);
+	    list.add(employee1);
+	    list.add(employee2);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return list;
+    }
+
+    <em>/**
+     * POST method with input JSON and path variables. URL:
+     * http://localhost:9091/SpringRest/method3?name=testing2&amp;address=testing2
+     * body: { &quot;id&quot;: &quot;10&quot;, &quot;name&quot;: &quot;testing1&quot;, &quot;address&quot;: &quot;testing2&quot; }
+     * 
+     * @param inputJson
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method3&quot;, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method3(@RequestBody String inputJson, @RequestParam(value = &quot;name&quot;, required = true) String name,
+	    @RequestParam(value = &quot;address&quot;, required = false) String address) {
+	List&lt;Employee&gt; list = new ArrayList&lt;&gt;();
+	try {
+	    Employee employee1 = mapper.readValue(inputJson, Employee.class);
+	    Employee employee2 = new Employee(name, address);
+	    list.add(employee1);
+	    list.add(employee2);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return list;
+    }
+
+    <em>/**
+     * POST method with input JSON and path variables. URL:
+     * http://localhost:9091/SpringRest/method4 body: { &quot;id&quot;: &quot;10&quot;, &quot;name&quot;:
+     * &quot;testing1&quot;, &quot;address&quot;: &quot;testing2&quot; }. In Postman -&gt; Headers tab -&gt; give
+     * key-value pairs (for example: name-testing, address-testing)
+     * 
+     * @param inputJson
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method4&quot;, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method4(@RequestBody String inputJson, @RequestHeader(value = &quot;name&quot;) String name,
+	    @RequestHeader(value = &quot;address&quot;) String address) {
+	List&lt;Employee&gt; list = new ArrayList&lt;&gt;();
+	try {
+	    Employee employee1 = mapper.readValue(inputJson, Employee.class);
+	    Employee employee2 = new Employee(name, address);
+	    list.add(employee1);
+	    list.add(employee2);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return list;
+    }
+
+    <em>/**
+     * Method to demonstrate
+     * {@link org.springframework.web.bind.annotation.PostMapping}
+     * 
+     * @param inputJson
+     * @param name
+     * @param address
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */</em>
+    @PostMapping(value = &quot;/method5/{name}/{address}&quot;, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method5(@RequestBody String inputJson, @PathVariable(&quot;name&quot;) String name,
+	    @PathVariable(&quot;address&quot;) String address) throws JsonParseException, JsonMappingException, IOException {
+	System.out.println(&quot;method5() -&gt; inputJson: &quot; + inputJson);
+	Employee employee1 = mapper.readValue(inputJson, Employee.class);
+	Employee employee2 = new Employee(name, address);
+	return Arrays.asList(employee1, employee2);
+    }
+}
+</code></pre>
+</div></div>

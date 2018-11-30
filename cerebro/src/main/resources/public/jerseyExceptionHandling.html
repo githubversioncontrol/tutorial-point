@@ -1,0 +1,439 @@
+<div class="page-header">
+    <h3>Exception Handling in Jersey Implementation</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">About this example</div><div class="panel-body">
+<ul>
+	<li>Handling specific exception with Custom Exception handler - refer ConditionalException.java
+		<ol>
+			<li>Write an Exception class extends java.lang.Exception and implements javax.ws.rs.ext.ExceptionMapper interface and override toResponse() method</li>
+			<li>Annotate custom exception with javax.ws.rs.ext.Provider annotation</li>
+		</ol>
+	</li>
+	<li>Handling all other exceptions - refer GenericException.java
+		<ol>
+			<li>Write custom exception class extends java.lang.Throwable implements ExceptionMapper&lt;Throwable&gt;</li>
+			<li>Override toResponse method</li>
+			<li>Annotate custom exception with javax.ws.rs.ext.Provider annotation</li>
+		</ol>
+	</li>
+	<li>Handling specific exception with custom exception handler and return custom pojo as JSON - refer ExceptionWithPojoResponse.java
+		<ol>
+			<li>Write custom exception class extends java.lang.Exception implements ExceptionMapper&lt;ExceptionWithPojoResponse&gt;</li>
+			<li>Override toResponse method</li>
+			<li>Annotate custom exception with javax.ws.rs.ext.Provider annotation</li>
+		</ol>
+	</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Web project using Maven using jersey archetyepe. If we create using Jersey archetype required dependencies will be added to pom.xml</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=jresey.rest.practice -DartifactId=JerseyRestPractice -Dversion=1.0.SNAPSHOT -DarchetypeGroupId=org.glassfish.jersey.archetypes -DarchetypeArtifactId=jersey-quickstart-webapp -DarchetypeVersion=2.2 -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jerseyRest.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;jresey.rest.practice&lt;/groupId&gt;
+    &lt;artifactId&gt;JerseyRestPractice&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;JerseyRestPractice&lt;/name&gt;
+
+    &lt;build&gt;
+        &lt;finalName&gt;JerseyRestPractice&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.5.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.8&lt;/source&gt;
+                    &lt;target&gt;1.8&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.glassfish.jersey&lt;/groupId&gt;
+                &lt;artifactId&gt;jersey-bom&lt;/artifactId&gt;
+                &lt;version&gt;${jersey.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
+            <em>&lt;!-- use the following artifactId if you don't need servlet 2.x compatibility --&gt;
+            &lt;!-- artifactId&gt;jersey-container-servlet&lt;/artifactId --&gt;</em>
+        &lt;/dependency&gt;
+       <em> &lt;!-- uncomment this to get JSON support  --&gt;</em>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+        	&lt;groupId&gt;junit&lt;/groupId&gt;
+        	&lt;artifactId&gt;junit&lt;/artifactId&gt;
+        	&lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+       
+    &lt;/dependencies&gt;
+    &lt;properties&gt;
+        &lt;jersey.version&gt;2.2&lt;/jersey.version&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre ><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- This web.xml file is not required when using Servlet 3.0 container,
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html --&gt;
+&lt;web-app version=&quot;2.5&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;jersey.config.server.provider.packages&lt;/param-name&gt;
+           <em> &lt;!-- package where Jersey will look for REST classes --&gt;</em>
+            &lt;param-value&gt;jersey.rest.practice&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/webapi/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice.model;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+<em>// for XML response support</em>
+@XmlRootElement
+public class Employee {
+
+	private String firstName;
+	private String lastName;
+	private String designation;
+	private int age;
+
+	public Employee(String firstName, String lastName, String designation, int age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.designation = designation;
+		this.age = age;
+	}
+
+	public Employee() {
+	}
+
+	<em>// to change the tag name in returned xml</em>
+	@XmlElement(name = &quot;employee-firstname&quot;)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;[firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, designation=&quot; + designation + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ExceptionsPractice.java</div><div class="panel-body">
+<pre><code>
+package jersey.rest.practice;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import jersey.rest.practice.exception.ConditionalException;
+import jersey.rest.practice.exception.ExceptionWithPojoResponse;
+
+@Path(&quot;/exceptions&quot;)
+public class ExceptionsPractice {
+
+	/**
+	 * http://localhost:9091/JerseyRestPractice/webapi/exceptions/conditionalException/true
+	 * 	- Exception message will come in post man
+	 * 
+	 * http://localhost:9091/JerseyRestPractice/webapi/exceptions/conditionalException/false
+	 * 	- No Exception
+	 * @param flag
+	 * @return
+	 * @throws ConditionalException
+	 */
+	@GET
+	@Path(&quot;/conditionalException/{flag}&quot;)
+	public Response throwConditionalException(@PathParam(&quot;flag&quot;) Boolean flag)
+			throws ConditionalException {
+		System.out.println(&quot;Inside ExceptionPractice -&gt; throwConditionalException()&quot;);
+		if (flag) {
+			throw new ConditionalException(
+					&quot;Inside ExceptionPractice -&gt; throwConditionalException() -&gt; Conditional Exceptional is thrown. Just for Demo fun&quot;);
+		}
+
+		return Response.status(Status.OK).build();
+	}
+
+	/**
+	 * http://localhost:9091/JerseyRestPractice/webapi/exceptions/genericException/true
+	 * @param flag
+	 * @return
+	 * @throws Exception
+	 */
+	@GET
+	@Path(&quot;/genericException/{flag}&quot;)
+	public Response throwException(@PathParam(&quot;flag&quot;) Boolean flag) throws Exception {
+		System.out.println(&quot;Inside ExceptionPractice -&gt; throwException()&quot;);
+		if (flag) {
+			throw new Exception();
+		}
+
+		return Response.status(Status.OK).build();
+	}
+
+	/**
+	 * http://localhost:9091/JerseyRestPractice/webapi/exceptions/throwExceptionWithPojoResponse/true
+	 * @param flag
+	 * @return
+	 * @throws ExceptionWithPojoResponse
+	 */
+	@GET
+	@Path(&quot;/throwExceptionWithPojoResponse/{flag}&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response throwExceptionWithPojoResponse(@PathParam(&quot;flag&quot;) Boolean flag)
+			throws ExceptionWithPojoResponse {
+		System.out.println(&quot;Inside ExceptionPractice -&gt; throwExceptionWithPojoResponse()&quot;);
+		if (flag) {
+			throw new ExceptionWithPojoResponse();
+		}
+		return Response.status(Status.OK).build();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ExceptionModel.java</div><div class="panel-body">
+<pre><code>
+package jersey.rest.practice.model;
+
+import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class ExceptionModel {
+
+	private Status statusCode;
+	private String errorDescription;
+
+	/**
+	 * If zero argument constructor is not there we will get below exception
+	 * 
+	 * Exception [EclipseLink-50001] (Eclipse Persistence Services - 2.5.0.v20130507-3faac2b): 
+	 * 	org.eclipse.persistence.exceptions.JAXBException
+	 * Exception Description: The class jersey.rest.practice.model.ExceptionModel requires a zero argument constructor 
+	 * 	or a specified factory method.  Note that non-static inner classes do not have zero argument constructors and are not supported.
+	 */
+	public ExceptionModel() {
+	}
+
+	public ExceptionModel(Status statusCode, String errorDescription) {
+		this.statusCode = statusCode;
+		this.errorDescription = errorDescription;
+	}
+
+	public Status getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(Status statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getErrorDescription() {
+		return errorDescription;
+	}
+
+	public void setErrorDescription(String errorDescription) {
+		this.errorDescription = errorDescription;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;[statusCode=&quot; + statusCode + &quot;, errorDescription=&quot; + errorDescription + &quot;]&quot;;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ConditionalException.java</div><div class="panel-body">
+<pre><code>
+package jersey.rest.practice.exception;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+@Provider
+public class ConditionalException extends Exception implements
+		ExceptionMapper&lt;ConditionalException&gt; {
+
+	private static final long serialVersionUID = 8891820062308157628L;
+
+	/**
+	 * If we add argumented constructor then this constructor also should be there, 
+	 * else we will get below exceptions while stating the server
+	 * 
+	 * MultiException stack 1 of 2
+	 * java.lang.NoSuchMethodException: 
+	 * 	Could not find a suitable constructor in jersey.rest.practice.exception.ConditionalException class.
+	 * 
+	 * MultiException stack 2 of 2
+	 * java.lang.IllegalArgumentException: Errors were discovered while reifying SystemDescriptor(
+	 * implementation=jersey.rest.practice.exception.ConditionalException
+	 */
+	public ConditionalException() {
+
+	}
+
+	public ConditionalException(String message) {
+		super(message);
+	}
+
+	@Override
+	public Response toResponse(ConditionalException exception) {
+		return Response.status(Status.NOT_FOUND).entity(exception.getMessage()).type(&quot;text/plain&quot;)
+				.build();
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">GenericException	.java</div><div class="panel-body">
+<pre><code>
+package jersey.rest.practice.exception;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+@Provider
+public class GenericException extends Throwable implements ExceptionMapper&lt;Throwable&gt; {
+
+	private static final long serialVersionUID = -1953069877198649304L;
+
+	@Override
+	public Response toResponse(Throwable exception) {
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(&quot;Some thing wrong in server&quot;)
+				.type(&quot;text/plain&quot;).build();
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ExceptionWithPojoResponse.java</div><div class="panel-body">
+<pre><code>
+package jersey.rest.practice.exception;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+import jersey.rest.practice.model.ExceptionModel;
+
+@Provider
+public class ExceptionWithPojoResponse extends Exception implements
+		ExceptionMapper&lt;ExceptionWithPojoResponse&gt; {
+
+	private static final long serialVersionUID = 8349324843962192177L;
+
+	@Override
+	public Response toResponse(ExceptionWithPojoResponse exception) {
+		ExceptionModel exceptionModel = new ExceptionModel(Status.BAD_REQUEST,
+				&quot;Bad request. Please check the request parameters&quot;);
+		return Response.status(Status.BAD_REQUEST).entity(exceptionModel).build();
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/exceptions/conditionalException/true</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/jersey/1-jersey-exception-handling.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/exceptions/genericException/true</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/jersey/2-jersey-exception-handling.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/exceptions/throwExceptionWithPojoResponse/true</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/jersey/3-jersey-exception-handling.jpg" />
+</div></div>

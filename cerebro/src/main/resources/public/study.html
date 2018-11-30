@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Core Java</a></li>
+	<li><a ng-click="navigate(2)">Java EE</a></li>
+	<li><a ng-click="navigate(3)">Spring</a></li>
+	<li><a ng-click="navigate(4)">IBM MQ</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Java EE</div><div class="panel-body table-responsive">
+<table class="table table-hover">
+<thead>
+	<tr>
+		<th>Course</th>
+        <th>Status</th>
+	</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="https://app.pluralsight.com/library/courses/java-ee-getting-started/table-of-contents" target="_blank">Java EE: Getting Started</a></td>
+	<td>Inprogress</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Spring Boot</div><div class="panel-body table-responsive">
+<table class="table table-hover">
+<thead>
+	<tr>
+		<th>Course</th>
+        <th>Status</th>
+	</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="https://www.javacodegeeks.com/2017/11/intro-redis-spring-boot.html" target="_blank">Spring Boot + Redis</a></td>
+	<td>None</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+</div>

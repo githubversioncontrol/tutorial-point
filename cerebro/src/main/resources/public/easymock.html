@@ -1,0 +1,15 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+<ul>
+  <li><a ng-href="#easymockHelloWorld" ng-click="buildBreadCrumbs('Easymock Hello world', '#easymockHelloWorld')">Easymock Hello world</a></li>
+  <li><a ng-href="#easymockAnnotations" ng-click="buildBreadCrumbs('Easymock Annotations', '#easymockAnnotations')">Easymock Annotations</a></li>
+  <li><a ng-href="#easymockStrictmock" ng-click="buildBreadCrumbs('Easymock strictmock', '#easymockStrictmock')">Easymock strictmock</a></li>
+  <li><a ng-href="#easymockExceptionHandling" ng-click="buildBreadCrumbs('Easymock Exception Handling', '#easymockExceptionHandling')">Easymock Exception Handling</a></li>
+</ul>
+</div></div>

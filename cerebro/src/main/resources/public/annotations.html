@@ -1,0 +1,315 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">class Level Annotations</a></li>
+	<li><a ng-click="navigate(2)">Field Level Annotations</a></li>
+	<li><a ng-click="navigate(3)">Method Level Annotations</a></li>
+	<li><a ng-click="navigate(4)">Parameter Level Annotations</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+	
+<div class="panel panel-primary" id="1"><div class="panel-heading">class Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ClassLevelAnnotation {
+
+    String stringValue() default &quot;class default string value&quot;;
+
+    int intValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void classLevelAnnotation() {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	ClassLevelAnnotation[] classLevelAnnotations = (ClassLevelAnnotation[]) classObject.getAnnotationsByType(ClassLevelAnnotation.class);
+
+	for (ClassLevelAnnotation classLevelAnnotation : classLevelAnnotations) {
+	    System.out.println(classLevelAnnotation.stringValue());
+	    System.out.println(classLevelAnnotation.intValue());
+	}
+
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+class default string value
+20
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Field Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface FieldLevelAnnotation {
+
+    String stringValue() default &quot;field default string value&quot;;
+
+    String[] stringValues();
+
+    long longValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void fieldLevelAnnotation() throws NoSuchFieldException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Field field = classObject.getField(&quot;fieldWithAnnotation&quot;);
+	FieldLevelAnnotation[] fieldLevelAnnotations = (FieldLevelAnnotation[]) field.getAnnotationsByType(FieldLevelAnnotation.class);
+
+	for (FieldLevelAnnotation annotation : fieldLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.longValue());
+	    String[] stringValues = annotation.stringValues();
+	    System.out.println(stringValues[0] + &quot;, &quot; + stringValues[1]);
+	}
+    }
+</code></pre>
+<h4  class="output">Output</h4>
+<pre><code>
+field default string value
+30
+value1, value2
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Method Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MethodLevelAnnotation {
+
+    String stringValue();
+
+    double doubleValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void methodLevelAnnotation() throws NoSuchMethodException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Method method = classObject.getMethod(&quot;methodWithAnnotation&quot;);
+
+	MethodLevelAnnotation[] methodLevelAnnotations = (MethodLevelAnnotation[]) method.getAnnotationsByType(MethodLevelAnnotation.class);
+
+	for (MethodLevelAnnotation annotation : methodLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.doubleValue());
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+method level annotation string vlaue
+10.25
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Parameter Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface ParameterLevelAnnotation {
+
+    String stringValue();
+
+    float floatValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void parameterAnnotations() throws NoSuchMethodException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Method method = classObject.getMethod(&quot;parametersWithAnnotation&quot;, new Class[] { String.class });
+	Parameter[] parameters = method.getParameters();
+
+	System.out.println(parameters[0].getName());
+
+	Parameter parameter = parameters[0];
+	ParameterLevelAnnotation[] parameterLevelAnnotations = (ParameterLevelAnnotation[]) parameter
+		.getAnnotationsByType(ParameterLevelAnnotation.class);
+
+	for (ParameterLevelAnnotation annotation : parameterLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.floatValue());
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+argument1
+parameter level annotation string value
+1.23
+</code></pre>
+</div></div>
+
+</div>

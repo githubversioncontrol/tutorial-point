@@ -1,0 +1,311 @@
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create core java project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.hibernate.practice -DartifactId=HibernatePractice1 -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/hibernate4/1-hibernate4Merge.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.hibernate.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;HibernatePractice1&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;HibernatePractice1&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+			&lt;version&gt;4.3.6.Final&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javassist&lt;/groupId&gt;
+			&lt;artifactId&gt;javassist&lt;/artifactId&gt;
+			&lt;version&gt;3.12.1.GA&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-annotations&lt;/artifactId&gt;
+			&lt;version&gt;3.5.6-Final&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate&lt;/artifactId&gt;
+			&lt;version&gt;3.2.3.ga&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;1.4.193&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.transaction&lt;/groupId&gt;
+			&lt;artifactId&gt;jta&lt;/artifactId&gt;
+			&lt;version&gt;1.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">hibernate.cfg.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; 
+&lt;!DOCTYPE hibernate-configuration SYSTEM &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;
+&lt;hibernate-configuration&gt;
+	&lt;session-factory&gt;
+		&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.H2Dialect&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;org.h2.Driver&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/HibernateProjects/HibernatePractice1/src/main/resources/hibernateDb;MV_STORE=FALSE&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.username&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.password&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;
+		&lt;property name=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/property&gt;
+		
+		&lt;mapping class=&quot;com.hibernate.practice.model.Student&quot;/&gt;
+		&lt;mapping class=&quot;com.hibernate.practice.model.Course&quot;/&gt;
+	&lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Course.java</div><div class="panel-body">
+<pre><code>
+package com.hibernate.practice.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;COURSE&quot;)
+public class Course {
+
+	private Integer id;
+	private String courseName;
+	private Integer credits;
+
+	public Course(Integer id, String courseName, Integer credits) {
+		this.id = id;
+		this.courseName = courseName;
+		this.credits = credits;
+	}
+
+	public Course() {
+	}
+
+	@Id
+	@Column(name = &quot;ID&quot;)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;COURSE_NAME&quot;)
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	@Column(name = &quot;CREDITS&quot;)
+	public Integer getCredits() {
+		return credits;
+	}
+
+	public void setCredits(Integer credits) {
+		this.credits = credits;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;(id=&quot; + id + &quot;, courseName=&quot; + courseName + &quot;, credits=&quot; + credits + &quot;)&quot;;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MergePractice.java</div><div class="panel-body">
+<pre><code>
+package com.hibernate.crud.practice;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Course;
+
+@SuppressWarnings({ &quot;deprecation&quot;, &quot;unchecked&quot; })
+public class MergePractice {
+
+	<em>/**
+	 * Before/setup method to insert the data
+	 */</em>
+	@Before
+	public void setup() {
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// save record</em>
+		Course course = new Course(1, &quot;courseName&quot;, 10);
+		session.beginTransaction();
+		session.save(course);
+		session.getTransaction().commit();
+
+		session.close();
+	}
+
+	<em>/**
+	 * After/teardown method to delete the data
+	 */</em>
+	@After
+	public void teardown() {
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		List&lt;Course&gt; courseList = session.createCriteria(Course.class).list();
+
+		session.beginTransaction();
+		courseList.stream().forEach(student -&gt; {
+			session.delete(student);
+		});
+		session.getTransaction().commit();
+
+		session.close();
+	}
+
+	<em>/**
+	 * 1. Load course object with id 1
+	 * 2. Now course object is present in org.hibernate.Session
+	 * 3. Create new course object with same id that is 1
+	 * 4. call session.update(course) - now we will get NonUniqueObjectException
+	 */</em>
+	@Test
+	public void mergeIssue() {
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// get record from DB</em>
+		Course course = (Course) session.get(Course.class, 1);
+		System.out.println(&quot;course: &quot; + course);
+
+		Course course2 = new Course(1, &quot;courseName2&quot;, 13);
+
+		try {
+			session.beginTransaction();
+			session.update(course2);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());
+		}
+
+		session.close();
+	}
+
+	<em>/**
+	 * If session already contains object with same id then call merge instead of update
+	 */</em>
+	@Test
+	public void mergeSolution() {
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// get record from DB</em>
+		Course course = (Course) session.get(Course.class, 1);
+		System.out.println(&quot;Before: course: &quot; + course);
+
+		Course course2 = new Course(1, &quot;courseName2&quot;, 13);
+
+		try {
+			session.beginTransaction();
+			session.merge(course2);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());
+		}
+
+		<em>// get record from DB</em>
+		course = (Course) session.get(Course.class, 1);
+		System.out.println(&quot;After: course: &quot; + course);
+
+		session.close();
+	}
+}
+</code></pre>
+<em>mergeIssue method Output</em>
+<pre><code>
+Hibernate: select course0_.ID as ID1_0_0_, course0_.COURSE_NAME as COURSE_N2_0_0_, course0_.CREDITS as CREDITS3_0_0_ from COURSE course0_ where course0_.ID=?
+course: (id=1, courseName=courseName, credits=10)
+<em>org.hibernate.NonUniqueObjectException: A different object with the same identifier value was already associated with the session : [com.hibernate.practice.model.Course#1]</em>
+Hibernate: select this_.ID as ID1_0_0_, this_.COURSE_NAME as COURSE_N2_0_0_, this_.CREDITS as CREDITS3_0_0_ from COURSE this_
+Hibernate: delete from COURSE where ID=?
+</code></pre>
+<em>mergeSolution method Output</em>
+<pre><code>
+Hibernate: select course0_.ID as ID1_0_0_, course0_.COURSE_NAME as COURSE_N2_0_0_, course0_.CREDITS as CREDITS3_0_0_ from COURSE course0_ where course0_.ID=?
+Before: course: (id=1, courseName=courseName, credits=10)
+Hibernate: update COURSE set COURSE_NAME=?, CREDITS=? where ID=?
+After: course: (id=1, courseName=courseName2, credits=13)
+Hibernate: select this_.ID as ID1_0_0_, this_.COURSE_NAME as COURSE_N2_0_0_, this_.CREDITS as CREDITS3_0_0_ from COURSE this_
+Hibernate: delete from COURSE where ID=?
+</code></pre>
+</div></div>

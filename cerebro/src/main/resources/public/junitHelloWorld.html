@@ -1,0 +1,253 @@
+<div class="panel panel-primary" id="1"><div class="panel-heading">Contens:</div><div class="panel-body">
+<ul>
+	<li><a ng-click="navigate(1)">Junit Hello World</a></li>
+	<li><a ng-click="navigate(2)">Test Case for Exception case</a></li>
+	<li><a ng-click="navigate(3)">Before and After annotations</a></li>
+	<li><a ng-click="navigate(4)">BeforeClass and AfterClass annotations</a></li>
+	<li><a ng-click="navigate(5)">timeout</a></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Maven project using following command:</div><div class="panel-body">
+  	<pre ><code>
+C:>mvn archetype:generate -DgroupId=junit.practice -DartifactId=JUnitPractice -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+  	</code></pre>
+</div></div>  
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Project Structure:</div><div class="panel-body">
+<pre><code>
+<img class="img-responsive" ng-src="images/junit/junitHelloWorld.jpg" title="Junit Hello World"/>
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Add below entries in pom.xml:</div><div class="panel-body">
+<pre><code>
+&lt;dependency&gt;
+ &lt;groupId&gt;junit&lt;/groupId&gt;
+ &lt;artifactId&gt;junit&lt;/artifactId&gt;
+ &lt;version&gt;4.12&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Full pom.xml:</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+ &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+ &lt;groupId&gt;junit.practice&lt;/groupId&gt;
+ &lt;artifactId&gt;JUnitPractice&lt;/artifactId&gt;
+ &lt;packaging&gt;jar&lt;/packaging&gt;
+ &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+ &lt;name&gt;JUnitPractice&lt;/name&gt;
+ &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;dependencies&gt;
+   &lt;dependency&gt;
+	&lt;groupId&gt;junit&lt;/groupId&gt;
+	&lt;artifactId&gt;junit&lt;/artifactId&gt;
+	&lt;version&gt;4.12&lt;/version&gt;
+   &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+ &lt;build&gt;
+  &lt;pluginManagement&gt;
+   &lt;plugins&gt;
+    &lt;plugin&gt;
+	 &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+	 &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+	 &lt;version&gt;3.5.1&lt;/version&gt;
+	 &lt;configuration&gt;
+	  &lt;source&gt;1.8&lt;/source&gt;
+	  &lt;target&gt;1.8&lt;/target&gt;
+	  &lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+ 	  &lt;showWarnings&gt;true&lt;/showWarnings&gt;
+	  &lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+	  &lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+	 &lt;/configuration&gt;
+    &lt;/plugin&gt;
+   &lt;/plugins&gt;
+  &lt;/pluginManagement&gt;
+ &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">JunitModel1.java</div><div class="panel-body">
+<pre><code>
+package junit.practice.model;
+
+public class JunitModel1 {
+
+    public String method1() {
+	return &quot;Hello World&quot;;
+    }
+
+    public String exceptionMethod(boolean flag) throws Exception {
+	if (flag) {
+	    throw new RuntimeException(&quot;JUnitModel1 -&gt; exceptionMethod(&quot; + flag + &quot;)&quot;);
+	} else {
+	    return &quot;No Exception&quot;;
+	}
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+import junit.practice.model.JunitModel1;
+import org.junit.Assert;
+import org.junit.Test;
+
+@Test
+ public void method1() {
+  JunitModel1 jUnitModel1 = new JunitModel1();
+  String actual = jUnitModel1.method1();
+
+  Assert.assertEquals(&quot;Hello World&quot;, actual);
+  Assert.assertNotEquals(&quot;Hello&quot;, actual);
+ }
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" id="2"><div class="panel-heading">JunitModel1.java</div><div class="panel-body">
+<pre><code>
+package junit.practice.model;
+
+public class JunitModel1 {
+
+    public String exceptionMethod(boolean flag) throws Exception {
+	if (flag) {
+	    throw new RuntimeException(&quot;JUnitModel1 -&gt; exceptionMethod(&quot; + flag + &quot;)&quot;);
+	} else {
+	    return &quot;No Exception&quot;;
+	}
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+import junit.practice.model.JunitModel1;
+import org.junit.Test;
+
+@Test(expected = RuntimeException.class)
+    public void exceptionMethodExceptionCase() throws Exception {
+	JunitModel1 jUnitModel1 = new JunitModel1();
+	jUnitModel1.exceptionMethod(true);
+    }
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" id="3"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+	@Before
+    public void setup() {
+	System.out.println(&quot;JunitPractice -&gt; setup()&quot;);
+    }
+
+    @After
+    public void teardown() {
+	System.out.println(&quot;JunitPractice -&gt; teardown()&quot;);
+    }
+
+    @Test
+    public void beforeAfterMethod1() {
+	System.out.println(&quot;JunitPractice -&gt; beforeAfterMethod1()&quot;);
+    }
+
+    @Test
+    public void beforeAfterMethod2() {
+	System.out.println(&quot;JunitPractice -&gt; beforeAfterMethod2()&quot;);
+    }
+</code></pre>
+</div></div>
+<em>Output</em>
+<div class="panel panel-primary"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+JunitPractice -&gt; setup()
+JunitPractice -&gt; beforeAfterMethod1()
+JunitPractice -&gt; teardown()
+JunitPractice -&gt; setup()
+JunitPractice -&gt; beforeAfterMethod2()
+JunitPractice -&gt; teardown()
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" id="4"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+@BeforeClass
+    public static void setupClass() {
+	System.out.println(&quot;JunitPractice -&gt; setupClass()&quot;);
+    }
+
+    @AfterClass
+    public static void teardownClass() {
+	System.out.println(&quot;JunitPractice -&gt; teardownClass()&quot;);
+    }
+
+    @Test
+    public void beforeAfterClassMethod1() {
+	System.out.println(&quot;JunitPractice -&gt; beforeAfterClassMethod1()&quot;);
+    }
+
+    @Test
+    public void beforeAfterClassMethod2() {
+	System.out.println(&quot;JunitPractice -&gt; beforeAfterClassMethod2()&quot;);
+    }
+</code></pre>
+</div></div>
+<em>Output</em>
+<div class="panel panel-primary"><div class="panel-heading">JunitPractice.java</div><div class="panel-body">
+<pre><code>
+JunitPractice -&gt; setupClass()
+JunitPractice -&gt; beforeAfterClassMethod1()
+JunitPractice -&gt; beforeAfterClassMethod2()
+JunitPractice -&gt; teardownClass()
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" id="5"><div class="panel-heading">Method under test</div><div class="panel-body">
+<pre><code>
+public void timeOutMethod() {
+	try {
+	    Thread.sleep(1000 * 10);
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	}
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Test method</div><div class="panel-body">
+<pre><code>
+<em>/**
+* timeout practice
+* timeout - we need to give in milli seconds. So below case will check for 5 seconds
+*/</em>
+@Test(timeout = 5 * 1000)
+public void timeOutMethod() {
+ JunitModel1 junitModel1 = new JunitModel1();
+ junitModel1.timeOutMethod();
+ }
+</code></pre>
+</div></div>
+<em>Output</em>
+<div class="panel panel-primary"><div class="panel-heading"></div><div class="panel-body">
+<pre><code>
+<img class="img-responsive" ng-src="images/junit/timeout.jpg" title="Timeout output"/>
+</code></pre>
+</div></div>

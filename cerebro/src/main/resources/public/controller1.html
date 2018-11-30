@@ -1,0 +1,59 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Create controller1.html file</li>
+		<li>Add angular.js file in script src</li>
+		<li>Create controller1.js file. Add it to controller1.html script tag</li>
+		<li>declare angular controller in controller1.js</li>
+		<li>create person variable and add it to scope</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">controller1.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;Controller 1&lt;/title&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;controller1.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+&lt;div&gt;
+First Name: &#123; &#123; jsObjectDetails.str1 &#125; &#125;
+&lt;/div&gt;
+&lt;div&gt;
+Last Name: &#123; &#123;jsObjectDetails.str2&#125; &#125;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;img ng-src=&quot;&#123; &#123;jsObjectDetails.imgSrc&#125; &#125;&quot; title=&quot;&#123; &#123;jsObjectDetails.str1&#125; &#125; &#123; &#123;jsObjectDetails.str2&#125; &#125;&quot;/&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">controller1.js</div><div class="panel-body">
+<pre ><code>
+(function () {
+
+    var app = angular.module(&quot;moduleName&quot;, []);
+
+    app.controller(&quot;mainController&quot;, function ($scope) {
+        var jsObject = {
+            str1: &quot;Cerebro&quot;,
+            str2: &quot;Angular Controller1&quot;,
+            imgSrc: &quot;img1.jpg&quot; <em>// path to jpg file</em>
+        }
+
+        $scope.jsObjectDetails = jsObject;
+    });
+
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/angular1/1-controller1.jpg"/>
+</div></div>

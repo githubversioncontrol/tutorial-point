@@ -1,0 +1,13 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+	<ul>
+		<li><a ng-href="#mockitoHelloWorld" ng-click="buildBreadCrumbs('Mockito Hello World', '#mockitoHelloWorld')">Mockito Hello World</a></li>
+		<li><a ng-href="#mockitoAnnotations" ng-click="buildBreadCrumbs('Mockito Annotations', '#mockitoAnnotations')">Mockito Annotations</a></li>
+	</ul>
+</div></div>

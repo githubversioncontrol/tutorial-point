@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Create Table Scripts</a></li>
+	<li><a ng-click="navigate(2)">SQL Queries</a></li>
+	
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Table Scripts</div><div class="panel-body table-responsive">
+<table class="table table-hover">
+<thead>
+	<tr>
+		<th>SQL Command Description</th>
+        <th>SQL</th>
+	</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Table creation with BLOB column and specify column size</td>
+	<td><pre>create table pictures(name varchar(32) not null primary key, pic blob(16M));</pre></td>
+</tr>
+<tr>
+	<td>Create table with BLOB column. Do not specify the column size</td>
+	<td><pre>CREATE TABLE a_table (blob_col BLOB);</pre></td>
+</tr>
+<tr>
+	<td>Create table with CLOB column</td>
+	<td><pre>CREATE TABLE a_table (blob_col CLOB);</pre></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">SQL Queries</div><div class="panel-body table-responsive">
+<table class="table table-hover">
+<thead>
+	<tr>
+		<th>SQL Command Description</th>
+        <th>SQL</th>
+	</tr>
+</thead>
+<tbody>
+<tr>
+	<td>select all records from table employee</td>
+	<td><pre>select * from employee</pre></td>
+</tr>
+<tr>
+	<td>Add 30 seconds to current date</td>
+	<td><pre>select sysdate NOW, sysdate+30/(24*60*60) NOW_PLUS_30_SECS from dual</pre></td>
+</tr>
+<tr>
+	<td>Convert 24 Hour time to 12 Hour plus AM/PM indication Oracle SQL</td>
+	<td><pre>
+SELECT invoice_date,
+ TO_CHAR(invoice_date, 'DD-MM-YYYY HH24:MI:SS') "Date 24Hr",
+ TO_CHAR(invoice_date, 'DD-MM-YYYY HH:MI:SS AM') "Date 12Hr"
+FROM invoices
+  	</pre></td>
+</tr>
+<tr>
+	<td>Check the date is future date or not</td>
+	<td><pre>
+SELECT APPT_BEG_DATETIME, TO_DATE(CURRENT_DATE, 'DD-MON-YY HH24:MI:SS') AS TODAY,
+CASE 
+	WHEN TO_DATE(APPT_BEG_DATETIME, 'DD-MON-YY HH24:MI:SS') > TO_DATE(CURRENT_DATE, 'DD-MON-YY HH24:MI:SS') THEN 'YES' ELSE 'NO' 
+END AS IS_FUTURE
+FROM SH_APPOINTMENTS;	
+	</pre></td>
+</tr>
+<tr>
+	<td>Select User</td>
+	<td><pre>SELECT USER FROM DUAL;</pre></td>
+</tr>
+<tr>
+	<td>Save current session sql commands to file. File will be saved on running &quot;SPOOL OFF&quot;</td>
+	<td><pre>SPOOL [path]\[fileName].extension</pre></td>
+</tr>
+<tr>
+	<td>create_date is a date in a table MY_TABLE. Get no.of records of each create_date</td>
+	<td><pre>
+select count(*), to_char(create_date,  'DD-MON-YY') from MY_TABLE group by to_char(create_date,  'DD-MON-YY') 
+order by to_char(create_date,  'DD-MON-YY') desc;
+	</pre></td>
+</tr>
+<tr>
+	<td>create_date is a date in a table MY_TABLE. Get no.of records of each create_date. Display in descending order of create_date</td>
+	<td><pre>
+select count(*), to_date(create_date,  'DD-MON-YY') from MY_TABLE group by to_date(create_date,  'DD-MON-YY') 
+order by to_date(create_date,  'DD-MON-YY') desc;	
+	</pre></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+<!-- <div class="panel panel-primary"><div class="panel-heading">Topics</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(1)">Create Table Scripts</a></li>
+		<li><a ng-click="navigate(2)">SQL Queries</a></li>
+	</ul>
+</div></div> -->

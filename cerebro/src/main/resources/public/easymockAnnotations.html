@@ -1,0 +1,321 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.easymock.practice -DartifactId=EasyMockPractice -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/easymock/1-easymockAnnotations.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.easymock.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;EasyMockPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;EasyMockPractice&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.easymock&lt;/groupId&gt;
+			&lt;artifactId&gt;easymock&lt;/artifactId&gt;
+			&lt;version&gt;3.5&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">build.gradle</div><div class="panel-body">
+<pre ><code>
+apply plugin: 'java'
+
+sourceSets { 
+	main.java.srcDir 'src/main/java'
+	test.java.srcDir 'src/test/java'
+}
+
+repositories { 
+	mavenCentral()
+}
+
+dependencies { 
+	compile 'junit:junit:4.12'
+	compile 'org.easymock:easymock:3.5'
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">CalculateService</div><div class="panel-body">
+<pre ><code>
+package easy.mock.annotations;
+
+public interface CalculateService {
+
+	public &lt;T&gt; T add(T t1, T t2);
+
+	public &lt;T&gt; T subtract(T t1, T t2);
+
+	public &lt;T&gt; T multiply(T t1, T t2);
+
+	public &lt;T&gt; T divide(T t1, T t2);
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MathApplication</div><div class="panel-body">
+<pre ><code>
+package easy.mock.annotations;
+
+public class MathApplication {
+
+	private CalculateService calculateService;
+
+	public void setCalculateService(CalculateService calculateService) {
+		this.calculateService = calculateService;
+	}
+
+	public &lt;T&gt; T add(T t1, T t2) {
+		return calculateService.add(t1, t2);
+	}
+
+	public &lt;T&gt; T subtract(T t1, T t2) {
+		return calculateService.subtract(t1, t2);
+	}
+
+	public &lt;T&gt; T multiply(T t1, T t2) {
+		return calculateService.multiply(t1, t2);
+		//		return t1;
+	}
+
+	public &lt;T&gt; T multiply2(T t1, T t2) {
+		calculateService.multiply(t1, t2);
+		return calculateService.multiply(t1, t2);
+	}
+
+	public &lt;T&gt; T multiply3(T t1, T t2) {
+		calculateService.multiply(t1, t2);
+		calculateService.multiply(t1, t2);
+		return calculateService.multiply(t1, t2);
+	}
+
+	public &lt;T&gt; T divide(T t1, T t2) {
+		return calculateService.divide(t1, t2);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Test2</div><div class="panel-body">
+<pre ><code>
+package easy.mock.annotations;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+//@RunWith attaches a runner with the test class to initialize the test data
+@RunWith(EasyMockRunner.class)
+public class Test2 {
+
+	// @TestSubject annotation is used to identify class which is going to use the mock object
+	@TestSubject
+	private MathApplication mathApplication = new MathApplication();
+
+	//@Mock annotation is used to create the mock object to be injected
+	@Mock
+	private CalculateService calculateService;
+
+	@SuppressWarnings(&quot;deprecation&quot;)
+	@Test
+	public void add() {
+		EasyMock.expect(calculateService.add(10, 20)).andReturn(40);
+		EasyMock.expect(calculateService.add(12.12, 23.23)).andReturn(50.5);
+
+		//activate the mock
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.add(10, 20);
+		System.out.println(&quot;result: &quot; + result);
+		Assert.assertEquals(40, result);
+
+		double result2 = mathApplication.add(12.12, 23.23);
+		System.out.println(&quot;result2: &quot; + result2);
+		Assert.assertEquals(50.5, result2);
+	}
+
+	@Test
+	public void subtract() {
+		EasyMock.expect(calculateService.subtract(10, 20)).andReturn(10);
+
+		//activate the mock
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.subtract(10, 20);
+		System.out.println(&quot;result: &quot; + result);
+	}
+
+	/**
+	 * Run the test case 
+	 * 1. comment calculateService.multiply(t1, t2) in MathApplication
+	 * 2. uncomment calculateService.multiply(t1, t2) in MathApplication
+	 */
+	@Test
+	public void verifyPractice() {
+		EasyMock.expect(calculateService.multiply(12, 12)).andReturn(150);
+
+		// activate the mock
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.multiply(12, 12);
+		System.out.println(&quot;result: &quot; + result);
+
+		EasyMock.verify(calculateService);
+	}
+
+	@Test
+	public void verifyNumberOfMethodCalls() {
+
+		EasyMock.expect(calculateService.multiply(12, 12)).andReturn(150);
+
+		// testing 2 times call
+		/*EasyMock.expectLastCall().times(2);
+		EasyMock.replay(calculateService);
+		int result = mathApplication.multiply2(12, 12);
+		System.out.println(&quot;results: &quot; + result);*/
+
+		// testing 3 times call
+		EasyMock.expectLastCall().times(3);
+		EasyMock.replay(calculateService);
+		int result = mathApplication.multiply3(12, 12);
+		System.out.println(&quot;results: &quot; + result);
+	}
+
+	@Test
+	public void timesMinMax() {
+		EasyMock.expect(calculateService.multiply(12, 10)).andReturn(130);
+		//expects between min and max calls
+		EasyMock.expectLastCall().times(1, 3);
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.multiply3(12, 10);
+		System.out.println(&quot;result: &quot; + result);
+	}
+
+	@Test
+	public void atLeastOnce() {
+		EasyMock.expect(calculateService.multiply(12, 10)).andReturn(130);
+		// expects at least one call
+		EasyMock.expectLastCall().atLeastOnce();
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.multiply3(12, 10);
+		System.out.println(&quot;result: &quot; + result);
+	}
+
+	@Test
+	public void anyTimes() {
+		EasyMock.expect(calculateService.multiply(12, 10)).andReturn(130);
+		// expects an unrestricted number of calls
+		EasyMock.expectLastCall().anyTimes();
+		EasyMock.replay(calculateService);
+
+		int result = mathApplication.multiply3(12, 10);
+		System.out.println(&quot;result: &quot; + result);
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void exceptionHandling() {
+		EasyMock.expect(calculateService.multiply(10, 10)).andThrow(
+				new RuntimeException(&quot;Multiply is not implemented&quot;));
+		EasyMock.replay(calculateService);
+
+		mathApplication.multiply(10, 10);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">App2</div><div class="panel-body">
+<pre ><code>
+package easy.mock.annotations;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class App2 {
+
+	public static void main(String[] args) {
+		Result result = JUnitCore.runClasses(Test2.class);
+
+		for (Failure failure : result.getFailures()) {
+			System.out.println(failure.toString());
+		}
+
+		System.out.println(&quot;result.wasSuccessful(): &quot; + result.wasSuccessful());
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Console output</div><div class="panel-body">
+<pre ><code>
+result: 10
+result: 150
+result: 130
+result: 130
+result: 40
+result2: 50.5
+result: 130
+results: 150
+add(easy.mock.annotations.Test2): Use assertEquals(expected, actual, delta) to compare floating-point numbers
+result.wasSuccessful(): false
+</code></pre>
+</div></div>

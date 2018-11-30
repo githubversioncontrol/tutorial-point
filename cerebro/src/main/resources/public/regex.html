@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Alphanumeric</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Alphanumeric</div><div class="panel-body">
+<pre >
+<em>/**
+* ^[a-zA-Z0-9]*$ =&gt; Regular expression for Alpha numeric
+* ^ =&gt; Start of string
+* [a-zA-Z0-9]* =&gt; multiple characters to include
+* $ =&gt; End of string
+*/</em>
+@Test
+public void isAlphaNumeric() {
+ String pattern = &quot;^[a-zA-Z0-9]*$&quot;;
+
+ System.out.println(&quot;pattern: &quot; + pattern);
+ System.out.println(&quot;\&quot;abc\&quot;.matches(pattern): &quot; + &quot;abc&quot;.matches(pattern));
+ System.out.println(&quot;\&quot;abc123\&quot;.matches(pattern): &quot; + &quot;abc123&quot;.matches(pattern));
+ System.out.println(&quot;\&quot;abc@12#def&amp;\&quot;.matches(pattern): &quot; + &quot;abc@12#def&amp;&quot;.matches(pattern));
+ System.out.println(&quot;\&quot;abc def\&quot;.matches(pattern): &quot; + &quot;abc def&quot;.matches(pattern));
+}
+</pre>
+<em>Ouptut</em>
+<pre>
+pattern: ^[a-zA-Z0-9]*$
+&quot;abc&quot;.matches(pattern): true
+&quot;abc123&quot;.matches(pattern): true
+&quot;abc@12#def&amp;&quot;.matches(pattern): false
+&quot;abc def&quot;.matches(pattern): false
+</pre>
+</div></div>
+
+</div>

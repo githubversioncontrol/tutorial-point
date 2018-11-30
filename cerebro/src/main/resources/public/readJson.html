@@ -1,0 +1,102 @@
+<div class="page-header">
+    <h3>Read JSON using Jackson</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(1)">Prepare Object From JSON String</a></li>
+		<li><a ng-click="navigate(2)">Prepare TreeModel from JSON String</a></li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Car.java</div><div class="panel-body">
+<pre ><code>
+package json.jackson.practice.model;
+
+public class Car {
+
+    private String brand;
+    private String doors;
+
+    public Car(String brand, String doors) {
+	this.brand = brand;
+	this.doors = doors;
+    }
+
+    public Car() {
+    }
+
+    public String getBrand() {
+	return brand;
+    }
+
+    public void setBrand(String brand) {
+	this.brand = brand;
+    }
+
+    public String getDoors() {
+	return doors;
+    }
+
+    public void setDoors(String doors) {
+	this.doors = doors;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;brand: &quot; + brand + &quot;, doors: &quot; + doors;
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Method to convert JSON to Car object</div><div class="panel-body">
+<pre ><code>
+import java.io.IOException;
+import json.jackson.practice.model.Car;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public void prepareObjectFromJSONString() {
+	try {
+	    ObjectMapper mapper = new ObjectMapper();
+	    String json = &quot;{\&quot;brand\&quot;:\&quot;mercede\&quot;,\&quot;doors\&quot;: \&quot;4\&quot;}&quot;;
+	    Car car = mapper.readValue(json, Car.class);
+	    System.out.println(&quot;Car: &quot; + car);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<pre ><code>
+Car: brand: mercede, doors: 4
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" id="2"><div class="panel-heading">Test Method</div><div class="panel-body">
+<pre ><code>
+import java.io.IOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public void prepareTreeModelFromJSONString() {
+	try {
+	    ObjectMapper mapper = new ObjectMapper();
+	    String json = &quot;{\&quot;brand\&quot;:\&quot;mercede\&quot;,\&quot;doors\&quot;: \&quot;4\&quot;}&quot;;
+	    JsonNode jsonNode = mapper.readValue(json, JsonNode.class);
+	    System.out.println(&quot;jsonNode: &quot; + jsonNode);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<pre ><code>
+jsonNode: {"brand":"mercede","doors":"4"}
+</code></pre>
+</div></div>

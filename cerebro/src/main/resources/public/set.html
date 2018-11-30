@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Iterate Set</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Iterate Set</div><div class="panel-body">
+<pre><code>
+import java.util.HashSet;
+import java.util.Set;
+
+public void iterateSet() {
+		Set&lt;String&gt; set = new HashSet&lt;&gt;();
+
+		for (int i = 0; i &lt; 10; i++) {
+			set.add(&quot;value&quot; + i);
+		}
+
+		set.stream().forEach(System.out::println);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+value6
+value5
+value8
+value7
+value2
+value1
+value4
+value3
+value0
+value9
+</code></pre>
+</div></div>
+
+</div>

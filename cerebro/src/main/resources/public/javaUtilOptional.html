@@ -1,0 +1,73 @@
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(1)">Optional Basic Example</a></li>
+		<li>References:
+			<ul>
+				<li><a href="https://www.mkyong.com/java8/java-8-optional-in-depth/" target="_blank">Java 8 Optional In Depth - Mkyong</a></li>
+			</ul>
+		</li>	
+	</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Optional Basic Example</div><div class="panel-body">
+<pre ><code>
+package core.java.java8.optional;
+
+import java.util.Optional;
+
+public class OptionalPractice {
+
+	public static void main(String[] args) {
+		OptionalPractice optionalPractice = new OptionalPractice();
+
+		System.out.println(&quot;--- calling method1 with String value: Jack&quot;);
+		optionalPractice.method1(&quot;Jack&quot;);
+		System.out.println(&quot;--- calling method1 with null value&quot;);
+		optionalPractice.method1(null);
+	}
+
+	public void method1(String arg0) {
+		// null value
+		Optional&lt;String&gt; fullName = Optional.ofNullable(null);
+
+		boolean isNotNull = fullName.isPresent();
+		System.out.println(&quot;isNotNull: &quot; + isNotNull);
+
+		String defaultValue = fullName.orElseGet(() -&gt; &quot;Default Value&quot;);
+		System.out.println(&quot;defaultValue: &quot; + defaultValue);
+
+		String passedValue = fullName.map((i) -&gt; &quot;Hey &quot; + i).orElse(&quot; Null Value passed&quot;);
+		System.out.println(&quot;passedValue: &quot; + passedValue);
+
+		// non null value
+		Optional&lt;String&gt; fullName2 = Optional.ofNullable(arg0);
+
+		boolean isNotNull2 = fullName2.isPresent();
+		System.out.println(&quot;isNotNull: &quot; + isNotNull2);
+
+		String defaultValue2 = fullName2.orElseGet(() -&gt; &quot;Default Value&quot;);
+		System.out.println(&quot;defaultValue: &quot; + defaultValue2);
+
+		String passedValue2 = fullName2.map((i) -&gt; &quot;Hey &quot; + i).orElse(&quot; Null Value passed&quot;);
+		System.out.println(&quot;passedValue: &quot; + passedValue2);
+	}
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+--- calling method1 with String value: Jack
+isNotNull: false
+defaultValue: Default Value
+passedValue:  Null Value passed
+isNotNull: true
+defaultValue: Jack
+passedValue: Hey Jack
+--- calling method1 with null value
+isNotNull: false
+defaultValue: Default Value
+passedValue:  Null Value passed
+isNotNull: false
+defaultValue: Default Value
+passedValue:  Null Value passed
+</code></pre>
+</div></div>

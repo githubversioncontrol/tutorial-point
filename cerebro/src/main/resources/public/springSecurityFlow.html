@@ -1,0 +1,51 @@
+<div class="page-header">
+    <h3>Spring Security Method Calls and Flow</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Spring Security Pre Authentication implementation methods calls</div><div class="panel-body">
+	<ul>
+		<li>AbstractPreAuthenticatedProcessingFilter -&gt; doFilter(ServletRequest request, ServletResponse response, FilterChain chain)</li>
+		<li>AbstractPreAuthenticatedProcessingFilter -&gt; doAuthenticate(HttpServletRequest request, HttpServletResponse response)</li>
+		<li>Subclass of AbstractPreAuthenticatedProcessingFilter -&gt; getPreAuthenticatedPrincipal(request);</li>
+		<li> Subclass of AbstractPreAuthenticatedProcessingFilter -&gt; getPreAuthenticatedCredentials(request);</li>
+		<li> Prepare Authentication object. Here it is PreAuthenticatedAuthenticationToken</li>
+		<li>PreAuthenticatedAuthenticationToken implements Authentication</li>
+		<li class="noBullet">
+			<pre><code>
+AbstractPreAuthenticatedProcessingFilter.doAuthenticate(HttpServletRequest request, HttpServletResponse response){
+PreAuthenticatedAuthenticationToken authRequest = new PreAuthenticatedAuthenticationToken(principal, credentials);
+authResult = authenticationManager.authenticate(authRequest);					
+}
+			</code></pre>
+		</li>
+		<li class="noBullet">
+			<pre><code>
+AuthenticationManager.authenticate(above created PreAuthenticatedAuthenticationToken object){
+ PreAuthenticatedAuthenticationProvider.authenticate(authenticationObject);
+}
+			</code></pre>
+		</li>
+		<li class="noBullet"><pre><code>
+PreAuthenticatedAuthenticationProvider.authenticate(authenticationObject){
+ UserDetails ud = UserDetailsService.loadUserDetails((PreAuthenticatedAuthenticationToken) authentication)
+ PreAuthenticatedAuthenticationToken result = new PreAuthenticatedAuthenticationToken(ud, authentication.getCredentials(), ud.getAuthorities());
+ return result;
+}
+		</code></pre></li>
+		<li>AbstractPreAuthenticatedProcessingFilter.successfulAuthentication(request, response, authResult);</li>
+		<li>SecurityContextHolder.getContext().setAuthentication(authResult);</li>
+		<li>org.springframework.security.web.authentication.AuthenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);</li>
+		<li>Three implementations are there for AuthenticationSuccessHandler interface. ForwardAuthenticationSuccessHandler, SimpleUrlAuthenticationSuccessHandler</li>
+		<li>SimpleUrlAuthenticationSuccessHadler has one sub class -&gt; SaveRequestAwareAuthenticationSuccessHadler</li>
+		<li>ForwardAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);</li>
+		<li class="noBullet">
+			<pre><code>
+class ForwardAuthenticationSuccessHandler{		
+public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+ request.getRequestDispatcher(forwardUrl).forward(request, response);
+ }
+}			
+			</code></pre>
+		</li>
+	</ul>
+</div></div>

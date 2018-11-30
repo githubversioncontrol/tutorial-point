@@ -1,0 +1,48 @@
+<div class="page-header">
+    <h3>Ant - Jacoco Integration - this is basic - update this with full example</h3>      
+</div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Add jacocoant.jar to classpath</li>
+	<li>Update build.xml</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Steps</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;  xmlns:jacoco=&quot;antlib:org.jacoco.ant&quot;?&gt;
+
+&lt;target name=&quot;jacocoTestReport&quot; depends=&quot;junitTest&quot;&gt;
+	&lt;mkdir dir=&quot;junit/coverage-report&quot;/&gt;
+	
+	&lt;taskdef name=&quot;junit&quot; classname=&quot;org.apache.tools.ant.taskdefs.optional.junit.JUnitTask&quot;&gt;
+		&lt;classpath path=&quot;path/jacocoant.jar&quot; /&gt;
+	&lt;/taskdef&gt;
+	
+	&lt;jacoco:coverage destfile=&quot;junit/jacoco.exec&quot;&gt;
+		&lt;junit fork=&quot;yes&quot; printsummary=&quot;withOutAndErr&quot;&gt;
+			&lt;classpath location=&quot;WEB-INF/classes&quot;/&gt;
+			&lt;formatter type=&quot;xml&quot; /&gt;
+			&lt;test name=&quot;com.test.MyTest&quot; todir=&quot;junit&quot;/&gt;
+			&lt;classpath refid=&quot;classpath.compile&quot;/&gt;
+		&lt;/junit&gt;
+	&lt;/jacoco:coverage&gt;
+	
+	&lt;jacoco:report&gt;
+		&lt;executiondata&gt;
+			&lt;fil file=&quot;junit/jacoco.exec&quot;/&gt;
+		&lt;/executiondata&gt;
+		&lt;structure name=&quot;jacoco-sample&quot;&gt;
+			&lt;classfiles&gt;
+				&lt;fileset dir=&quot;WEB-INF/classes&quot;/&gt;
+			&lt;/classfiles&gt;
+			&lt;sourcefiles encoding=&quot;UTF-8&quot;&gt;
+				&lt;fileset dir=&quot;src&quot; /&gt;
+			&lt;/sourcefiles&gt;
+		&lt;/structure&gt;
+		&lt;html destdir=&quot;junit/coverage-report&quot;/&gt;
+	&lt;/jacoco:report&gt;
+&lt;/target&gt;
+</code></pre>
+</div></div>

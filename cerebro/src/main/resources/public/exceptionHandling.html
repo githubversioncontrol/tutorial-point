@@ -1,0 +1,523 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Exception in for loop</a></li>
+	<li><a ng-click="navigate(2)">RuntimeException/unchecked exception</a></li>
+	<li><a ng-click="navigate(3)">Exception/checked exception</a></li>
+	<li><a ng-click="navigate(4)">Handle runtime/unchecked exception using try-catch</a></li>
+	<li><a ng-click="navigate(5)">Handled runtime/unchecked exception with try-catch. catch with java.lang.Exception class</a></li>
+	<li><a ng-click="navigate(6)">Handle checked exception with try-catch</a></li>
+	<li><a ng-click="navigate(7)">unchecked exception with try-catch. finally block always executes</a></li>
+	<li><a ng-click="navigate(8)">try with finally block without catch</a></li>
+	<li><a ng-click="navigate(9)">try-finally. if we exit - finally block will not be executed</a></li>
+	<li><a ng-click="navigate(16)">try-finally. finally will execute even though we have return in try block</a></li>
+	<li><a ng-click="navigate(10)">close FileReader, BufferedReader in finally block</a></li>
+	<li><a ng-click="navigate(11)">close FileReader, BufferedReader using try-with-resource</a></li>
+	<li><a ng-click="navigate(12)">Handle custom checked exception and display our message</a></li>
+	<li><a ng-click="navigate(13)">Handle custom checked exception and display default message</a></li>
+	<li><a ng-click="navigate(14)">Handle custom unchecked exception. Display our message</a></li>
+	<li><a ng-click="navigate(15)">Handle custom unchecked exception. Display default message</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Exception in for loop</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+If exception occurs in for loop, then loop will be broken.
+</pre>
+<em>Test Method</em>
+<pre>
+public void exceptionInForLoop() {
+		try {
+			for (int i = 0; i &lt; 10; i++) {
+				if (i == 5)
+					throw new NullPointerException(&quot;Exception thrown&quot;);
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+
+	}
+</pre>
+<em>Output</em>
+<pre>
+java.lang.NullPointerException: Exception thrown
+	at core.java.ExceptionHandlingPractice.exceptionInForLoop(ExceptionHandlingPractice.java:21)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">RuntimeException/unchecked exception</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Throwing runtime exception. we don't need to declare throws or try-catch
+</pre>
+<em>Test Method</em>
+<pre>
+public void uncheckedException() {
+ throw new RuntimeException(&quot;RuntimeException thrown&quot;);
+}
+</pre>
+<em>Output</em>
+<pre>
+java.lang.RuntimeException: RuntimeException thrown
+	at core.java.ExceptionHandlingPractice.uncheckedException(ExceptionHandlingPractice.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Exception/checked exception</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Throwing checked exception. We need to declare either throws or try-catch. In this example we declared throws
+</pre>
+<em>Test Method</em>
+<pre>
+public void checkedException() throws Exception {
+		throw new Exception(&quot;Exception object created and thrown&quot;);
+	}
+</pre>
+<em>Output</em>
+<pre>
+java.lang.Exception: Exception object created and thrown
+	at core.java.ExceptionHandlingPractice.checkedException(ExceptionHandlingPractice.java:42)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Handle runtime/unchecked exception using try-catch</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Handle unchecked exception with try-catch
+</pre>
+<em>Test Method</em>
+<pre>
+public void uncheckedWithTryCatch() {
+		try {
+			throw new RuntimeException(&quot;RuntimeException thrown&quot;);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+java.lang.RuntimeException: RuntimeException thrown
+	at core.java.ExceptionHandlingPractice.uncheckedWithTryCatch(ExceptionHandlingPractice.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+</pre>
+</div></div>
+
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Handled runtime/unchecked exception with try-catch. catch with java.lang.Exception class</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Handle unchecked/runtime exception with try-catch. catch clause with Exception class
+</pre>
+<em>Test Method</em>
+<pre>
+public void uncheckedWithTryCatch2() {
+		try {
+			throw new RuntimeException(&quot;ExceptionHandlingPractice.uncheckedWithTryCatch2 - RuntimeException thrown&quot;);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Handle checked exception with try-catch</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void checkedWithTryCatch() {
+		try {
+			throw new Exception(&quot;ExceptionHandlingPractice.checkedWithTryCatch- Exception thrown&quot;);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">unchecked exception with try-catch. finally block always executes</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void tryCatchFinally(){
+		try {
+			throw new RuntimeException(&quot;ExceptionHandlingPractice.uuncheckedWithTryCatchFinally&quot;);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			System.out.println(&quot;ExceptionHandlingPractice.uncheckedWithTryCatchFinally&quot;);
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">try with finally block without catch</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void tryFinally(){
+		try {
+			System.out.println(&quot;ExceptionHandlingPractice.tryFinally - try block&quot;);
+		}finally {
+			System.out.println(&quot;ExceptionHandlingPractice.tryFinally - finally block&quot;);
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="16"><div class="panel-heading">try-finally. finally will execute even though we have return in try block</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void tryWithReturnAndFinally() {
+		try {
+			System.out.println(&quot;ExceptionHandlingPractice.tryWithReturnAndFinally - try block&quot;);
+			return;
+		}finally {
+			System.out.println(&quot;ExceptionHandlingPractice.tryWithReturnAndFinally - finally block&quot;);
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">try-finally. if we exit - finally block will not be executed</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void tryWithExitAndFinally() {
+		try {
+			System.out.println(&quot;ExceptionHandlingPractice.tryWithExitAndFinally - try block&quot;);
+			System.exit(0);
+		}finally {
+			System.out.println(&quot;ExceptionHandlingPractice.tryWithExitAndFinally - finally block&quot;);
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">close FileReader, BufferedReader in finally block</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+public void tryFinallyResource() {
+		URL url = ExceptionHandlingPractice.class.getClassLoader().getResource(&quot;file1.txt&quot;);
+		File file = new File(url.getPath());
+		
+		FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+		
+		try {
+			fileReader = new FileReader(file);
+			bufferedReader = new BufferedReader(fileReader);
+			String line = &quot;&quot;;
+			
+			while(null != (line = bufferedReader.readLine())){
+				System.out.println(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(null != fileReader)
+				try {
+					fileReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			
+			if(null != bufferedReader)
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">close FileReader, BufferedReader using try-with-resource</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>Test Method</em>
+<pre>
+
+</pre>
+<em>Output</em>
+<pre>
+public void tryWithResource() {
+		URL url = ExceptionHandlingPractice.class.getClassLoader().getResource(&quot;file1.txt&quot;);
+		File file = new File(url.getPath());
+		try(FileReader fileReader = new FileReader(file); BufferedReader bufferedReader = new  BufferedReader(fileReader)){
+			String line = &quot;&quot;;
+			
+			while(null != (line = bufferedReader.readLine())) {
+				System.out.println(line);
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="12"><div class="panel-heading">Handle custom checked exception and display our message</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>CustomCheckedException.java</em>
+<pre>
+package core.java.model;
+
+public class CustomCheckedException extends Exception {
+
+	private static final long serialVersionUID = 2373186207227495043L;
+	private String errorDescription;
+	
+	public CustomCheckedException() {
+	}
+	
+	
+	public CustomCheckedException(String errorDescription) {
+		this.errorDescription = errorDescription;
+	}
+	
+	@Override
+	public String toString() {
+		if(null != errorDescription) {
+			return errorDescription;
+		}
+		return &quot;CustomCheckedException - Exception thrown&quot;;
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void customCheckedException() {
+		try {
+			throw new CustomCheckedException(&quot;ExceptionHandlingPractice.customCheckedException&quot;);
+		}catch(CustomCheckedException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="13"><div class="panel-heading">Handle custom checked exception and display default message</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>CustomCheckedException.java</em>
+<pre>
+package core.java.model;
+
+public class CustomCheckedException extends Exception {
+
+	private static final long serialVersionUID = 2373186207227495043L;
+	private String errorDescription;
+	
+	public CustomCheckedException() {
+	}
+	
+	
+	public CustomCheckedException(String errorDescription) {
+		this.errorDescription = errorDescription;
+	}
+	
+	@Override
+	public String toString() {
+		if(null != errorDescription) {
+			return errorDescription;
+		}
+		return &quot;CustomCheckedException - Exception thrown&quot;;
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void customCheckedException2() {
+		try {
+			throw new CustomCheckedException();
+		}catch(CustomCheckedException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">Handle custom unchecked exception. Display our message</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>CustomUnCheckedException.java</em>
+<pre>
+package core.java.model;
+
+public class CustomUnCheckedException extends RuntimeException {
+
+	private static final long serialVersionUID = -3532234464359254343L;
+	private String errorDescription;
+	
+	public CustomUnCheckedException() {
+	}
+	
+	
+	public CustomUnCheckedException(String errorDescription) {
+		this.errorDescription = errorDescription;
+	}
+	
+	@Override
+	public String toString() {
+		if(null != errorDescription) {
+			return errorDescription;
+		}
+		return &quot;CustomUnCheckedException - Exception thrown&quot;;
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void customUnCheckedException() {
+		try {
+			throw new CustomUnCheckedException(&quot;ExceptionHandlingPractice.customUnCheckedException&quot;);
+		}catch(CustomUnCheckedException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="15"><div class="panel-heading">Handle custom unchecked exception. Display default message</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+
+</pre>
+<em>CustomUnCheckedException.java</em>
+<pre>
+package core.java.model;
+
+public class CustomUnCheckedException extends RuntimeException {
+
+	private static final long serialVersionUID = -3532234464359254343L;
+	private String errorDescription;
+	
+	public CustomUnCheckedException() {
+	}
+	
+	
+	public CustomUnCheckedException(String errorDescription) {
+		this.errorDescription = errorDescription;
+	}
+	
+	@Override
+	public String toString() {
+		if(null != errorDescription) {
+			return errorDescription;
+		}
+		return &quot;CustomUnCheckedException - Exception thrown&quot;;
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void customUnCheckedException2() {
+		try {
+			throw new CustomUnCheckedException();
+		}catch(CustomUnCheckedException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+
+</pre>
+</div></div>
+
+</div>

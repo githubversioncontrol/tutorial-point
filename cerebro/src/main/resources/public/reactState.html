@@ -1,0 +1,81 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create React JS Project. Refer <a ng-href="#reactHelloWorld" target="_blank">here</a></li>
+	
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.jsx</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+State is the place where the data comes from. We should always try to make our state as simple as possible and minimize the number of stateful components. 
+If we have, for example, ten components that need data from the state, we should create one container component that will keep the state for all of them
+</pre>
+<pre>
+import React from 'react';
+
+class App extends React.Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            headerContent: &quot;Header value from state&quot;,
+            bodyContent: &quot;Body value from state&quot;
+        }
+    }
+
+    render(){
+        return(
+            &lt;div&gt;
+                &lt;h2&gt; {this.state.headerContent} &lt;/h2&gt;
+                &lt;h3&gt; {this.state.bodyContent} &lt;/h3&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Execute application</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld&gt;webpack-dev-server --hot
+Project is running at http://localhost:9092/
+webpack output is served from /
+webpack: wait until bundle finished: /
+Hash: 7bd46f496fb95e791cf3
+Version: webpack 3.8.1
+Time: 20537ms
+   Asset     Size  Chunks                    Chunk Names
+index.js  1.05 MB       0  [emitted]  [big]  main
+   [2] ./node_modules/react/index.js 190 bytes {0} [built]
+  [16] multi (webpack)-dev-server/client?http://localhost:9092 ./main.js 40 bytes {0} [built]
+  [17] (webpack)-dev-server/client?http://localhost:9092 7.95 kB {0} [built]
+  [18] ./node_modules/url/url.js 23.3 kB {0} [built]
+  [25] ./node_modules/strip-ansi/index.js 161 bytes {0} [built]
+  [27] ./node_modules/loglevel/lib/loglevel.js 7.86 kB {0} [built]
+  [28] (webpack)-dev-server/client/socket.js 1.05 kB {0} [built]
+  [30] (webpack)-dev-server/client/overlay.js 3.73 kB {0} [built]
+  [31] ./node_modules/ansi-html/index.js 4.26 kB {0} [built]
+  [32] ./node_modules/html-entities/index.js 231 bytes {0} [built]
+  [35] (webpack)/hot nonrecursive ^\.\/log$ 170 bytes {0} [built]
+  [37] (webpack)/hot/emitter.js 75 bytes {0} [built]
+  [39] ./main.js 470 bytes {0} [built]
+  [43] ./node_modules/react-dom/index.js 1.36 kB {0} [built]
+  [52] ./App.jsx 3.37 kB {0} [built]
+    + 38 hidden modules
+webpack: Compiled successfully.
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactState.jpg"/>
+</div></div>

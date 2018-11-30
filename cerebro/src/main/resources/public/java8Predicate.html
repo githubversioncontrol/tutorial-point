@@ -1,0 +1,115 @@
+<div class="panel panel-primary"><div class="panel-heading">About java.util.function.Predicate interface</div><div class="panel-body">
+<ul>
+	<li>In mathematics, a predicate is commonly understood to be a Boolean-valued function P: X? {true, false}, called the predicate on X.</li>
+	<li>Informally, a predicate is a statement that may be true or false depending on the values of its variables. </li>
+	<li>It can be thought of as an operator or function that returns a value that is either true or false</li>
+	<li>In java 8, Predicate a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Examples</div><div class="panel-body">
+<ul>
+<li><a ng-click="navigate(1)">Using java.util.function.Predicate with Collection stream to return male Employees</a></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Example 1</div><div class="panel-body">
+<pre><code>
+Using java.util.function.Predicate with Collection stream to return male Employees
+</code></pre>
+<em>Employee.java</em>
+<pre><code>
+package core.java.java8.java.util.function.model;
+
+public class Employee {
+
+	private String firstName;
+	private String lastName;
+	private Long salary;
+	private String gender;
+
+	public Employee(String firstName, String lastName, Long salary, String gender) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.salary = salary;
+		this.gender = gender;
+	}
+
+	public Employee(String firstName, String lastName, Long salary) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.salary = salary;
+	}
+
+	public Employee() {
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Long salary) {
+		this.salary = salary;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;{firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, salary=&quot; + salary + &quot;, gender=&quot;
+				+ gender + &quot;}&quot;;
+	}
+}
+</code></pre>
+<em>PredicatePractice.java</em>
+<pre><code>
+package core.java.java8.java.util.function;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import org.junit.Ignore;
+import org.junit.Test;
+import core.java.java8.java.util.function.model.Employee;
+
+public class PredicatePractice {
+
+	public void allMaleEmployees() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;firstName1&quot;, &quot;lastName1&quot;, 20000L, &quot;M&quot;),
+				new Employee(&quot;firstName2&quot;, &quot;lastName2&quot;, 30000L, &quot;F&quot;));
+		Predicate&lt;Employee&gt; maleEmployeesPredicate = (Employee e) -&gt; {
+			return &quot;M&quot;.equals(e.getGender());
+		};
+		List&lt;Employee&gt; maleEmployees = employees.stream().filter(maleEmployeesPredicate).collect(Collectors.toList());
+		System.out.println(&quot;maleEmployees: &quot; + maleEmployees);
+	}
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+maleEmployees: [{firstName=firstName1, lastName=lastName1, salary=20000, gender=M}]
+</code></pre>
+</div></div>

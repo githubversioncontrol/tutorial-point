@@ -1,0 +1,248 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Java project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=spring.boot.gradle -DartifactId=SpringBootGradle -Dversion=1.0.SNAPSHOT -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springBootHelloWorldGradle.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre >
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.boot.gradle&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringBootGradle&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringBootGradle&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;1.4.7.RELEASE&lt;/version&gt;
+	&lt;/parent&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+				&lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;mainClass&gt;spring.boot.gradle.App&lt;/mainClass&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">build.gradle</div><div class="panel-body">
+<pre >
+buildscript{
+    ext{
+        springBootVersion = &quot;1.4.7.RELEASE&quot; <em>// specify global variable</em>
+    }
+    
+    repositories{
+        jcenter()
+        mavenCentral()
+    }
+
+	dependencies{
+	    classpath(
+	    <em>// to use spring boot plugin - which will be used to ignore version while adding dependencies</em>
+	    &quot;org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}&quot;,
+	    <em>// to declare parent dependencies </em>
+	    &quot;org.springframework.boot:spring-boot-starter-parent:${springBootVersion}&quot;
+	    )
+	}
+}
+
+apply plugin: &quot;java&quot;
+apply plugin: &quot;eclipse&quot;
+apply plugin: &quot;org.springframework.boot&quot; <em>// spring boot plugin</em>
+
+version = 1.0
+sourceCompatibility = 1.8 <em>// compile time JDK version</em>
+targetCompatibility = 1.8 <em>// run time JDK version</em>
+
+repositories{
+    jcenter()
+    mavenCentral()
+}
+
+
+jar{
+    baseName = &quot;SpringBootGradle&quot; <em>// jar file prefix</em>
+    version = &quot;${version}&quot; <em>// jar file suffix</em>
+}
+
+dependencies{
+    compile(&quot;org.springframework.boot:spring-boot-starter-web&quot;)
+    
+    testCompile(&quot;org.springframework.boot:spring-boot-starter-test&quot;)
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">application.yml</div><div class="panel-body">
+<pre >
+server:
+  port: 9090 
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">application-prop.properties</div><div class="panel-body">
+<pre >
+server.port=9091
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Controller1.java</div><div class="panel-body">
+<pre ><code>
+package spring.boot.gradle.controller;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = &quot;/test&quot;)
+public class Controller1 {
+
+	@RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+	public String hello() {
+		return &quot;Welcome to spring Boot with gradle&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre ><code>
+package spring.boot.gradle;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class App {
+
+	public static void main(String[] args) {
+		SpringApplication.run(App.class, args);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Gradle Command execution in cmd</div><div class="panel-body">
+<h4>Note: Jar file created after running <em>gradle build</em> in build/lib folder is executable jar file</h4>
+<pre>
+E:\Backup\JavaPrep\practiceProjects\Spring\SpringBootProjects\SpringBootGradle&gt;gradle clean assemble check build bootRun
+Starting a Gradle Daemon (subsequent builds will be faster)
+:clean
+:compileJava
+:processResources
+:classes
+:findMainClass
+:jar
+:bootRepackage
+:assemble
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
+:bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.7.RELEASE)
+
+2017-11-04 11:29:38.916  INFO 9424 --- [           main] spring.boot.gradle.App                   : Starting App on Admin-PC with PID 9424 (E:\Backup\JavaPrep\practiceProjects\Spring\SpringBootProjects\SpringBootGradle\build\classes\main started by Admin in E:\Backup\JavaPrep\practiceProjects\Spring\SpringBootProjects\SpringBootGradle)
+2017-11-04 11:29:38.921  INFO 9424 --- [           main] spring.boot.gradle.App                   : No active profile set, falling back to default profiles: default
+2017-11-04 11:29:39.065  INFO 9424 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@292b08d6: startup date [Sat Nov 04 11:29:39 IST 2017]; root of context hierarchy
+2017-11-04 11:29:46.320  INFO 9424 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 9090 (http)
+2017-11-04 11:29:46.342  INFO 9424 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2017-11-04 11:29:46.345  INFO 9424 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.15
+2017-11-04 11:29:46.529  INFO 9424 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2017-11-04 11:29:46.530  INFO 9424 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 7469 ms
+2017-11-04 11:29:46.994  INFO 9424 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-11-04 11:29:47.003  INFO 9424 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-11-04 11:29:47.004  INFO 9424 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-11-04 11:29:47.005  INFO 9424 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-11-04 11:29:47.007  INFO 9424 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2017-11-04 11:29:47.450  INFO 9424 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@292b08d6: startup date [Sat Nov 04 11:29:39 IST 2017]; root of context hierarchy
+2017-11-04 11:29:47.554  INFO 9424 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/test/hello],methods=[GET],produces=[text/plain]}&quot; onto public java.lang.String spring.boot.gradle.controller.Controller1.hello()
+2017-11-04 11:29:47.560  INFO 9424 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/error]}&quot; onto public org.springframework.http.ResponseEntity&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-11-04 11:29:47.562  INFO 9424 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/error],produces=[text/html]}&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-11-04 11:29:47.657  INFO 9424 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-11-04 11:29:47.660  INFO 9424 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-11-04 11:29:47.785  INFO 9424 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-11-04 11:29:48.003  INFO 9424 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-11-04 11:29:48.108  INFO 9424 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 9090 (http)
+2017-11-04 11:29:48.116  INFO 9424 --- [           main] spring.boot.gradle.App                   : Started App in 9.839 seconds (JVM running for 10.268)
+&gt; Building 93% &gt; :bootRun
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-springBootHelloWorldGradle.jpg"/>
+</div></div>

@@ -1,0 +1,2128 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Prepare stream and print each element in the stream using method reference</a></li>
+	<li><a ng-click="navigate(2)">Prepare stream of Employee objects</a></li>
+	<li><a ng-click="navigate(3)">Prepare stream with primitive int</a></li>
+	<li><a ng-click="navigate(4)">Prepare stream with primitive long</a></li>
+	<li><a ng-click="navigate(5)">Prepare stream with primitive double</a></li>
+	<li><a ng-click="navigate(6)">iterate and print elements in list</a></li>
+	<li><a ng-click="navigate(7)">iterate list and prepare new list with all elements in source list</a></li>
+	<li><a ng-click="navigate(8)">list of employee object and filter list with name starts with j</a></li>
+	<li><a ng-click="navigate(9)">list of employee object and filter list with name starts with j and prepare new list with filtered values</a></li>
+	<li><a ng-click="navigate(10)">list of employee objects, convert all firstNames to upper case, prepare new list with upper cased firstName values</a></li>
+	<li><a ng-click="navigate(11)">list of employee objects, get all first names of employee whose name starting with j with all names converted to upper case and display names in sorted order</a></li>
+	<li><a ng-click="navigate(12)">print first element in the list</a></li>
+	<li><a ng-click="navigate(13)">List of Employee objects, Sort list by employee joiningDate using Java 8 collection streams</a></li>
+	<li><a ng-click="navigate(14)">List of employee objects, Prepare new list with employee's firstName using Java 8 collection streams</a></li>
+	<li><a ng-click="navigate(15)">Sum all int values</a></li>
+	<li><a ng-click="navigate(16)">Sum of all employee ages</a></li>
+	<li><a ng-click="navigate(17)">Average age of all employees</a></li>
+	<li><a ng-click="navigate(18)">Max age of all employees</a></li>
+	<li><a ng-click="navigate(19)">Min age of all employees</a></li>
+	<li><a ng-click="navigate(20)">Convert stream of int to employee objects</a></li>
+	<li><a ng-click="navigate(21)">Group employees by age</a></li>
+	<li><a ng-click="navigate(22)">Group employees by age with summary statistics</a></li>
+	<li><a ng-click="navigate(23)">Joining the list of employee filters to phrase</a></li>
+	<li><a ng-click="navigate(24)">Create map(age, firstName) with list of employee objects</a></li>
+	<li><a ng-click="navigate(25)">Sort of list of Employee objects</a></li>
+	<li><a ng-click="navigate(26)">flatMap()</a></li>
+	<li><a ng-click="navigate(27)">Remove duplicates in a list</a></li>
+	<li><a ng-click="navigate(28)">Print Random numbers</a></li>
+	<li><a ng-click="navigate(29)">Unique Squares</a></li>
+	<li><a ng-click="navigate(30)">Count Empty Strings</a></li>
+	<li><a ng-click="navigate(31)">Print Non Empty Strings</a></li>
+	<li><a ng-click="navigate(32)">Print 2 Non Empty Strings</a></li>
+	<li class="subGroupHeading">References</li>
+	<li><a ng-href="https://github.com/avinashbabudonthu/CoreJavaPractice/blob/master/src/main/java/core/java/java8/collections/streams/CollectionStreamsPractice.java" target="_blank">source code</a></li>
+	<li><a ng-href="https://github.com/avinashbabudonthu/CoreJavaPractice/archive/master.zip" target="_blank">Download repository</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Prepare stream and print each element in the stream using method reference</div><div class="panel-body">
+<pre ><code>
+public void prepareStream() {
+	Stream&lt;String&gt; srcStream = Stream.of(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;, &quot;five&quot;);
+	srcStream.forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+one
+two
+three
+four
+five		
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Prepare stream of Employee objects</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+	
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void prepareEmployeeStreams() {
+	Stream&lt;Employee&gt; employeeStream = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	employeeStream.forEach(System.out::println);
+
+	Stream&lt;Employee&gt; employeeStream2 = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	employeeStream2.map(Employee::getAge).forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+[firstName: null, lastName: null, age: 21]
+[firstName: null, lastName: null, age: 22]
+[firstName: null, lastName: null, age: 23]
+[firstName: null, lastName: null, age: 24]
+21
+22
+23
+24	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Prepare stream with primitive int</div><div class="panel-body">
+<pre ><code>
+public void preparePrimitiveIntStream() {
+	IntStream intStream = IntStream.of(1, 2, 3, 4, 5);
+	intStream.forEach(System.out::println);
+
+	IntStream intStream2 = Arrays.stream(new int[] { 16, 17, 18, 19, 20 });
+	intStream2.forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+1
+2
+3
+4
+5
+16
+17
+18
+19
+20	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Prepare stream with primitive long</div><div class="panel-body">
+<pre ><code>
+public void preparePrimitiveLongStream() {
+	LongStream longStream = LongStream.of(11, 12, 13, 14, 15);
+	longStream.forEach(System.out::println);
+
+	LongStream longStream2 = Arrays.stream(new long[] { 21, 22, 23, 24, 25 });
+	longStream2.forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+11
+12
+13
+14
+15
+21
+22
+23
+24
+25	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Prepare stream with primitive double</div><div class="panel-body">
+<pre ><code>
+public void preparePrimitiveDoubleStream() {
+	DoubleStream doubleStream = DoubleStream.of(6, 7, 8, 9, 10);
+	doubleStream.forEach(System.out::println);
+
+	DoubleStream doubleStream2 = Arrays.stream(new double[] { 26, 27, 28, 29, 30 });
+	doubleStream2.forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+6.0
+7.0
+8.0
+9.0
+10.0
+26.0
+27.0
+28.0
+29.0
+30.0	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">iterate and print elements in list</div><div class="panel-body">
+<pre ><code>
+public void printList() {
+	List&lt;String&gt; list = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;);
+
+	<em>// method 1 - using lambda expression</em>
+	list.stream().forEach(element -&gt; {
+	    System.out.print(element);
+	});
+
+	<em>// method 2 - using method references</em>
+	list.stream().forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+abcdea
+b
+c
+d
+e	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">iterate list and prepare new list with all elements in source list</div><div class="panel-body">
+<pre ><code>
+public void prepareNewList() {
+	List&lt;String&gt; sourceList = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;);
+	List&lt;String&gt; targetList = sourceList.stream().collect(Collectors.toList());
+
+	targetList.stream().forEach(element -&gt; System.out.print(element));
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+abcde	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">list of employee object and filter list with name starts with j</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void filterList() {
+	List&lt;Employee&gt; list = Arrays.asList(new Employee(&quot;mahesh&quot;), new Employee(&quot;suresh&quot;), new Employee(&quot;jack&quot;), new Employee(&quot;jill&quot;));
+	list.stream().filter(employee -&gt; employee.getFirstName().startsWith(&quot;j&quot;)).forEach(employee -&gt; System.out.println(employee));
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+[firstName: jack, lastName: null, age: 0]
+[firstName: jill, lastName: null, age: 0]	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">list of employee object and filter list with name starts with j and prepare new list with filtered values</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void filterListAndPrepareNewList() {
+	List&lt;Employee&gt; list = Arrays.asList(new Employee(&quot;mahesh&quot;), new Employee(&quot;suresh&quot;), new Employee(&quot;jack&quot;), new Employee(&quot;jill&quot;));
+	List&lt;Employee&gt; filteredList = list.stream().filter(element -&gt; element.getFirstName().startsWith(&quot;j&quot;)).collect(Collectors.toList());
+
+	filteredList.stream().forEach(employee -&gt; System.out.println(employee.getFirstName()));
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+jack
+jill	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">list of employee objects, convert all firstNames to upper case, prepare new list with upper cased firstName values</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void upperCase() {
+	List&lt;Employee&gt; list = Arrays.asList(new Employee(&quot;mahesh&quot;), new Employee(&quot;suresh&quot;), new Employee(&quot;jack&quot;), new Employee(&quot;jill&quot;));
+	List&lt;String&gt; upperCasedNamesList = list.stream().map(Employee::getFirstName).map(String::toUpperCase).collect(Collectors.toList());
+
+	upperCasedNamesList.stream().forEach(firstName -&gt; System.out.println(firstName));
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+MAHESH
+SURESH
+JACK
+JILL	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">list of employee objects, get all first names of employee whose name starting with j with all names converted to upper case and display names in sorted order</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void filteredCaseChangedSortedList() {
+	List&lt;Employee&gt; list = Arrays.asList(new Employee(&quot;mahesh&quot;), new Employee(&quot;suresh&quot;), new Employee(&quot;jack&quot;), new Employee(&quot;jill&quot;));
+
+	List&lt;String&gt; targetList = list.stream().filter(employee -&gt; employee.getFirstName().startsWith(&quot;j&quot;)).map(employee -&gt; employee.getFirstName())
+		.map(String::toUpperCase).sorted().collect(Collectors.toList());
+	System.out.println(targetList);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+[JACK, JILL]	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="12"><div class="panel-heading">print first element in the list</div><div class="panel-body">
+<pre ><code>
+public void printFirstElement() {
+	List&lt;String&gt; srcList = Arrays.asList(&quot;first&quot;, &quot;second&quot;, &quot;third&quot;);
+	srcList.stream().findFirst().ifPresent(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+first	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="13"><div class="panel-heading">List of Employee objects, Sort list by employee joiningDate using Java 8 collection streams</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void sortListByDate() {
+	List&lt;Employee&gt; employeeList = Arrays.asList(new Employee(LocalDate.of(2017, 04, 12), &quot;jack&quot;),
+		new Employee(LocalDate.of(2017, 04, 13), &quot;jill&quot;), new Employee(LocalDate.of(2017, 01, 01), &quot;john&quot;),
+		new Employee(LocalDate.of(2017, 02, 10), &quot;scott&quot;), new Employee(LocalDate.of(2017, 03, 11), &quot;amy&quot;));
+
+	List&lt;Employee&gt; sortedList = employeeList.stream().sorted((e1, e2) -&gt; e1.getJoiningDate().compareTo(e2.getJoiningDate()))
+		.collect(Collectors.toList());
+
+	System.out.println(&quot;employeeList: &quot; + employeeList);
+	System.out.println(&quot;sortedList: &quot; + sortedList);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+employeeList: [[firstName: jack, lastName: null, age: 0], [firstName: jill, lastName: null, age: 0], [firstName: john, lastName: null, age: 0], [firstName: scott, lastName: null, age: 0], [firstName: amy, lastName: null, age: 0]]
+sortedList: [[firstName: john, lastName: null, age: 0], [firstName: scott, lastName: null, age: 0], [firstName: amy, lastName: null, age: 0], [firstName: jack, lastName: null, age: 0], [firstName: jill, lastName: null, age: 0]]
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">List of employee objects, Prepare new list with employee's firstName using Java 8 collection streams</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void getFirstNameListFromEmployee() {
+	List&lt;Employee&gt; employeeList = Arrays.asList(new Employee(LocalDate.of(2017, 04, 12), &quot;john&quot;),
+		new Employee(LocalDate.of(2017, 04, 13), &quot;jack&quot;), new Employee(LocalDate.of(2017, 01, 01), &quot;jill&quot;),
+		new Employee(LocalDate.of(2017, 02, 10), &quot;mahesh&quot;), new Employee(LocalDate.of(2017, 03, 11), &quot;suresh&quot;));
+
+	<em>// using method reference</em>
+	List&lt;String&gt; namesList = employeeList.stream().map(Employee::getFirstName).collect(Collectors.toList());
+	System.out.println(&quot;namesList: &quot; + namesList);
+
+	<em>// using lambda expression</em>
+	List&lt;String&gt; namesList2 = employeeList.stream().map(employee -&gt; employee.getFirstName()).collect(Collectors.toList());
+	System.out.println(&quot;namesList2: &quot; + namesList2);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+namesList: [john, jack, jill, mahesh, suresh]
+namesList2: [john, jack, jill, mahesh, suresh]	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="15"><div class="panel-heading">Sum all int values</div><div class="panel-body">
+<pre ><code>
+public void sumAllElements() {
+	IntStream intStream = IntStream.of(1, 2, 3, 4, 5);
+	int sum = intStream.sum();
+	System.out.println(sum);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+15	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="16"><div class="panel-heading">Sum of all employee ages</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void sumAges() {
+	Stream&lt;Employee&gt; employeeStream = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	int sumOfAges = employeeStream.mapToInt(Employee::getAge).sum();
+	System.out.println(&quot;sumOfAges: &quot; + sumOfAges);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+sumOfAges: 90	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="17"><div class="panel-heading">Average age of all employees</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void averageAge() {
+	Stream&lt;Employee&gt; employeeStream = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	OptionalDouble averageAge = employeeStream.mapToInt(Employee::getAge).average();
+	System.out.println(&quot;averageAge: &quot; + averageAge);
+	System.out.println(&quot;averageAge: &quot; + averageAge.getAsDouble());
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+averageAge: OptionalDouble[22.5]
+averageAge: 22.5
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="18"><div class="panel-heading">Max age of all employees</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void maxAge() {
+	Stream&lt;Employee&gt; employeeStream = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	OptionalInt maxAge = employeeStream.mapToInt(Employee::getAge).max();
+	System.out.println(&quot;maxAge: &quot; + maxAge);
+	System.out.println(&quot;maxAge: &quot; + maxAge.getAsInt());
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+maxAge: OptionalInt[24]
+maxAge: 24	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="19"><div class="panel-heading">Min age of all employees</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void minAge() {
+	Stream&lt;Employee&gt; employeeStream = Stream.of(new Employee(21), new Employee(22), new Employee(23), new Employee(24));
+	OptionalInt minAge = employeeStream.mapToInt(Employee::getAge).min();
+	System.out.println(&quot;minAge: &quot; + minAge);
+	System.out.println(&quot;minAge: &quot; + minAge.getAsInt());
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+minAge: OptionalInt[21]
+minAge: 21	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="20"><div class="panel-heading">Convert stream of int to employee objects</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void mapToObject() {
+	IntStream intStream = IntStream.of(26, 27, 28, 29, 30);
+	intStream.mapToObj(value -&gt; new Employee(value)).forEach(System.out::println);
+
+	<em>// using constructor reference</em>
+	System.out.println(&quot;-------------------------------------------------------&quot;);
+	IntStream intStream2 = IntStream.of(26, 27, 28, 29, 30);
+	List&lt;Object&gt; employeeStream = intStream2.mapToObj(Employee::new).collect(Collectors.toList());
+	employeeStream.forEach(System.out::println);
+
+	<em>// using lambda expression</em>
+	System.out.println(&quot;-------------------------------------------------------&quot;);
+	IntStream intStream3 = IntStream.of(26, 27, 28, 29, 30);
+	List&lt;Employee&gt; employeeStream2 = intStream3.mapToObj(value -&gt; new Employee(value)).collect(Collectors.toList());
+	employeeStream2.forEach(System.out::println);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+[firstName: null, lastName: null, age: 26]
+[firstName: null, lastName: null, age: 27]
+[firstName: null, lastName: null, age: 28]
+[firstName: null, lastName: null, age: 29]
+[firstName: null, lastName: null, age: 30]
+-------------------------------------------------------
+[firstName: null, lastName: null, age: 26]
+[firstName: null, lastName: null, age: 27]
+[firstName: null, lastName: null, age: 28]
+[firstName: null, lastName: null, age: 29]
+[firstName: null, lastName: null, age: 30]
+-------------------------------------------------------
+[firstName: null, lastName: null, age: 26]
+[firstName: null, lastName: null, age: 27]
+[firstName: null, lastName: null, age: 28]
+[firstName: null, lastName: null, age: 29]
+[firstName: null, lastName: null, age: 30]	
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="21"><div class="panel-heading">Group employees by age</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void groupByAge() {
+	List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;mahesh&quot;, 21), new Employee(&quot;suresh&quot;, 21), new Employee(&quot;jack&quot;, 22), new Employee(
+		&quot;jill&quot;, 22));
+
+	Map&lt;Integer, List&lt;Employee&gt;&gt; employeesGroupByAge = employees.stream().collect(Collectors.groupingBy(Employee::getAge));
+	System.out.println(employeesGroupByAge);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+{21=[[firstName: mahesh, lastName: null, age: 21], [firstName: suresh, lastName: null, age: 21]], 22=[[firstName: jack, lastName: null, age: 22], [firstName: jill, lastName: null, age: 22]]}
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="22"><div class="panel-heading">Group employees by age with summary statistics</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void ageSummaryStatistics() {
+	List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;mahesh&quot;, 21), new Employee(&quot;suresh&quot;, 21), new Employee(&quot;jack&quot;, 22), new Employee(
+		&quot;jill&quot;, 22));
+
+	IntSummaryStatistics ageSummaryStatistics = employees.stream().collect(Collectors.summarizingInt(Employee::getAge));
+	System.out.println(ageSummaryStatistics);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+IntSummaryStatistics{count=4, sum=86, min=21, average=21.500000, max=22}
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="23"><div class="panel-heading">Joining the list of employee filters to phrase</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void joining() {
+	List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;mahesh&quot;, 17), new Employee(&quot;suresh&quot;, 18), new Employee(&quot;jack&quot;, 22), new Employee(
+		&quot;jill&quot;, 22));
+	String phrase = employees.stream().filter(employee -&gt; employee.getAge() &gt; 18).map(employee -&gt; employee.getFirstName())
+		.collect(Collectors.joining(&quot; and &quot;, &quot;In India &quot;, &quot; are of legal age employees&quot;));
+	System.out.println(phrase);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+In India jack and jill are of legal age employees
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="24"><div class="panel-heading">Create map(age, firstName) with list of employee objects</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void createMapWithEmployee() {
+	List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;mahesh&quot;, 17), new Employee(&quot;suresh&quot;, 17), new Employee(&quot;jack&quot;, 22), new Employee(
+		&quot;jill&quot;, 22));
+
+	<em>// we are using age as key. If key is same for 2 employees we  will get IllegalStateException. So we need to pass 3rd argument to collect</em>
+	Map&lt;Integer, String&gt; employeesMap = employees.stream().collect(
+		Collectors.toMap(Employee::getAge, Employee::getFirstName, (name1, name2) -&gt; name1 + &quot;,&quot; + name2));
+	System.out.println(employeesMap);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+{17=mahesh,suresh, 22=jack,jill}
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="25"><div class="panel-heading">Sort of list of Employee objects</div><div class="panel-body">
+<pre><code>
+package core.java.collections.model;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+    private LocalDate joiningDate;
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    public Employee() {
+    }
+
+    public Employee(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public Employee(LocalDate joiningDate, String firstName) {
+	this.joiningDate = joiningDate;
+	this.firstName = firstName;
+    }
+
+    public Employee(String firstName, int age) {
+	this.firstName = firstName;
+	this.age = age;
+    }
+
+    public Employee(String firstName, String lastName) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+    }
+
+    public Employee(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public Employee(int age) {
+	this.age = age;
+    }
+
+    public LocalDate getJoiningDate() {
+	return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+	this.joiningDate = joiningDate;
+    }
+
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
+
+    public int getAge() {
+	return age;
+    }
+
+    public void setAge(int age) {
+	this.age = age;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;[firstName: &quot; + firstName + &quot;, lastName: &quot; + lastName + &quot;, age: &quot; + age + &quot;]&quot;;
+    }
+}
+</code></pre>
+<pre ><code>
+public void sortList() {
+	List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;mahesh&quot;, 25), new Employee(&quot;suresh&quot;, 18), new Employee(&quot;jack&quot;, 22), new Employee(
+		&quot;jill&quot;, 19));
+
+	Comparator&lt;Employee&gt; firstNameComparator = (e1, e2) -&gt; {
+	    return e1.getFirstName().compareTo(e2.getFirstName());
+	};
+
+	<em>// collect entire object into a list</em>
+	List&lt;Employee&gt; sortedByFirstName = employees.stream().sorted(firstNameComparator).collect(Collectors.toList());
+	System.out.println(&quot;sortedByFirstName: &quot; + sortedByFirstName);
+
+	<em>// collect only firstName from sorted list</em>
+	List&lt;String&gt; sortByFirstName2 = employees.stream().sorted(firstNameComparator).map(Employee::getFirstName).collect(Collectors.toList());
+	System.out.println(&quot;sortByFirstName2: &quot; + sortByFirstName2);
+
+	<em>// in line lambda expression</em>
+	List&lt;Employee&gt; sortByAge = employees.stream().sorted((e1, e2) -&gt; {
+	    return Integer.valueOf(e1.getAge()).compareTo(Integer.valueOf(e2.getAge()));
+	}).collect(Collectors.toList());
+	System.out.println(&quot;sortByAge: &quot; + sortByAge);
+
+	List&lt;Employee&gt; employees2 = Arrays.asList(new Employee(&quot;jack&quot;, &quot;G&quot;), new Employee(&quot;jack&quot;, &quot;C&quot;), new Employee(&quot;jack&quot;, &quot;A&quot;), new Employee(
+		&quot;jack&quot;, &quot;H&quot;));
+	Comparator&lt;Employee&gt; firstNameComparator2 = (e1, e2) -&gt; {
+	    return e1.getFirstName().compareTo(e2.getFirstName());
+	};
+	Comparator&lt;Employee&gt; lastNameComparator = (e1, e2) -&gt; {
+	    return e1.getLastName().compareTo(e2.getLastName());
+	};
+
+	<em>// sort by first name first and then last name</em>
+	List&lt;Employee&gt; sortedByFirstNameThenLastName = employees2.stream().sorted(firstNameComparator2.thenComparing(lastNameComparator))
+		.collect(Collectors.toList());
+	System.out.println(&quot;sortedByFirstNameThenLastName: &quot; + sortedByFirstNameThenLastName);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+sortedByFirstName: [[firstName: jack, lastName: null, age: 22], [firstName: jill, lastName: null, age: 19], [firstName: mahesh, lastName: null, age: 25], [firstName: suresh, lastName: null, age: 18]]
+sortByFirstName2: [jack, jill, mahesh, suresh]
+sortByAge: [[firstName: suresh, lastName: null, age: 18], [firstName: jill, lastName: null, age: 19], [firstName: jack, lastName: null, age: 22], [firstName: mahesh, lastName: null, age: 25]]
+sortedByFirstNameThenLastName: [[firstName: jack, lastName: A, age: 0], [firstName: jack, lastName: C, age: 0], [firstName: jack, lastName: G, age: 0], [firstName: jack, lastName: H, age: 0]]
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="26"><div class="panel-heading">flatMap()</div><div class="panel-body">
+<pre ><code>
+<em>/**
+     * If Stream contains Collection of data then operations like filter, sum, distinct, Collectors are not supported. So we need to use flatMap() for 
+     * following conversion:
+     * Stream&lt;String[]&gt;		-&gt; flatMap -&gt;	Stream&lt;String&gt;
+     * Stream&lt;Set&lt;String&gt;&gt;	-&gt; flatMap -&gt;	Stream&lt;String&gt;
+     * Stream&lt;List&lt;String&gt;&gt;	-&gt; flatMap -&gt;	Stream&lt;String&gt;
+     * Stream&lt;List&lt;Object&gt;&gt;	-&gt; flatMap -&gt;	Stream&lt;Object&gt;
+     * 
+     * collection of data after using flatMap():
+     * { {1,2}, {3,4}, {5,6} } -&gt; flatMap -&gt; {1,2,3,4,5,6}
+     * { {'a','b'}, {'c','d'}, {'e','f'} } -&gt; flatMap -&gt; {'a','b','c','d','e','f'}
+     */</em>
+public void flatMapPractice() {
+	<em>// 2-D String array without flatMap()</em>
+	String[][] stringArray1 = new String[][] { { &quot;a&quot;, &quot;b&quot; }, { &quot;c&quot;, &quot;d&quot; }, { &quot;e&quot;, &quot;f&quot; } };
+	Stream&lt;String[]&gt; streamOfArray1 = Arrays.stream(stringArray1);
+	Stream&lt;String[]&gt; filter1 = streamOfArray1.filter(e -&gt; &quot;a&quot;.equals(e));
+	System.out.println(&quot;Result 1: &quot;);
+	filter1.forEach(System.out::print);
+
+	<em>// 2-D String array with flatMap()</em>
+	String[][] stringArray2 = new String[][] { { &quot;a&quot;, &quot;b&quot; }, { &quot;c&quot;, &quot;d&quot; }, { &quot;e&quot;, &quot;f&quot; } };
+	Stream&lt;String[]&gt; streamOfArray2 = Arrays.stream(stringArray2);
+	Stream&lt;String&gt; streamOfArray2Flatted = streamOfArray2.flatMap(e -&gt; Arrays.stream(e));
+	Stream&lt;String&gt; filter2 = streamOfArray2Flatted.filter(e -&gt; &quot;a&quot;.equals(e));
+	System.out.println(&quot;Result 2: &quot;);
+	filter2.forEach(System.out::print);
+
+	<em>// java.util.Set&lt;String&gt;</em>
+	Set&lt;String&gt; set1 = new HashSet&lt;&gt;(Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;a&quot;, &quot;e&quot;, &quot;c&quot;));
+	Stream&lt;Set&lt;String&gt;&gt; streamOfSet = Stream.of(set1);
+	List&lt;String&gt; list1 = streamOfSet.flatMap(e -&gt; e.stream()).distinct().collect(Collectors.toList());
+	System.out.println(&quot;Result 3: &quot;);
+	list1.forEach(System.out::print);
+
+	<em>// int[]</em>
+	int[] intArray = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+	Stream&lt;int[]&gt; intArrayStream = Stream.of(intArray);
+	IntStream intStream = intArrayStream.flatMapToInt(e -&gt; Arrays.stream(e));
+	System.out.println(&quot;Result 4: &quot;);
+	intStream.forEach(System.out::print);
+    }     
+</code></pre>
+<em>Output</em>
+<pre><code>
+Result 1: 
+Result 2: 
+aResult 3: 
+abcdeResult 4: 
+1234567890
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="27"><div class="panel-heading">Remove duplicates in a list</div><div class="panel-body">
+<pre ><code>
+public void removeDuplicatesInList() {
+	List&lt;String&gt; list1 = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;a&quot;, &quot;e&quot;, &quot;c&quot;);
+	List&lt;String&gt; list1Result = list1.stream().distinct().collect(Collectors.toList());
+	System.out.print(&quot;list1Result: &quot;);
+	list1Result.forEach(System.out::print);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+list1Result: abcde
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="28"><div class="panel-heading">Print Random numbers</div><div class="panel-body">
+<pre ><code>
+<em>
+/** Print 10 random numbers */
+</em>
+public void printRandomNumbers() {
+		Random random = new Random(10);
+
+		// print 10 random numbers
+		System.out.println(&quot;----- 10 random numbers ---------- &quot;);
+		random.ints().limit(10).forEach(System.out::println);
+
+		// 10 random numbers where value &gt; 10
+		System.out.println(&quot;---------10 random numbers and number &gt; 10 ---------------------------&quot;);
+		random.ints().limit(10).filter(e -&gt; e &gt; 10).forEach(System.out::println);
+
+		// 10 random numbers in sorted order
+		System.out.println(&quot;----- 10 random numbers in sorted order ------------------&quot;);
+		random.ints().limit(10).sorted().forEach(System.out::println);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+----- 10 random numbers ---------- 
+-1157793070
+1913984760
+1107254586
+1773446580
+254270492
+-1408064384
+1048475594
+1581279777
+-778209333
+1532292428
+---------10 random numbers and number &gt; 10 ---------------------------
+1591762646
+1762380960
+1233758972
+1504499906
+183138476
+----- 10 random numbers in sorted order ------------------
+-1339421797
+-347474078
+-331953347
+-162763079
+35545786
+134578271
+498897016
+772426541
+813611501
+1892459190
+</code></pre> 
+</div></div>
+
+<div class="panel panel-primary" id="29"><div class="panel-heading">Unique Squares</div><div class="panel-body">
+<pre ><code>
+<em>
+/** Unique squares of numbers */
+</em>
+public void uniqueSquares() {
+		List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 2, 3, 3, 4, 4, 5, 6);
+		// squares
+		numbers.stream().map(number -&gt; number * number).forEach(System.out::println);
+
+		// distinct squares
+		System.out.println(&quot;------- distinct numbers -----------&quot;);
+		numbers.stream().map(num -&gt; num * num).distinct().forEach(System.out::println);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+1
+4
+4
+9
+9
+16
+16
+25
+36
+------- distinct numbers -----------
+1
+4
+9
+16
+25
+36
+</code></pre> 
+</div></div>
+
+<div class="panel panel-primary" id="30"><div class="panel-heading">Count Empty Strings</div><div class="panel-body">
+<pre ><code>
+<em>
+/** print no.of empty strings */
+</em>
+public void countEmptyStrings() {
+		List&lt;String&gt; strings = Arrays.asList(&quot;a&quot;, &quot;&quot;, &quot;b&quot;, &quot;&quot;, &quot;c&quot;, &quot;&quot;, &quot;d&quot;);
+		System.out.println(&quot;number of empty strings: &quot;
+				+ strings.stream().filter(str -&gt; str.isEmpty()).count());
+
+		// using parallel stream
+		System.out.println(&quot;number of empty string using parallel stream: &quot; + strings.parallelStream().filter(e -&gt; e.isEmpty()).count());
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+number of empty strings: 3
+number of empty string using parallel stream: 3
+</code></pre> 
+</div></div>
+
+<div class="panel panel-primary" id="31"><div class="panel-heading">Print Non Empty Strings</div><div class="panel-body">
+<pre ><code>
+<em>
+/** print non empty strings */
+</em>
+public void printNonEmptyStrings() {
+		List&lt;String&gt; strings = Arrays.asList(&quot;a&quot;, &quot;&quot;, &quot;b&quot;, &quot;&quot;, &quot;c&quot;, &quot;&quot;, &quot;d&quot;);
+		System.out.println(&quot;non empty strings list: &quot; + strings.stream().filter(str -&gt; !str.isEmpty()).collect(Collectors.toList()));
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+non empty strings list: [a, b, c, d]
+</code></pre> 
+</div></div>
+
+<div class="panel panel-primary" id="32"><div class="panel-heading">Print 2 Non Empty Strings</div><div class="panel-body">
+<pre ><code>
+<em>
+/** print non empty strings and limit the output to 2 strings */
+</em>
+public void printTwoNonEmptyStrings() {
+		List&lt;String&gt; strings = Arrays.asList(&quot;a&quot;, &quot;&quot;, &quot;b&quot;, &quot;&quot;, &quot;c&quot;, &quot;&quot;, &quot;d&quot;);
+		System.out.println(&quot;First two non empty strings: &quot; + strings.stream().filter(str -&gt; !str.isEmpty()).limit(2).collect(Collectors.toList()));
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+First two non empty strings: [a, b]
+</code></pre> 
+</div></div>
+
+</div>

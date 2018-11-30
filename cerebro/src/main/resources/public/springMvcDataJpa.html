@@ -1,0 +1,17 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">About ContentNegotiatingViewResolver</div><div class="panel-body">
+<ul>
+<li>How to use Spring Data JPA with Spring MVC</li>
+</ul>
+</div></div>
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Web project using Maven from cmd</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.mvc.data.jpa -DartifactId=SpringMVCDataJpaHelloWorld -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</code></pre>
+</div></div>

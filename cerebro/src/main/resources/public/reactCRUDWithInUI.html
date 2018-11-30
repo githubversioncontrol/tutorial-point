@@ -1,0 +1,161 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create react-crud-app app. This will take some time.
+<em>cmd&gt; create-react-app react-crud-app</em>
+3. Open this folder in any editor (visual-code, sublime etc)
+4. In this example. we will modify only App.js file
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactCRUDWithInUI.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends Component {
+
+  constructor(){
+    super();
+    this.state = {
+      todos: [],
+      title: &quot;React Todo Application&quot;,
+      counter: 0
+    }
+  }
+
+  addTodo = (event) =&gt; {
+    event.preventDefault();
+    let name = this.refs.name.value;
+    let completed = this.refs.completed.value;
+    let counter = this.state.counter;
+    counter = counter + 1;
+
+    let todo = {
+      name,
+      completed,
+      counter
+    }
+
+    let todos = this.state.todos;
+    todos.push(todo);
+    this.setState({
+      todos: todos,
+      counter: counter
+    });
+
+    this.refs.todoForm.reset();
+  }
+
+  removeTodo = (index) =&gt; {
+    let todos = this.state.todos;
+   
+    let newTodos = [];
+    for (let i = 0; i &lt; todos.length; i++) {
+      let val1 = todos[i];
+      if (val1.counter !== index) {
+        newTodos.push(val1);
+      }
+    }
+
+    this.setState({
+      todos: newTodos
+    });
+  }
+
+  render() {
+    let todos = this.state.todos;
+    return (
+      &lt;div className=&quot;App&quot;&gt;
+        &lt;h3&gt;{this.state.title}&lt;/h3&gt;
+        &lt;hr /&gt;
+        &lt;form ref=&quot;todoForm&quot;&gt;
+          &lt;input type=&quot;text&quot; placeholder=&quot;Enter Text&quot; ref=&quot;name&quot; /&gt;
+          &lt;input type=&quot;text&quot; placeholder=&quot;Status&quot; ref=&quot;completed&quot; /&gt;
+          &lt;button type=&quot;button&quot; onClick={this.addTodo}&gt;Add Todo &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;hr /&gt;
+        &lt;ul&gt;
+          {todos.map(todo =&gt; &lt;li key={todo.counter}&gt;{todo.name}-{todo.completed}
+              &lt;button onClick={this.removeTodo.bind(null, todo.counter)}&gt;Remove Todo&lt;/button&gt;&lt;/li&gt;)}
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+<em>Start the application</em>
+<pre>
+1. If you are using visual code - View - Integrated Terminal - npm start
+2. Application will be started on port 3000
+3. Open browser http://localhost:3000
+</pre>
+<pre>
+1. Open cmd - go to project location - npm start
+2. Application will be started on port 3000
+3. Open browser http://localhost:3000
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.css</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+.App: text-align changed to left
+</pre>
+<pre>
+.App {
+  text-align: left;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Application home page</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactCRUDWithInUI.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Enter Text and Status click on Add Todo Button</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/3-reactCRUDWithInUI.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Click Remove Todo button in the below table</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/4-reactCRUDWithInUI.jpg"/>
+</div></div>

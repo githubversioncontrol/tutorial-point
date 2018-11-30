@@ -1,0 +1,282 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create web project using maven using webapp template</li>
+	<li>update web.xml and write RestController</li>
+	<li>Create ExceptionModel class</li>
+	<li>Create ResponseEntity with ExceptionModel object. That ExceptionModel object returns as JSON</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create web project using maven using webapp template</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.rest.exception.handling -DartifactId=SpringRestExceptionHandling -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/springRestExceptionHandling.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.rest.exception.handling&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringRestExceptionHandling&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringRestExceptionHandling Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;spring.version&gt;4.3.8.RELEASE&lt;/spring.version&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax&lt;/groupId&gt;
+			&lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+			&lt;version&gt;7.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- Spring --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-mapper-asl&lt;/artifactId&gt;
+			&lt;version&gt;1.9.13&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+			&lt;version&gt;2.5.0&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringRestExceptionHandling&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;127m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre><code>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+    	version=&quot;3.0&quot;&gt;
+  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+  
+  &lt;servlet&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  	&lt;init-param&gt;
+  		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+  		&lt;param-value&gt;/WEB-INF/springConfig.xml&lt;/param-value&gt;
+  	&lt;/init-param&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;url-pattern&gt;/&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">springConfig.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+	xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+&lt;context:component-scan base-package=&quot;com.spring.rest.exception&quot;/&gt;
+&lt;mvc:annotation-driven/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Controller2.java</div><div class="panel-body">
+<pre><code>
+package com.spring.rest.exception.handling2;
+
+import java.time.Clock;
+import java.time.LocalDate;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.rest.exception.model.Employee;
+import com.spring.rest.exception.model.ExceptionModel;
+
+@RestController
+public class Controller2 {
+
+	<em>/**
+	 * Using ResponseEntity and return Error object as JSON
+	 * @param id
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/exceptionHandling2/{id}&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity&lt;?&gt; exceptionHandling2(@PathVariable(&quot;id&quot;) Integer id) {
+		ResponseEntity&lt;?&gt; responseEntity;
+		if (id &lt; 0) {
+			responseEntity = new ResponseEntity&lt;ExceptionModel&gt;(
+					new ExceptionModel(400, &quot;Bad request, id cannot be less that 0&quot;), HttpStatus.BAD_REQUEST);
+		} else {
+			responseEntity = new ResponseEntity&lt;Employee&gt;(
+					new Employee(&quot;jack&quot;, &quot;NY&quot;, LocalDate.now(Clock.systemDefaultZone())), HttpStatus.OK);
+		}
+		return responseEntity;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+package com.spring.rest.exception.model;
+
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Employee {
+
+	private String name;
+	private String address;
+	private LocalDate joiningDate;
+
+	public Employee(String name, String address, LocalDate joiningDate) {
+		this.name = name;
+		this.address = address;
+		this.joiningDate = joiningDate;
+	}
+
+	public Employee() {
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
+	}
+
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Employee1 [name=&quot; + name + &quot;, address=&quot; + address + &quot;, joiningDate=&quot; + joiningDate + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ExceptionModel.java</div><div class="panel-body">
+<pre><code>
+package com.spring.rest.exception.model;
+
+public class ExceptionModel {
+
+	private Integer errorCode;
+	private String description;
+
+	public ExceptionModel() {
+	}
+
+	public ExceptionModel(Integer errorCode, String description) {
+		this.errorCode = errorCode;
+		this.description = description;
+	}
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRestExceptionHandling/exceptionHandling2/-10</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springRestExceptionHandling2.jpg"/>
+</div></div>

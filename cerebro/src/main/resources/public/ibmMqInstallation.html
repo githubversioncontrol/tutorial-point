@@ -1,0 +1,43 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">IBM MQ Installation in local</div><div class="panel-body">
+<pre>
+IBM MQ local setup
+1. download IBM MQ2 - this we will get zip file
+2. Extract to any location
+3. Optional step (this helps to clean windows registry if you installed IBM MQ before) extract-location/MQServer - Right click on "ResetMQ.cmd" - Run as administrator
+4. right click on MQLaunch.exe - Run as administrator - a installation wizard will open
+5. open Software Requirements tab - this will show Green Tick if OS is supported by IBM MQ
+6. Open Network Configuration - this will ask for configure domain user ID - select No radio button
+7. Open IBM MQ Installation tab - select the language - click "Launch IBM MQ Installer" button
+8. Follow the instruction in installation wizard - this will take some time
+9. click Finish button once installation completed
+10. Open cmd as administrator - run this command to set path: C:\"Program Files"\IBM\MQ\bin\setmqenv -s
+11. To see IBM MQ version (display mq version): dspmqver
+12. To create a queue manager: crtmqm qm_demo
+13. Start the queue manager: strmqm qm_demo
+14. Display queue: dspmq
+15. create queue in queue manager create above:
+C:\Windows\System32&gt;runmqsc qm_demo
+5724-H72 (C) Copyright IBM Corp. 1994, 2016.
+Starting MQSC for queue manager qm_demo.
+
+define qlocal(QL1)
+     1 : define qlocal(QL1)
+AMQ8006: IBM MQ queue created.
+end
+     2 : end
+One MQSC command read.
+No commands have a syntax error.
+All valid MQSC commands were processed.
+
+16. Send message to queue QL1 in qm_demo queue manager created above: amqsput QL1 qm_demo
+After entering message - press Ctrl+C
+17. Get message from queue QL1: amqsget QL1 qm_demo
+</pre>
+</div></div>

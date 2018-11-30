@@ -1,0 +1,39 @@
+em{
+	color: #1E8449;
+	font-weight: bold;
+}
+
+a{
+	cursor: pointer;
+}
+
+.output , .contentHeading {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.noBullet{
+	list-style-type: none;
+}
+
+.errorOutput{
+	color: red;
+}
+
+.up{
+	bottom: 10px;
+	right: 5px;
+	position: fixed;
+}
+
+/* table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+} */

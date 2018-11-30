@@ -1,0 +1,541 @@
+<div class="panel panel-primary"><div class="panel-heading">Create core java project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.hibernate.practice -DartifactId=HibernatePractice1 -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/hibernate4/1-hibernate4Crud.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.hibernate.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;HibernatePractice1&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;HibernatePractice1&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+			&lt;version&gt;4.3.6.Final&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javassist&lt;/groupId&gt;
+			&lt;artifactId&gt;javassist&lt;/artifactId&gt;
+			&lt;version&gt;3.12.1.GA&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-annotations&lt;/artifactId&gt;
+			&lt;version&gt;3.5.6-Final&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate&lt;/artifactId&gt;
+			&lt;version&gt;3.2.3.ga&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;1.4.193&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.transaction&lt;/groupId&gt;
+			&lt;artifactId&gt;jta&lt;/artifactId&gt;
+			&lt;version&gt;1.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">hibernate.cfg.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; 
+&lt;!DOCTYPE hibernate-configuration SYSTEM &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;
+&lt;hibernate-configuration&gt;
+	&lt;session-factory&gt;
+		&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.H2Dialect&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;org.h2.Driver&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/HibernateProjects/HibernatePractice1/src/main/resources/hibernateDb;MV_STORE=FALSE&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.username&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.password&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;
+		&lt;property name=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/property&gt;
+		
+		&lt;mapping class=&quot;com.hibernate.practice.model.Student&quot;/&gt;
+		&lt;mapping class=&quot;com.hibernate.practice.model.Course&quot;/&gt;
+	&lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<pre><code>
+package com.hibernate.practice.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;STUDENT&quot;)
+public class Student {
+
+	private Integer id;
+	private String name;
+	private String courseName;
+	private Date courseStartDate;
+
+	public Student() {
+	}
+
+	public Student(String name, String courseName, Date courseStartDate) {
+		this.name = name;
+		this.courseName = courseName;
+		this.courseStartDate = courseStartDate;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = &quot;ID&quot;)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;NAME&quot;)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = &quot;COURSE_NAME&quot;)
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	@Column(name = &quot;COURSE_START_DATE&quot;)
+	public Date getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	public void setCourseStartDate(Date courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;(id= &quot; + id + &quot;, name=&quot; + name + &quot;, courseName=&quot; + courseName + &quot;, courseStartDate=&quot;
+				+ courseStartDate + &quot;)&quot;;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">create</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void create() {
+		<em>// create org.hibernate.Session</em>
+		Configuration annotationConfiguration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = annotationConfiguration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// insert record</em>
+		Student student = new Student(&quot;Jack&quot;, &quot;Java&quot;, new Date());
+		session.beginTransaction();
+		Serializable id = session.save(student);
+		session.getTransaction().commit();
+
+		<em>// get the record</em>
+		Student student2 = (Student) session.get(Student.class, id);
+		System.out.println(&quot;student2: &quot; + student2);
+
+		<em>// delete the record</em>
+		session.beginTransaction();
+		session.delete(student2);
+		session.getTransaction().commit();
+
+		<em>// close org.hibenate.Session</em>
+		session.close();
+	}
+	
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+student2: (id= 21, name=Jack, courseName=Java, courseStartDate=Sun Aug 06 15:59:26 IST 2017)
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">persist</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void persist() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// save record</em>
+		Student student = new Student(&quot;Jill&quot;, &quot;Groovy&quot;, new Date());
+		session.beginTransaction();
+		session.persist(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		Student student2 = (Student) session.get(Student.class, student.getId());
+		System.out.println(&quot;student2: &quot; + student2);
+
+		<em>// delete record</em>
+		session.beginTransaction();
+		session.delete(student2);
+		session.getTransaction().commit();
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+student2: (id= 22, name=Jill, courseName=Groovy, courseStartDate=Sun Aug 06 16:01:13 IST 2017)
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">read</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void read() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// insert 10 record</em>
+		Student student = null;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
+		session.beginTransaction();
+		for (int i = 0; i &lt; 10; i++) {
+			calendar.add(Calendar.MONTH, 1);
+			student = new Student(&quot;name&quot; + i, &quot;courseName&quot; + i, calendar.getTime());
+			session.save(student);
+		}
+		session.getTransaction().commit();
+
+		<em>// read records</em>
+		Criteria criteria = session.createCriteria(Student.class);
+		List&lt;Student&gt; list = criteria.list();
+		list.stream().forEach(System.out::println);
+
+		<em>// delete records</em>
+		session.beginTransaction();
+		list.stream().forEach(studentObj -&gt; {
+			session.delete(studentObj);
+		});
+		session.getTransaction().commit();
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Hibernate: select this_.ID as ID1_1_0_, this_.COURSE_NAME as COURSE_N2_1_0_, this_.COURSE_START_DATE as COURSE_S3_1_0_, this_.NAME as NAME4_1_0_ from STUDENT this_
+(id= 23, name=name0, courseName=courseName0, courseStartDate=Wed Sep 06 16:02:47 IST 2017)
+(id= 24, name=name1, courseName=courseName1, courseStartDate=Fri Oct 06 16:02:47 IST 2017)
+(id= 25, name=name2, courseName=courseName2, courseStartDate=Mon Nov 06 16:02:47 IST 2017)
+(id= 26, name=name3, courseName=courseName3, courseStartDate=Wed Dec 06 16:02:47 IST 2017)
+(id= 27, name=name4, courseName=courseName4, courseStartDate=Sat Jan 06 16:02:47 IST 2018)
+(id= 28, name=name5, courseName=courseName5, courseStartDate=Tue Feb 06 16:02:47 IST 2018)
+(id= 29, name=name6, courseName=courseName6, courseStartDate=Tue Mar 06 16:02:47 IST 2018)
+(id= 30, name=name7, courseName=courseName7, courseStartDate=Fri Apr 06 16:02:47 IST 2018)
+(id= 31, name=name8, courseName=courseName8, courseStartDate=Sun May 06 16:02:47 IST 2018)
+(id= 32, name=name9, courseName=courseName9, courseStartDate=Wed Jun 06 16:02:47 IST 2018)
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">update</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void update() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// save record</em>
+		Student student = new Student(&quot;Jack&quot;, &quot;Java&quot;, new Date());
+		session.beginTransaction();
+		Serializable id = session.save(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		Student student2 = (Student) session.get(Student.class, id);
+		System.out.println(&quot;student2: &quot; + student2);
+
+		<em>// update record</em>
+		student.setCourseName(&quot;Spring&quot;);
+		session.beginTransaction();
+		session.update(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		Student student3 = (Student) session.get(Student.class, id);
+		System.out.println(&quot;student3: &quot; + student3);
+
+		<em>// delete record</em>
+		session.beginTransaction();
+		session.delete(student3);
+		session.getTransaction().commit();
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+student2: (id= 33, name=Jack, courseName=Java, courseStartDate=Sun Aug 06 16:04:16 IST 2017)
+Hibernate: update STUDENT set COURSE_NAME=?, COURSE_START_DATE=?, NAME=? where ID=?
+student3: (id= 33, name=Jack, courseName=Spring, courseStartDate=Sun Aug 06 16:04:16 IST 2017)
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">delete</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void delete() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// save record</em>
+		Student student = new Student(&quot;Jill&quot;, &quot;Java&quot;, new Date());
+		session.beginTransaction();
+		session.save(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		Student student2 = (Student) session.get(Student.class, student.getId());
+		System.out.println(&quot;student2: &quot; + student2);
+
+		<em>// delete record</em>
+		session.beginTransaction();
+		session.delete(student);
+		session.getTransaction().commit();
+	}
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+student2: (id= 34, name=Jill, courseName=Java, courseStartDate=Sun Aug 06 16:06:06 IST 2017)
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">saveOrUpdate</div><div class="panel-body">
+<pre><code>
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.hibernate.practice.model.Student;
+
+public void saveOrUpdate() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// save record</em>
+		Student student = new Student(&quot;Mike&quot;, &quot;Core Java&quot;, new Date());
+		session.beginTransaction();
+		session.saveOrUpdate(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		Student student2 = (Student) session.get(Student.class, student.getId());
+		System.out.println(&quot;Before: student2: &quot; + student2);
+
+		<em>// update record</em>
+		student.setCourseName(&quot;Maven&quot;);
+		session.beginTransaction();
+		session.saveOrUpdate(student);
+		session.getTransaction().commit();
+
+		<em>// read record</em>
+		student2 = (Student) session.get(Student.class, student.getId());
+		System.out.println(&quot;After: student2: &quot; + student2);
+
+		<em>// delete record</em>
+		session.beginTransaction();
+		session.delete(student2);
+		session.getTransaction().commit();
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+	
+</code></pre>
+<em>Console Output</em>
+<pre><code>
+Hibernate: insert into STUDENT (ID, COURSE_NAME, COURSE_START_DATE, NAME) values (null, ?, ?, ?)
+Before: student2: (id= 35, name=Mike, courseName=Core Java, courseStartDate=Sun Aug 06 16:07:54 IST 2017)
+Hibernate: update STUDENT set COURSE_NAME=?, COURSE_START_DATE=?, NAME=? where ID=?
+After: student2: (id= 35, name=Mike, courseName=Maven, courseStartDate=Sun Aug 06 16:07:54 IST 2017)
+Hibernate: delete from STUDENT where ID=?
+</code></pre>
+</div></div>

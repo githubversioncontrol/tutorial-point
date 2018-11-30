@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Using Math class</a></li>
+	<li><a ng-click="navigate(2)">Using Random class</a></li>
+	<li><a ng-click="navigate(3)">Using Random class - JDK 8</a></li>
+	<li><a ng-click="navigate(4)">Generates random integers in a range</a></li>
+	<li><a ng-click="navigate(5)">Using UUID class</a></li>
+	<li><a ng-click="navigate(6)">Using UID class</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Using Math class</div><div class="panel-body">
+<pre >
+import java.lang.Math;
+
+public void method1() {
+		double value1 = Math.random() * 7;
+		System.out.println(value1);
+
+		int value2 = (int) value1;
+		System.out.println(value2);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+3.7782087146397005
+3
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Using Random class</div><div class="panel-body">
+<pre >
+import java.util.Random;
+
+public void method2() {
+		Random random = new Random();
+
+		int randomInt = random.nextInt(50);
+		float randomFloat = random.nextFloat() * 7;
+		double randomDouble = random.nextDouble() * 7.5;
+
+		System.out.println(&quot;randomInt: &quot; + randomInt + &quot;, randomFloat: &quot; + randomFloat + &quot;, randomDouble: &quot;
+				+ randomDouble);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+randomInt: 26, randomFloat: 5.1608953, randomDouble: 1.4057321450383942
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Using Random class - JDK 8</div><div class="panel-body">
+<pre >
+import java.util.Random;
+
+public void method3() {
+		Random random = new Random();
+
+		// ints(min, max-exclusive) 
+		int randomInt = random.ints(10, 25).findFirst().getAsInt();
+		System.out.println(randomInt);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+20
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Generates random integers in a range</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Generates random integers in a range between 15 (inclusive) and 35 (exclusive), with stream size of 10. 
+And print out the items with forEach
+</pre>
+<em>Test Method:</em>
+<pre >
+import java.util.Random;
+
+public void method4() {
+		new Random().ints(10, 15, 35).forEach(System.out::println);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+33
+24
+19
+30
+16
+17
+34
+19
+22
+29
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Using UUID class</div><div class="panel-body">
+<pre >
+import java.util.Random;
+
+public void method5() {
+		UUID uuid1 = UUID.randomUUID();
+		UUID uuid2 = UUID.randomUUID();
+
+		System.out.println(uuid1);
+		System.out.println(uuid2);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+b96cfab5-3163-4f8c-9613-f4bb670e12ab
+65fda8eb-a472-4df2-9b4e-c1e8e0af8d1d
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Using UID class</div><div class="panel-body">
+<pre >
+import java.rmi.server.UID;
+
+public void method6() {
+		UID uid = new UID();
+		System.out.println(uid);
+	}
+</pre>
+<em>Ouptut</em>
+<pre>
+15a73406:15fe74984f4:-8000
+</pre>
+</div></div>
+
+</div>

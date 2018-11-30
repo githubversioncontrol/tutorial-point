@@ -1,0 +1,65 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create intervalService.html</li>
+	<li>Create intervalService.js. Add it in intervalService.html</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">intervalService.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;interval service&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;intervalService.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+    &lt;h3 style=&quot;text-align: center;&quot;&gt;&#123; &#123;message&#125; &#125;&lt;/h3&gt;
+    &lt;hr/&gt; Count Down : &#123; &#123;countDown&#125; &#125;
+    &lt;hr/&gt;
+    &lt;h4&gt;&#123; &#123;intervalCancelMessage&#125; &#125;&lt;/h4&gt;
+    &lt;input type=&quot;button&quot; value=&quot;Cancel Interval&quot; ng-click=&quot;cancelInterval()&quot; /&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">intervalService.js</div><div class="panel-body">
+<pre ><code>
+(function () {
+    var app = angular.module(&quot;moduleName&quot;, []);
+
+    app.controller(&quot;mainController&quot;, function ($scope, $http, $interval) {
+        $scope.message = &quot;Welcome to Angular interval service demo&quot;;
+        $scope.countDown = 10;
+        $scope.intervalCancelMessage = &quot;&quot;;
+
+        $scope.countDownTimer = function () {
+            $scope.countDown -= 1;
+        }
+
+        // 3rd parameter is how many times interval has to be executed. In below example interval will be disabled after 10 times execution
+        var countDownInterval = $interval($scope.countDownTimer, 1000, 10);
+
+
+        $scope.cancelInterval = function () {
+            $interval.cancel(countDownInterval);
+            $scope.intervalCancelMessage = &quot;Interval cancelled, refresh the page to start interval again&quot;;
+        }
+
+    })
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<ul>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/1-intervalService.jpg"/></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/2-intervalService.jpg"/></li>
+</ul>
+</div></div>

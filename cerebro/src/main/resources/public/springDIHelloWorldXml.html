@@ -1,0 +1,192 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">About this example</div><div class="panel-body">
+<ul>
+<li>Dependency Injection using setter in Spring using Xml</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using maven in cmd</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.core.hello.world -DartifactId=SpringCoreHelloWorldXml -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springDIHelloWorldXml.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.core.hello.world&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringCoreHelloWorldXml&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringCoreHelloWorldXml&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+			&lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;1024m&lt;/maxmem&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">springConfig.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+&lt;bean id=&quot;myController&quot; class=&quot;spring.core.hello.world.controller.MyController&quot;&gt;
+	&lt;property name=&quot;myService&quot; ref=&quot;myServiceBean&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;bean id=&quot;myServiceBean&quot; class=&quot;spring.core.hello.world.service.MyService&quot; p:myRepository-ref=&quot;myRepositoryBean&quot;/&gt;
+
+&lt;bean id=&quot;myRepositoryBean&quot; class=&quot;spring.core.hello.world.repository.MyRepository&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyController.java</div><div class="panel-body">
+<pre><code>
+package spring.core.hello.world.controller;
+
+import spring.core.hello.world.service.MyService;
+
+public class MyController {
+
+	private MyService myService;
+
+	public MyService getMyService() {
+		return myService;
+	}
+
+	public void setMyService(MyService myService) {
+		this.myService = myService;
+	}
+
+	public void method1() {
+		System.out.println(&quot;MyController -&gt; method1()&quot;);
+		myService.method1();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyService.java</div><div class="panel-body">
+<pre><code>
+package spring.core.hello.world.service;
+
+import spring.core.hello.world.repository.MyRepository;
+
+public class MyService {
+
+	private MyRepository myRepository;
+
+	public MyRepository getMyRepository() {
+		return myRepository;
+	}
+
+	public void setMyRepository(MyRepository myRepository) {
+		this.myRepository = myRepository;
+	}
+
+	public void method1() {
+		System.out.println(&quot;MyService -&gt; method1()&quot;);
+		myRepository.method1();
+	}
+}
+
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyRepository.java</div><div class="panel-body">
+<pre><code>
+package spring.core.hello.world.repository;
+
+public class MyRepository {
+
+	public void method1() {
+		System.out.println(&quot;MyRepository -&gt; method1(): &quot;);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">MyApp.java</div><div class="panel-body">
+<pre><code>
+package spring.core.hello.world;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import spring.core.hello.world.controller.MyController;
+
+public class MyApp {
+	public static void main(String[] args) {
+		AbstractApplicationContext applicationContext = new ClassPathXmlApplicationContext(&quot;springConfig.xml&quot;);
+
+		MyController myController = (MyController) applicationContext.getBean(&quot;myController&quot;);
+		myController.method1();
+
+		applicationContext.close();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">output</div><div class="panel-body">
+<pre><code>
+MyController -&gt; method1()
+MyService -&gt; method1()
+MyRepository -&gt; method1()
+</code></pre>
+</div></div>

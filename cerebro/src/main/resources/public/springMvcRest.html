@@ -1,0 +1,332 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create web project using Maven from cmd</div><div class="panel-body">
+<pre>
+mvn archetype:generate -DgroupId=com.spring.mvc.rest -DartifactId=SpringMVCRest -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springMvcRest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<em>Explanation</em>
+<ul>
+	<li>Add these dependencies
+		<ul>
+			<li>spring-webmvc</li>
+			<li>servlet-api</li>
+			<li>jstl</li>
+			<li>jackson-mapper-asl</li>
+			<li>jackson-databind</li>
+		</ul>
+	</li>
+</ul>
+<pre>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.spring.mvc.rest&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringMVCRest&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringMVCRest Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;!-- properties --&gt;
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+		&lt;spring.version&gt;4.3.6.RELEASE&lt;/spring.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+
+		&lt;!-- junit --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- spring --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+			&lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+			&lt;version&gt;2.5&lt;/version&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;jstl&lt;/groupId&gt;
+			&lt;artifactId&gt;jstl&lt;/artifactId&gt;
+			&lt;version&gt;1.2&lt;/version&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-mapper-asl&lt;/artifactId&gt;
+			&lt;version&gt;1.9.13&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+			&lt;version&gt;2.5.0&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringMVCRest&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Add DispatcherServlet entry
+</pre>
+<pre>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+ xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+     version=&quot;3.0&quot;&gt;
+  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+  
+  &lt;servlet&gt;
+  	&lt;servlet-name&gt;mvcHelloWorld&lt;/servlet-name&gt;
+  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;mvcHelloWorld&lt;/servlet-name&gt;
+  	&lt;url-pattern&gt;/&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+  
+&lt;/web-app&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">mvcHelloWorld-servlet.xml</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+1. create spring config file with name mvcHelloWorld-servlet.xml
+2. mvcHelloWorld in spring config file name should be same as servlet-name tag entry in web.xml
+3. Give packages of MVC Controller, Rest Controller in component-scan tag
+4. Add bean class InternalResourceViewResolver to resolve String returned from MVC Controller to jsp name
+</pre>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+	xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+	xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+&lt;context:component-scan base-package=&quot;mvc.controller, rest.controller&quot;/&gt;
+&lt;context:annotation-config/&gt;
+&lt;mvc:annotation-driven/&gt;
+
+&lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+	&lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot;/&gt;
+	&lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;/&gt;
+&lt;/bean&gt;
+
+&lt;!-- Following is also valid and same as above bean definition --&gt;
+&lt;!-- &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot; p:prefix=&quot;/WEB-INF/jsp/&quot; p:suffix=&quot;.jsp&quot;/&gt; --&gt; 
+&lt;/beans&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MVController.java</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+1. MVCController is a controller for Spring MVC
+2. String returned by controller method will be resolved to jsp name based on configuration in mvcHelloWorld-servlet.xml
+</pre>
+<pre>
+package mvc.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class MVController {
+
+	@RequestMapping(value = &quot;/index&quot;, method = RequestMethod.GET)
+	public ModelAndView index(ModelAndView modelAndView, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		System.out.println(&quot;request: &quot; + httpServletRequest + &quot;, response: &quot; + httpServletResponse);
+		modelAndView.addObject(&quot;message&quot;, &quot;Welcome to Spring MVC&quot;);
+		modelAndView.setViewName(&quot;index&quot;);
+		return modelAndView;
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Model class used in Rest Controller
+</pre>
+<pre>
+package rest.controller.model;
+
+import java.time.LocalDate;
+
+public class Student {
+
+	private String firstName;
+	private String lastName;
+	private String coure;
+	private LocalDate joiningDate;
+
+	public Student() {
+	}
+
+	public Student(String firstName, String lastName, String coure, LocalDate joiningDate) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.coure = coure;
+		this.joiningDate = joiningDate;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getCoure() {
+		return coure;
+	}
+
+	public void setCoure(String coure) {
+		this.coure = coure;
+	}
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
+	}
+
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student [firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, coure=&quot; + coure
+				+ &quot;, joiningDate=&quot; + joiningDate + &quot;]&quot;;
+	}
+
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">RestController1.java</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Rest Controller which returns the JSON
+</pre>
+<pre>
+package rest.controller;
+
+import java.time.LocalDate;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import rest.controller.model.Student;
+
+@RestController
+public class RestController1 {
+
+	@RequestMapping(value = &quot;/student&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Student student() {
+		Student student = new Student(&quot;jack&quot;, &quot;jill&quot;, &quot;CSE&quot;, LocalDate.now());
+		return student;
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.jsp</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+index.jsp, we are returning to jsp from MVCController
+</pre>
+<pre>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot;
+    pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+${message}
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MVC Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-springMvcRest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Rest Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/3-springMvcRest.jpg"/>
+</div></div>

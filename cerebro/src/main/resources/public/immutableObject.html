@@ -1,0 +1,106 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps to create Immutable object</div><div class="panel-body">
+<ul>
+<li>Instantiate object using constructor. Do not provide any setters that can change object values</li>
+<li>If class contains collections, return immutable collection on calling getter so that collection cannot be modified</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ImmutableModel.java</div><div class="panel-body">
+<pre><code>
+package core.java.immutable.model;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * 1. Instantiate object using constructor. Do not provide any setters that can change object values
+ * 2. If class contains collections, return immutable collection on calling getter so that collection cannot be modified
+ * @author Avinash Babu Donthu
+ *
+ */
+public class ImmutableModel {
+
+	private String name;
+	private Integer age;
+	private List&lt;String&gt; list;
+	private Set&lt;String&gt; set;
+	private Map&lt;Integer, String&gt; map;
+
+	public ImmutableModel(String name, Integer age, List&lt;String&gt; list, Set&lt;String&gt; set,
+			Map&lt;Integer, String&gt; map) {
+		this.name = name;
+		this.age = age;
+		this.list = list;
+		this.set = set;
+		this.map = map;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public List&lt;String&gt; getList() {
+		return Collections.unmodifiableList(list);
+	}
+
+	public Set&lt;String&gt; getSet() {
+		return Collections.unmodifiableSet(set);
+	}
+
+	public Map&lt;Integer, String&gt; getMap() {
+		return Collections.unmodifiableMap(map);
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ImmutablePractice.java</div><div class="panel-body">
+<pre><code>
+package core.java.immutable;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+import core.java.immutable.model.ImmutableModel;
+
+public class ImmutablePractice {
+
+	@Test
+	public void immutable() {
+		Map&lt;Integer, String&gt; map = new HashMap&lt;&gt;();
+		map.put(1, &quot;one&quot;);
+		ImmutableModel immutableModel = new ImmutableModel(&quot;testName&quot;, 23, Arrays.asList(&quot;1&quot;, &quot;2&quot;),
+				new HashSet&lt;&gt;(Arrays.asList(&quot;1&quot;, &quot;2&quot;)), map);
+		System.out.println(immutableModel);
+		List&lt;String&gt; list = immutableModel.getList();
+		list.add(&quot;3&quot;); // java.lang.UnsupportedOperationException
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<pre><code>
+core.java.immutable.model.ImmutableModel@246b179d
+java.lang.UnsupportedOperationException
+</code></pre>
+</div></div>

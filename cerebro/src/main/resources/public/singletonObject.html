@@ -1,0 +1,113 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps to create singleton object method1</div><div class="panel-body">
+<ul>
+<li>Method 1
+	<ul>
+		<li>Create static variable which is an instance of a class</li>
+ 		<li>Make constructor private, no need to make class final. Since constructor is private we cannot sub class it</li>
+ 		<li>Write static method which returns the instance of created as static variable</li>
+	</ul>
+</li>
+<li>Method 2:
+	<ul>
+		<li>Create an object inside getInstance() method inside synchronized block else that will fail in multi threaded environment</li>
+	</ul>
+</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">SingletonClass.java</div><div class="panel-body">
+<pre><code>
+package core.java.immutable.singleton.model;
+
+<em>/**
+ * 1. create static variable which is an instance of a class
+ * 2. make constructor private, no need to make class final. Since constructor is private we cannot sub class it
+ * 3. write static method which returns the instance of created as static variable
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+public class SingletonClass {
+
+	private static SingletonClass INSTANCE = new SingletonClass();
+
+	private SingletonClass() {
+
+	}
+
+	public static SingletonClass getInstnace() {
+		return INSTANCE;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">SingletonClass2.java</div><div class="panel-body">
+<pre><code>
+package core.java.immutable.singleton.model;
+
+public class SingletonClass2 {
+
+	private static SingletonClass2 INSTANCE = null;
+	private static Object lock = new Object();
+
+	private SingletonClass2() {
+	}
+
+	public static SingletonClass2 getInstance() {
+		synchronized (lock) {
+			if (null == INSTANCE)
+				INSTANCE = new SingletonClass2();
+		}
+		return INSTANCE;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">SingletonPractice.java</div><div class="panel-body">
+<pre><code>
+package core.java.immutable.singleton;
+
+import org.junit.Test;
+
+import core.java.immutable.singleton.model.SingletonClass;
+import core.java.immutable.singleton.model.SingletonClass2;
+
+public class SingletonPractice {
+
+	@Test
+	public void method1() {
+		SingletonClass obj1 = SingletonClass.getInstnace();
+		System.out.println(obj1);
+
+		SingletonClass obj2 = SingletonClass.getInstnace();
+		System.out.println(obj2);
+	}
+
+	@Test
+	public void method2() {
+		SingletonClass2 obj1 = SingletonClass2.getInstance();
+		System.out.println(obj1);
+
+		SingletonClass2 obj2 = SingletonClass2.getInstance();
+		System.out.println(obj2);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<pre><code>
+core.java.immutable.singleton.model.SingletonClass@246b179d
+core.java.immutable.singleton.model.SingletonClass@246b179d
+core.java.immutable.singleton.model.SingletonClass2@3d646c37
+core.java.immutable.singleton.model.SingletonClass2@3d646c37
+</code></pre>
+</div></div>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="cerebro">
+<head>
+<title>Cerebro</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="css/cerebro.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.js"></script>
+<script src="js/cerebro.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-101524048-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!-- TODO: Move to separate CSS file -->
+<style>
+body {margin:0;}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  /* position: fixed; */
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.main {
+  padding: 16px;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Top Navigation bar -->
+<!-- <div ng-include=" 'topNavigation.html'"></div> -->
+
+<!-- <div class="navbar">
+  <a ng-controller="cerebroController" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Cerebro</a>
+  <a href="#">News</a>
+  <a href="#">Contact</a>
+  
+</div> -->
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid" ng-controller="cerebroController">
+    <div class="navbar-header">
+      <a ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Cerebro</a>
+    </div>
+    <div class="navbar-header"><a href="#study">Study</a></div>
+    <div class="navbar-header"><a href="#definitions" ng-click="buildBreadCrumbs('Definitions', '#definitions')">Definitions</a></div>
+    
+    <form class="navbar-form navbar-right">
+      <div class="input-group" ng-controller="searchController">
+        <input type="text" class="form-control" placeholder="Search" ng-model="searchText" ng-keypress="checkIfEnterKeyWasPressed($event)">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="search()"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</nav>
+
+<!-- Body Content -->
+<div class="main">
+
+<!-- Search Box -->
+<!-- <div class="container-fluid" ng-controller="searchController">
+	<div class="row">
+    	<div class="col-xs-9 col-xs-offset-2">
+    		<div class="input-group">
+            	<div class="input-group-btn search-panel" ng-controller="cerebroController">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    	<span id="search_concept">All</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu scrollable-menu" role="menu">
+                      <li><a ng-href="#coreJava"  ng-click="buildBreadCrumbs('Core Java', '#coreJava')">Core Java</a></li>
+                      <li><a ng-href="#scala" ng-click="buildBreadCrumbs('Scala', '#scala')">Scala</a></li>
+                      <li><a ng-href="#spring" ng-click="buildBreadCrumbs('Spring', '#spring')">Spring</a></li>
+                      <li class="divider"></li>
+                      <li><a ng-href="#ant" ng-click="buildBreadCrumbs('Ant', '#ant')">Ant</a></li>
+                      <li><a ng-href="#maven" ng-click="buildBreadCrumbs('Maven', '#maven')">Maven</a></li>
+                      <li><a ng-href="#gradle" ng-click="buildBreadCrumbs('Gradle', '#gradle')">Gradle</a></li>
+                      <li class="divider"></li>
+                      <li><a href="">All</a></li>
+                      <li>
+                    </ul>
+                </div>
+                <input type="hidden" name="search_param" value="all" id="search_param">         
+                <input type="text" class="form-control" placeholder="Search" ng-model="searchText" ng-keypress="checkIfEnterKeyWasPressed($event)">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="search()"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+        	</div>
+    	</div>
+	</div>
+</div> 
+
+<hr /> -->
+
+<!-- Bread Crumbs -->
+<!-- <div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div> -->
+
+<!-- Page Content -->
+<div ng-view>
+<script type="text/javascript">
+$(this).scrollTop(0)
+</script>
+</div>
+
+</div>
+
+<a id="back-to-top" ng-click="scrollUp()" ng-controller="cerebroController" class="up btn btn-primary btn-lg" role="button" title="Click to return to top of the page">
+	<span  class="glyphicon glyphicon-chevron-up"></span>
+</a>
+
+</body></html>

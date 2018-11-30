@@ -1,0 +1,529 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(7)">Thread Life Cycle</a></li>
+	<li><a ng-click="navigate(1)">Creating threads - using Thread class, using Runnable class, using anonymous inner class, using lambda expressions</a></li>
+	<li><a ng-click="navigate(2)">Thread Name</a></li>
+	<li><a ng-click="navigate(3)">Thread Name Another Example</a></li>
+	<li><a ng-click="navigate(4)">Current Thread</a></li>
+	<li><a ng-click="navigate(5)">Methods in Thread class</a></li>
+	<li><a ng-click="navigate(6)">raceConditionCriticalSectionProblem</a></li>
+	
+	<li class="subGroupHeading">References</li>
+	<li><a href="http://tutorials.jenkov.com/java-concurrency/index.html" target="_blank">Concurrency and Multithreading</a></li>
+	<li><a href="http://tutorials.jenkov.com/java-util-concurrent/index.html" target="_blank">java.util.concurrent package - Java Concurrency Utilities</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Thread Life Cycle</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/threads/thread-life-cycle.jpg"/>
+</div></div>
+	
+<div class="panel panel-primary" id="1"><div class="panel-heading">Creating threads - using Thread class, using Runnable class, using anonymous inner class, using lambda expressions</div><div class="panel-body">
+<em>Thread1.java</em>
+<pre><code>
+package core.java.threads.model;
+
+public class Thread1 extends Thread {
+
+    @Override
+    public void run() {
+	for (int i = 0; i &lt; 10; i++) {
+	    System.out.println(&quot;Thread1 -&gt; run(): &quot; + i);
+	}
+    }
+}
+</code></pre>
+<em>Thread2.java</em>
+<pre><code>
+package core.java.threads.model;
+
+public class Thread2 implements Runnable {
+
+    @Override
+    public void run() {
+	for (int i = 10; i &lt; 20; i++) {
+	    System.out.println(&quot;Thread2 -&gt; run(): &quot; + i);
+	}
+    }
+
+}
+</code></pre>
+<em>Test Method:</em>
+<pre ><code>
+public void createThread() {
+	<em>// method 1 - create sub class of java.lang.Thread class and override run() method</em>
+	Thread thread = new Thread1();
+	thread.start();
+
+	<em>// method 2 - create class implementing java.lang.Runnable interface and implement run() method</em>
+	Thread thread2 = new Thread(new Thread2());
+	thread2.start();
+
+	<em>// method 3 - using anonymous inner class</em>
+	Thread thread3 = new Thread(new Runnable() {
+	    @Override
+	    public void run() {
+		for (int i = 20; i &lt; 30; i++) {
+		    System.out.println(&quot;Anonymous inner class: &quot; + i);
+		}
+	    }
+	});
+	thread3.start();
+
+	<em>// method 4 - from java 8 using Lambda expressions</em>
+	Thread thread4 = new Thread(() -&gt; {
+	    for (int i = 30; i &lt; 40; i++) {
+		System.out.println(&quot;Java 8 -&gt; Labmda expression: &quot; + i);
+	    }
+	});
+	thread4.start();
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+Thread1 -&gt; run(): 0
+Thread1 -&gt; run(): 1
+Thread1 -&gt; run(): 2
+Thread1 -&gt; run(): 3
+Thread1 -&gt; run(): 4
+Thread1 -&gt; run(): 5
+Thread1 -&gt; run(): 6
+Thread1 -&gt; run(): 7
+Thread1 -&gt; run(): 8
+Thread1 -&gt; run(): 9
+Thread2 -&gt; run(): 10
+Thread2 -&gt; run(): 11
+Thread2 -&gt; run(): 12
+Thread2 -&gt; run(): 13
+Thread2 -&gt; run(): 14
+Thread2 -&gt; run(): 15
+Thread2 -&gt; run(): 16
+Thread2 -&gt; run(): 17
+Thread2 -&gt; run(): 18
+Thread2 -&gt; run(): 19
+Anonymous inner class: 20
+Anonymous inner class: 21
+Anonymous inner class: 22
+Anonymous inner class: 23
+Anonymous inner class: 24
+Anonymous inner class: 25
+Anonymous inner class: 26
+Anonymous inner class: 27
+Anonymous inner class: 28
+Anonymous inner class: 29
+Java 8 -&gt; Labmda expression: 30
+Java 8 -&gt; Labmda expression: 31
+Java 8 -&gt; Labmda expression: 32
+Java 8 -&gt; Labmda expression: 33
+Java 8 -&gt; Labmda expression: 34
+Java 8 -&gt; Labmda expression: 35
+Java 8 -&gt; Labmda expression: 36
+Java 8 -&gt; Labmda expression: 37
+Java 8 -&gt; Labmda expression: 38
+Java 8 -&gt; Labmda expression: 39
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Thread Name</div><div class="panel-body">
+<em>Thread4.java</em>
+<pre ><code>
+package core.java.threads.model;
+
+public class Thread4 extends Thread {
+
+    public Thread4(String name) {
+	super(name);
+    }
+
+    @Override
+    public void run() {
+	System.out.println(&quot;Thread Name: &quot; + getName());
+    }
+}
+</code></pre>
+<em>Test Method:</em>
+<pre><code>
+public void threadName() {
+	Thread thread = new Thread4(&quot;My Thread&quot;);
+	thread.start();
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+Thread Name: My Thread
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Thread Name Another Example</div><div class="panel-body">
+<em>Thread4.java</em>
+<pre><code>
+package core.java.threads.model;
+
+public class Thread4 extends Thread {
+
+    public Thread4(String name) {
+	super(name);
+    }
+
+    @Override
+    public void run() {
+	System.out.println(&quot;Thread Name: &quot; + getName());
+    }
+}
+</code></pre>
+<em>Test Method:</em>
+<pre><code>
+public void threadName2() {
+	for (int i = 0; i &lt; 10; i++) {
+	    Thread thread = new Thread4(&quot;Thread&quot; + i);
+	    thread.start();
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+Thread Name: Thread0
+Thread Name: Thread2
+Thread Name: Thread1
+Thread Name: Thread3
+Thread Name: Thread5
+Thread Name: Thread4
+Thread Name: Thread6
+Thread Name: Thread7
+Thread Name: Thread8
+Thread Name: Thread9
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Current Thread</div><div class="panel-body">
+Discription:
+<pre>
+Getting currently executing thread info
+</pre>
+<em>Thread5.java</em>
+<pre><code>
+package core.java.threads.model;
+
+public class Thread5 extends Thread {
+
+    public Thread5(String name) {
+	super(name);
+    }
+
+    @Override
+    public void run() {
+	<em>// currentThread() method is present in Thread class this method will not be available if we implement Runnable interface</em>
+	Thread currentThread = currentThread();
+	System.out.println(&quot;Current Thread: &quot; + currentThread + &quot;, Thread Name: &quot; + currentThread.getName());
+    }
+
+}
+</code></pre>
+<em>Test Method1:</em>
+<pre><code>
+public void currentThread() {
+ Thread thread = new Thread5("My Thread5");
+ thread.start();
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Current Thread: Thread[My Thread5,5,main], Thread Name: My Thread5
+</code></pre>
+<em>Test Method2:</em>
+<pre><code>
+public void currentThread2() {
+	for (int i = 0; i &lt; 10; i++) {
+	    Thread thread = new Thread5(&quot;Thread&quot; + i);
+	    thread.start();
+ }
+}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+Current Thread: Thread[Thread1,5,main], Thread Name: Thread1
+Current Thread: Thread[Thread0,5,main], Thread Name: Thread0
+Current Thread: Thread[Thread2,5,main], Thread Name: Thread2
+Current Thread: Thread[Thread4,5,main], Thread Name: Thread4
+Current Thread: Thread[Thread5,5,main], Thread Name: Thread5
+Current Thread: Thread[Thread6,5,main], Thread Name: Thread6
+Current Thread: Thread[Thread7,5,main], Thread Name: Thread7
+Current Thread: Thread[Thread8,5,main], Thread Name: Thread8
+Current Thread: Thread[Thread9,5,main], Thread Name: Thread9
+Current Thread: Thread[Thread3,5,main], Thread Name: Thread3
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Methods in Thread class</div><div class="panel-body">
+<em>Description:</em>
+<pre>
+Different methods in java.lang.Thread class
+</pre>
+<em>Thread6.java</em>
+<pre><code>
+package core.java.threads.model;
+
+public class Thread6 extends Thread {
+
+    public Thread6(String name) {
+	super(name);
+    }
+
+    @Override
+    public void run() {
+	Thread currentThread = currentThread();
+	System.out.println(&quot;Thread6 -&gt; run() -&gt; start&quot;);
+	System.out.println(&quot;Current Thread: &quot; + currentThread);
+	System.out.println(&quot;currentThread.getId() :&quot; + currentThread.getId());
+	System.out.println(&quot;currentThread.getName(): &quot; + currentThread.getName());
+	System.out.println(&quot;currentThread.getPriority(): &quot; + currentThread.getPriority());
+	System.out.println(&quot;currentThread.isAlive(): &quot; + currentThread.isAlive());
+	System.out.println(&quot;currentThread.isDaemon(): &quot; + currentThread.isDaemon());
+	System.out.println(&quot;currentThread.isInterrupted(): &quot; + currentThread.isInterrupted());
+	System.out.println(&quot;currentThread.getStackTrace(): &quot; + currentThread.getStackTrace());
+
+	State state = currentThread.getState();
+	System.out.println(&quot;currentThread.getState(): &quot; + state);
+
+	ThreadGroup threadGroup = currentThread.getThreadGroup();
+	System.out.println(&quot;currentThread.getThreadGroup(): &quot; + threadGroup);
+	System.out.println(&quot;currentThread.getThreadGroup().getName(): &quot; + threadGroup.getName());
+	System.out.println(&quot;currentThread.getThreadGroup().getMaxPriority(): &quot; + threadGroup.getMaxPriority());
+	System.out.println(&quot;currentThread.getThreadGroup().getParent(): &quot; + threadGroup.getParent());
+
+	System.out.println(&quot;currentThread.getUncaughtExceptionHandler(): &quot; + currentThread.getUncaughtExceptionHandler());
+	System.out.println(&quot;Thread6 -&gt; run() -&gt; end&quot;);
+    }
+}
+</code></pre>
+<em>Test Method:</em>
+<pre><code>
+public void threadClassMethods() {
+	Thread thread = new Thread6("My Thread6");
+	//	thread.setDaemon(true);
+	thread.start();
+    }
+</code></pre>
+<em>Output:</em>
+<pre><code>
+Thread6 -&gt; run() -&gt; start
+Current Thread: Thread[My Thread6,5,main]
+currentThread.getId() :11
+currentThread.getName(): My Thread6
+currentThread.getPriority(): 5
+currentThread.isAlive(): true
+currentThread.isDaemon(): false
+currentThread.isInterrupted(): false
+currentThread.getStackTrace(): [Ljava.lang.StackTraceElement;@7b5e81e1
+currentThread.getState(): RUNNABLE
+currentThread.getThreadGroup(): java.lang.ThreadGroup[name=main,maxpri=10]
+currentThread.getThreadGroup().getName(): main
+currentThread.getThreadGroup().getMaxPriority(): 10
+currentThread.getThreadGroup().getParent(): java.lang.ThreadGroup[name=system,maxpri=10]
+currentThread.getUncaughtExceptionHandler(): java.lang.ThreadGroup[name=main,maxpri=10]
+Thread6 -&gt; run() -&gt; end
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">raceConditionCriticalSectionProblem</div><div class="panel-body">
+<em>Description:</em>
+<pre>
+What is Race Conditions and Critical Sections? A race condition is a special condition that may occur inside a critical section.
+A critical section is a section of code that is executed by multiple threads and where the sequence of execution for the threads makes a 
+difference in the result of the concurrent execution of the critical section.
+When the result of multiple threads executing a critical section may differ depending on the sequence in which the threads execute, 
+the critical section is said to contain a race condition.
+The term race condition stems from the metaphor that the threads are racing through the critical section, and that the result of that race 
+impacts the result of executing the critical section.
+Synchronized testing
+1. Counter class has 2 variables - count1, count2
+2. count1 will be incremented using non-synchronized method
+3 count2 will be incremented using synchronized method
+<a href="http://tutorials.jenkov.com/java-concurrency/race-conditions-and-critical-sections.html" target="_blank">Reference</a>
+</pre>
+<em>Thread3.java</em>
+<pre><code>
+package core.java.threads.model;
+
+<em>/**
+ * Thread for non static synchronized practice
+ * @author Avinash Babu Donthu
+ */</em>
+public class Thread3 implements Runnable {
+
+    private Counter counter;
+
+    public Thread3(Counter counter) {
+	this.counter = counter;
+    }
+
+    @Override
+    public void run() {
+	for (int i = 0; i &lt; 10000; i++) {
+	    counter.increment1();
+	}
+
+	for (int i = 0; i &lt; 10000; i++) {
+	    counter.increment2();
+	}
+    }
+
+}
+</code></pre>
+<em>Counter.java</em>
+<pre><code>
+package core.java.threads.model;
+
+<em>/**
+ * Class to practice synchronized (race conditions and critical sections)
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+public class Counter {
+
+    private int count1 = 0;
+    private int count2 = 0;
+    private static int count3 = 0;
+    private static int count4 = 0;
+    private int count5 = 0;
+    private int count6 = 0;
+    private volatile int count7 = 0;
+
+   <em> /**
+     * non-synchronized non static increment method
+     */</em>
+    public void increment1() {
+	count1++;
+    }
+
+   <em> /**
+     * synchronized non static increment method
+     */</em>
+    public synchronized void increment2() {
+	count2++;
+    }
+
+  <em>  /**
+     * non synchronized static increment method
+     */</em>
+    public static void increment3() {
+	count3++;
+    }
+
+   <em> /**
+     * synchronized static increment method
+     */</em>
+    public static synchronized void increment4() {
+	count4++;
+    }
+
+    <em>/**
+     * increment without synchronized block
+     */</em>
+    public void increment5() {
+	count5++;
+    }
+
+   <em> /**
+     * increment with synchronized block
+     */</em>
+    public void increment6() {
+	synchronized (this) {
+	    count6++;
+	}
+    }
+
+    public void increment7() {
+	count7++;
+    }
+
+    <em>/**
+     * get count1 value
+     * @return
+     */</em>
+    public int getCount1() {
+	return count1;
+    }
+
+   <em> /**
+     * get count2 value
+     * @return
+     */</em>
+    public int getCount2() {
+	return count2;
+    }
+
+  <em>  /**
+     * get count3 value
+     * @return
+     */</em>
+    public static int getCount3() {
+	return count3;
+    }
+
+  <em>  /**
+     * get count4 value
+     */</em>
+    public static int getCount4() {
+	return count4;
+    }
+
+  <em>  /**
+     * get count5
+     * @return
+     */</em>
+    public int getCount5() {
+	return count5;
+    }
+
+   <em> /**
+     * get count6
+     * @return
+     */</em>
+    public int getCount6() {
+	return count6;
+    }
+
+    public int getCount7() {
+	return count7;
+    }
+
+}
+</code></pre>
+<em>Test Method:</em>
+<pre><code>
+public void raceConditionCriticalSectionProblem() throws InterruptedException {
+	Counter counter = new Counter();
+
+	Thread thread1 = new Thread(new Thread3(counter));
+	Thread thread2 = new Thread(new Thread3(counter));
+	Thread thread3 = new Thread(new Thread3(counter));
+
+	thread1.start();
+	thread2.start();
+	thread3.start();
+
+	thread1.join();
+	thread2.join();
+	thread3.join();
+
+	System.out.println(counter.getCount1());
+	System.out.println(counter.getCount2());
+    }
+</code></pre>
+<em>Output:</em>
+<pre><code>
+26503
+30000
+</code></pre>
+</div></div>
+
+</div>

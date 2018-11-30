@@ -1,0 +1,54 @@
+<div class="page-header">
+    <h3>Scala Hello World with sbt</h3>      
+</div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Install Scala</div><div class="panel-body">
+<ul>
+	<li>Go to the location where we want to create a project in command prompt</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/1-scala-hello-world.jpg" /></code></pre></li>
+	<li>Create ScalaHelloWorld directory and go inside that directory</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/2-scala-hello-world.jpg" /></code></pre></li>
+	<li>Create HelloWorld.scala file</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/3-scala-hello-world.jpg" /></code></pre></li>
+	<li>open sbt prompt</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/4-scala-hello-world.jpg" /></code></pre></li>
+	<li>type console in sbt prompt. This will compile .scala files present in ScalaHelloWorld directory. Create HelloWorld object and execute sayHello() method</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/5-scala-hello-world.jpg" /></code></pre></li>
+	<li>Now make this project compatible to import into eclipse</li>
+	<li>Come out of scala - run - :quit</li>
+	<li>Come out of sbt - run - exit</li>
+	<li>Create build.sbt</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/6-scala-hello-world.jpg" /></code></pre></li>
+	<li>Enter following content. Give one empty line between each lines</li>
+	<li class="noBullet">
+	<pre><code>
+name := "Scala Hello World"
+		
+version := "0.1"
+		
+scalaVersion := "2.12.1"
+	</code></pre>
+	</li>
+	<li>Create project directory and create build.properties file in project directory</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/7-scala-hello-world.jpg" /></code></pre></li>
+	<li>Enter following content:</li>
+	<li class="noBullet">
+		<pre><code>
+sbt.version = 0.13.13
+		</code></pre>
+	</li>
+	<li>Create plugins.sbt in project directory</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/8-scala-hello-world.jpg" /></code></pre></li>
+	<li>Enter following content:</li>
+	<li class="noBullet">
+		<pre><code>
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.4.0")
+		</code></pre>
+	</li>
+	<li>run sbt eclipse in cmd</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/9-scala-hello-world.jpg" /></code></pre></li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/10-scala-hello-world.jpg" /></code></pre></li>
+	<li>Import this project to Scala Eclipse IDE</li>
+	<li class="noBullet"><pre><code><img class="img-responsive" ng-src="images/scala/11-scala-hello-world.jpg" /></code></pre></li>
+</ul>
+</div></div>

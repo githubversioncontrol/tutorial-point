@@ -1,0 +1,292 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create Spring REST application. Refer <a ng-href="#springRestGet" ng-click="buildBreadCrumbs('Spring REST Get', '#springRestGet')" target="_blank">Spring REST GET</a></li>
+	<li>Add log4j dependency. log4j:log4j:1.2.17</li>
+	<li>Add log4j.properties in src/main/resources folder</li>
+	<li>Create org.apache.log4j.Logger object in controller/service/rest and log messages</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create web project using Maven from cmd</div><div class="panel-body">
+<pre>
+mvn archetype:generate -DgroupId=spring.rest.log4j -DartifactId=SpringRestLog4J -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springRestLog4J.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.rest.log4j&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringRestLog4J&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringRestLog4J Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;spring.version&gt;4.3.8.RELEASE&lt;/spring.version&gt;
+		&lt;log4j.version&gt;1.2.17&lt;/log4j.version&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax&lt;/groupId&gt;
+			&lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+			&lt;version&gt;7.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- Spring Web --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- jackson dependencies --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-mapper-asl&lt;/artifactId&gt;
+			&lt;version&gt;1.9.13&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+			&lt;version&gt;2.5.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- log4j dependencies --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;log4j&lt;/groupId&gt;
+			&lt;artifactId&gt;log4j&lt;/artifactId&gt;
+			&lt;version&gt;${log4j.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre><code>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+    	version=&quot;3.0&quot;&gt;
+  &lt;display-name&gt;Spring Rest Log$J&lt;/display-name&gt;
+  
+  &lt;servlet&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">springREST-servlet.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+	xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+&lt;context:component-scan base-package=&quot;com.spring.rest&quot;/&gt;
+&lt;mvc:annotation-driven/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">log4j.properties</div><div class="panel-body">
+<pre><code>
+## Root Logger
+log4j.rootLogger=INFO, stdout, file
+
+## Redirect log messages to console
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
+
+## Redirect log message to a log file
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=E:/Backup/JavaPrep/practiceProjects/Spring/SpringRESTProjects/SpringRestLog4J/src/main/resources/log/myapp.log
+log4j.appender.file.MaxFileSize=5MB
+log4j.appender.file.MaxBackupIndex=10
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<pre><code>
+package com.spring.rest.log4j.model;
+
+import java.time.LocalDate;
+
+public class Student {
+
+	private String name;
+	private String course;
+	private LocalDate courseStartDate;
+	private Double grade;
+
+	public Student() {
+	}
+
+	public Student(String name, String course, LocalDate courseStartDate, Double grade) {
+		this.name = name;
+		this.course = course;
+		this.courseStartDate = courseStartDate;
+		this.grade = grade;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public LocalDate getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	public void setCourseStartDate(LocalDate courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+
+	public Double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student(name=&quot; + name + &quot;, course=&quot; + course + &quot;, courseStartDate=&quot; + courseStartDate
+				+ &quot;, grade=&quot; + grade + &quot;)&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">GetController.java</div><div class="panel-body">
+<pre><code>
+package com.spring.rest.log4j.controller;
+
+import java.time.Clock;
+import java.time.LocalDate;
+
+import org.apache.log4j.Logger;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.rest.log4j.model.Student;
+
+@RestController
+public class GetController {
+
+	private static final Logger LOGGER = Logger.getLogger(GetController.class);
+
+	@RequestMapping(value = &quot;/student&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Student getStudent() {
+		LOGGER.info(&quot;------ GetController.getStudent() ----------- &quot;);
+		return new Student(&quot;Jack&quot;, &quot;Java&quot;, LocalDate.now(Clock.systemDefaultZone()), 9.2D);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">myapp.log</div><div class="panel-body">
+<pre><code>
+2017-08-15 17:27:18 INFO  DispatcherServlet:489 - FrameworkServlet 'springREST': initialization started
+2017-08-15 17:27:18 INFO  XmlWebApplicationContext:582 - Refreshing WebApplicationContext for namespace 'springREST-servlet': startup date [Tue Aug 15 17:27:18 IST 2017]; root of context hierarchy
+2017-08-15 17:27:18 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from ServletContext resource [/WEB-INF/springREST-servlet.xml]
+2017-08-15 17:27:21 INFO  AutowiredAnnotationBeanPostProcessor:155 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2017-08-15 17:27:21 INFO  RequestMappingHandlerMapping:543 - Mapped &quot;{[/hello],methods=[GET],produces=[text/plain]}&quot; onto public java.lang.String com.spring.rest.log4j.controller.GetController.hello()
+2017-08-15 17:27:22 INFO  RequestMappingHandlerMapping:543 - Mapped &quot;{[/student],methods=[GET],produces=[application/json]}&quot; onto public com.spring.rest.log4j.model.Student com.spring.rest.log4j.controller.GetController.getStudent()
+2017-08-15 17:27:23 INFO  RequestMappingHandlerAdapter:534 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'springREST-servlet': startup date [Tue Aug 15 17:27:18 IST 2017]; root of context hierarchy
+2017-08-15 17:27:23 INFO  RequestMappingHandlerAdapter:534 - Looking for @ControllerAdvice: WebApplicationContext for namespace 'springREST-servlet': startup date [Tue Aug 15 17:27:18 IST 2017]; root of context hierarchy
+2017-08-15 17:27:23 INFO  DispatcherServlet:508 - FrameworkServlet 'springREST': initialization completed in 5746 ms
+2017-08-15 17:27:23 INFO  GetController:26 - ------ GetController.getStudent() ----------- 
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRestLog4J/student</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-springRestLog4J.jpg"/>
+</div></div>

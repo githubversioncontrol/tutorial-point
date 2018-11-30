@@ -1,0 +1,228 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Play Nine Game With React</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Below example is done in <a href="https://jscomplete.com/repl/" target="_blank">jscomplete</a>
+</pre>
+<pre>
+const Stars = (props) =&gt; {
+	return(
+  	&lt;div className=&quot;col-5&quot;&gt;
+		{_.range(props.noOfStars).map(i =&gt; &lt;i key={i} className=&quot;fa fa-star&quot;&gt;&lt;/i&gt;)}
+    &lt;/div&gt;
+  );
+}
+
+const Button = (props) =&gt; {
+	let button;
+  switch(props.answerIsCorrect){
+  	case true:
+    	button =	&lt;button className=&quot;btn btn-success&quot; onClick={props.acceptAnswer}&gt;
+        	&lt;i className=&quot;fa fa-check&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+      break;
+    case false:
+    	button = &lt;button className=&quot;btn btn-danger&quot; onClick={props.checkAnswer}&gt;
+        	&lt;i className=&quot;fa fa-times&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+    	break;
+    default:
+    	button = &lt;button className=&quot;btn&quot; type=&quot;button&quot; 
+      	disabled={props.selectedNumbers.length === 0}
+        onClick={props.checkAnswer}
+      &gt;=&lt;/button&gt;
+    	break;
+  }
+	return(
+  	&lt;div className=&quot;col-2&quot;&gt;
+      {button}
+      &lt;br /&gt;&lt;br /&gt;
+	    &lt;button className=&quot;btn btn-warning&quot; 
+       	onClick={props.redraw}
+        disabled={props.redraws === 0}&gt;
+        &lt;i className=&quot;fa fa-refresh&quot;&gt;&lt;/i&gt; {props.redraws}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+const Numbers = (props) =&gt; {
+	const selectedNumberClassName = (number) =&gt; {
+  	if(props.selectedNumbers.indexOf(number) &gt;= 0){
+    	return &quot;selected&quot;;
+    }
+    if(props.usedNumbers.indexOf(number) &gt;= 0){
+    	return &quot;used&quot;;
+    }
+  }
+
+	return(
+  	&lt;div className=&quot;card text-center&quot;&gt;
+    	&lt;div&gt;
+      	{Numbers.arrayOfNumbers.map((number, i) =&gt; 
+        	&lt;span key={i} className={selectedNumberClassName(number)}
+          	onClick={() =&gt; props.selectNumber(number)}&gt;{number}&lt;/span&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// _ comes from lodash library
+Numbers.arrayOfNumbers = _.range(1, 10);
+
+const Answer = (props) =&gt; {
+	return(
+  	&lt;div className=&quot;col-5&quot;&gt;
+    	{props.selectedNumbers.map((number, i) =&gt; 
+      		&lt;span key={i} onClick={() =&gt; props.unselectNumber(number)}&gt;
+          	{number}
+          &lt;/span&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+const DoneFrame = (props) =&gt; {
+	return(
+  	&lt;div className=&quot;text-center&quot;&gt;
+    	&lt;h3&gt;{props.doneStatus}&lt;/h3&gt;
+      &lt;button className=&quot;btn btn-secondary&quot;
+      	onClick={props.resetGame}&gt;
+      	Play Again
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+class Game extends React.Component{
+	static generateRandomNumber = () =&gt; {return 1+ Math.floor(Math.random() * 9);}
+  static initialState = () =&gt; ({
+  	selectedNumbers: [],
+    noOfStars: Game.generateRandomNumber(),
+    answerIsCorrect: null,
+    usedNumbers: [],
+    redraws: 5,
+    doneStatus: null
+  });
+	state = Game.initialState();
+  
+  selectNumber = (clickedNumber) =&gt; {
+  	if(this.state.selectedNumbers.indexOf(clickedNumber) &gt;= 0){
+    	return;
+    }
+    this.setState( prevState =&gt; ({
+    		answerIsCorrect: null,
+    		selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+    }));
+  }
+  
+  unselectNumber = (clickedNumber) =&gt; {
+  	this.setState( prevState =&gt; ({
+    	answerIsCorrect: null,
+    	selectedNumbers: prevState.selectedNumbers.filter(number =&gt; number !== clickedNumber)	
+    }));
+  }
+  
+  acceptAnswer = () =&gt; {
+  	this.setState(prevState =&gt; ({
+    	usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+      selectedNumbers: [],
+      answerIsCorrect: null,
+      noOfStars: Game.generateRandomNumber()
+    }));
+  }
+  
+  checkAnswer = () =&gt; {
+   this.setState(prevState =&gt; ({
+    	answerIsCorrect: prevState.noOfStars === 
+      	prevState.selectedNumbers.reduce((acc, n) =&gt; acc + n, 0)
+    }));
+  }
+  
+  redraw = () =&gt; {
+    if(this.state.redraws === 0) { return; }
+  	this.setState(prevState =&gt; ({
+    	selectedNumbers: [],
+    	noOfStars: Game.generateRandomNumber(),
+    	answerIsCorrect: null,
+      redraws: prevState.redraws - 1
+    }), this.updateDoneStatus); // call updateDoneStatus() function after setState
+  }
+  
+  updateDoneStatus = () =&gt; {
+  	this.setState(prevState =&gt; {
+      if(prevState.usedNumbers.length === 9){
+      	return {doneStatus: &quot;Done&quot;};
+      }
+      if(prevState.redraws === 0){
+      	return {doneStatus: &quot;Game Over&quot;};
+      }
+    });
+  }
+  
+  resetGame = () =&gt; this.setState(Game.initialState());
+  
+	render(){
+  	const {
+    	selectedNumbers, 
+      noOfStars, 
+      answerIsCorrect,
+      usedNumbers,
+      redraws,
+      doneStatus
+    } = this.state;
+    
+  	return(
+    	&lt;div className=&quot;container&quot;&gt;
+      	&lt;h3&gt;Play Nine&lt;/h3&gt;
+        &lt;hr /&gt;
+        &lt;div className=&quot;row&quot;&gt;
+        	&lt;Stars noOfStars={noOfStars}/&gt;
+        	&lt;Button selectedNumbers={selectedNumbers} 
+          	checkAnswer={this.checkAnswer}
+            answerIsCorrect={answerIsCorrect}
+            acceptAnswer={this.acceptAnswer}
+            redraw={this.redraw}
+            redraws={redraws}/&gt;
+       		&lt;Answer selectedNumbers={selectedNumbers} 
+          	unselectNumber={this.unselectNumber}/&gt;
+        &lt;/div&gt;
+        &lt;hr /&gt;
+        {doneStatus ? 
+        	&lt;DoneFrame doneStatus={doneStatus} resetGame={this.resetGame}/&gt; : 
+          &lt;Numbers selectedNumbers={selectedNumbers} 
+        	selectNumber={this.selectNumber} usedNumbers={usedNumbers}/&gt;
+        }        
+      &lt;/div&gt;
+    );
+  }
+}
+
+class App extends React.Component{
+	render(){
+  	return(
+    	&lt;div&gt;
+      	&lt;Game /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(&lt;App /&gt;, mountNode);
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactPlayNineGame.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactPlayNineGame.jpg"/>
+</div></div>

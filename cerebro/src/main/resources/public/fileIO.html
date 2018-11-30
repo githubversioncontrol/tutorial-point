@@ -1,0 +1,632 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Method to iterate list of files in directories and sub directories</a></li>
+	<li><a ng-click="navigate(2)">Prepare java.io.File object using string path</a></li>
+	<li><a ng-click="navigate(3)">Read file using relative path</a></li>
+	<li><a ng-click="navigate(4)">Read file with relative path from static method</a></li>
+	<li><a ng-click="navigate(5)">convert file to java.io.InputStream</a></li>
+	<li><a ng-click="navigate(6)">Read contents of the file</a></li>
+	<li><a ng-click="navigate(7)">Delete file</a></li>
+	<li><a ng-click="navigate(8)">Copy file</a></li>
+	<li><a ng-click="navigate(9)">Create file</a></li>
+	<li><a ng-click="navigate(10)">Reading Zip file</a></li>
+	<li><a ng-click="navigate(11)">Create Zip file with single file</a></li>
+	<li><a ng-click="navigate(12)">Create zip file with files present in a folder</a></li>
+	<li><a ng-click="navigate(13)">Method to get current project directory</a></li>
+	<li><a ng-click="navigate(14)">Print file with line numbers</a></li>
+	
+	<li class="subGroupHeading">References</li>
+	<li><a ng-href="http://tutorials.jenkov.com/java-io/index.html" target="_blank">Jenkov</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Method to iterate list of files in directories and sub directories</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+
+public class FileIOPractice {
+
+    public static void main(String[] args) {
+	FileIOPractice fileUtil = new FileIOPractice();
+	fileUtil.listFilesAndDirectories(new File(&quot;E:/Backup/JavaPrep/practiceProjects/images&quot;));
+    }
+
+    public void listFilesAndDirectories(File directory) {
+	File[] listOfFiles = directory.listFiles();
+	for (File file : listOfFiles) {
+	    if (file.isDirectory())
+		listFilesAndDirectories(file);
+	    System.out.println(file.getPath() + &quot;\\&quot; + file.getName());
+	}
+    }
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+E:\Backup\JavaPrep\practiceProjects\images\Definitions\m_Definitions_Servers.xlsx\m_Definitions_Servers.xlsx
+E:\Backup\JavaPrep\practiceProjects\images\Definitions\Definitions
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\1_components_of_logging_api.jpg\1_components_of_logging_api.jpg
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\2_Logging Messages - Methods.docx\2_Logging Messages - Methods.docx
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\3_Handlers_and_Formatters.docx\3_Handlers_and_Formatters.docx
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\4_java_logging_configuration.docx\4_java_logging_configuration.docx
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\5_LogManager.docx\5_LogManager.docx
+E:\Backup\JavaPrep\practiceProjects\images\d_logging_java_util_logging\d_logging_java_util_logging
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Prepare java.io.File object using string path</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+
+public void stringToFileObject() {
+	String filePath1 = &quot;file1.txt&quot;;
+	File file1 = new File(filePath1);
+	System.out.println(&quot;file1: &quot; + file1);
+
+	String filePath2 = &quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1.txt&quot;;
+	File file2 = new File(filePath2);
+	System.out.println(&quot;file2: &quot; + file2);
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+file1: file1.txt
+file2: E:\Backup\JavaPrep\practiceProjects\CoreJavaPractice\src\main\resources\file1.txt
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Read file using relative path</div><div class="panel-body">
+<pre ><code>
+import java.net.URL;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public void readFileWithRelativePath() throws IOException {
+	URL url = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File file = new File(url.getPath());
+	System.out.println(&quot;readFileWithRelativePath() -&gt; file.getAbsolutePath(): &quot; + file.getAbsolutePath());
+
+	System.out.println(&quot;-----------------method 1 - reading content--------------------------&quot;);
+	try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+
+	System.out.println(&quot;-----------------method 2 - reading content--------------------------&quot;);
+	try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(&quot;file1.txt&quot;);
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+readFileWithRelativePath() -> file.getAbsolutePath(): E:\Backup\JavaPrep\practiceProjects\CoreJavaPractice\target\classes\file1.txt
+-----------------method 1 - reading content--------------------------
+Welcome to file1.txt
+Core Java Practice
+-----------------method 2 - reading content--------------------------
+Welcome to file1.txt
+Core Java Practice
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Read file with relative path from static method</div><div class="panel-body">
+<pre><code>
+public static void main(String[] args) {
+
+	try {
+	    readFileWithRelativePathFromStaticMethod();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+</code></pre>
+<pre ><code>
+import java.net.URL;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public static void readFileWithRelativePathFromStaticMethod() throws FileNotFoundException, IOException {
+
+	URL url = FileIOPractice.class.getClassLoader().getResource(&quot;file1.txt&quot;);
+	File file = new File(url.getPath());
+	System.out.println(&quot;readFileWithRelativePathFromStaticMethod() -&gt; file.getAbsolutePath(): &quot; + file.getAbsolutePath());
+
+	System.out.println(&quot;-----------------method 1 - reading content--------------------------&quot;);
+	try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+
+	System.out.println(&quot;-----------------method 2 - reading content--------------------------&quot;);
+	try (InputStream inputStream = FileIOPractice.class.getClassLoader().getResourceAsStream(&quot;file1.txt&quot;);
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+readFileWithRelativePathFromStaticMethod() -> file.getAbsolutePath(): E:\Backup\JavaPrep\practiceProjects\CoreJavaPractice\target\classes\file1.txt
+-----------------method 1 - reading content--------------------------
+Welcome to file1.txt
+Core Java Practice
+-----------------method 2 - reading content--------------------------
+Welcome to file1.txt
+Core Java Practice
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">convert file to java.io.InputStream</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+public void convertFileToInputstream() throws IOException {
+	String filePath1 = &quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1.txt&quot;;
+	File file = new File(filePath1);
+	InputStream inputStream1 = new FileInputStream(file);
+	System.out.println(&quot;inputStream1: &quot; + inputStream1 + &quot;, number of bytes:&quot; + inputStream1.available());
+	inputStream1.close();
+
+	InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream(&quot;file1.txt&quot;);
+	System.out.println(&quot;inputStream2: &quot; + inputStream2 + &quot;, number of bytes:&quot; + inputStream2.available());
+	inputStream2.close();
+
+	// from java 7 
+	try (InputStream inputStream3 = getClass().getClassLoader().getResourceAsStream(&quot;file1.txt&quot;)) {
+	    System.out.println(&quot;inputStream3: &quot; + inputStream3 + &quot;, number of bytes:&quot; + inputStream3.available());
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+inputStream1: java.io.FileInputStream@377dca04, number of bytes:40
+inputStream2: java.io.BufferedInputStream@728938a9, number of bytes:40
+inputStream3: java.io.BufferedInputStream@21b8d17c, number of bytes:40
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Read contents of the file</div><div class="panel-body">
+<pre ><code>
+import java.net.URL;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+public void readContentsOfFile() throws FileNotFoundException, IOException {
+	System.out.println(&quot;-------------method 1 using java.io.BufferedReader with relative path--------------------------&quot;);
+	URL url = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File file = new File(url.getPath());
+	System.out.println(&quot;readContentsOfFile() -&gt; file.getAbsolutePath(): &quot; + file.getAbsolutePath());
+	try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+
+	System.out.println(&quot;----------------method 2 java.io.BufferedReader with absolute path-----------------------&quot;);
+	try (BufferedReader bufferedReader = new BufferedReader(new FileReader(
+		&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1.txt&quot;))) {
+	    String line = &quot;&quot;;
+	    while ((line = bufferedReader.readLine()) != null) {
+		System.out.println(line);
+	    }
+	}
+
+	System.out.println(&quot;-----------------method 3 read file using java.util.Scanner----------------------&quot;);
+	URL url2 = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File file2 = new File(url2.getPath());
+	System.out.println(&quot;readContentsOfFile() -&gt; file2.getAbsolutePath(): &quot; + file2.getAbsolutePath());
+	try (Scanner scanner = new Scanner(file)) {
+	    while (scanner.hasNextLine()) {
+		System.out.println(scanner.nextLine());
+	    }
+	}
+
+	System.out.println(&quot;----------method 4 - read file using java.io.InputStream --------------&quot;);
+	File file3 = new File(getClass().getClassLoader().getResource(&quot;file1.txt&quot;).getPath());
+	try (InputStream inputStream = new FileInputStream(file3);
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));) {
+	    StringBuffer stringBuffer = new StringBuffer();
+	    String line;
+	    while ((line = bufferedReader.readLine()) != null) {
+		stringBuffer.append(line).append(&quot;\n&quot;);
+	    }
+	    System.out.println(&quot;stringBuffer: &quot; + stringBuffer);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	
+	System.out.println(&quot;---------- method 5 using JDK 8 Collection streams ------------&quot;);
+	final Path path = new File(getClass().getClassLoader().getResource(&quot;file1.txt&quot;).getPath()).toPath();
+	try (Stream&lt;String&gt; lines = Files.lines(path, StandardCharsets.UTF_8)) {
+		lines.onClose(() -&gt; System.out.println(&quot;Done&quot;)).forEach(System.out::println);
+	}
+}
+</code></pre>
+<em>Output</em>
+<pre>
+-------------method 1 using java.io.BufferedReader with relative path--------------------------
+readContentsOfFile() -&gt; file.getAbsolutePath(): E:\Backup\JavaPrep\practiceProjects\CoreJavaPractice\target\classes\file1.txt
+Welcome to file1.txt
+Core Java Practice
+----------------method 2 java.io.BufferedReader with absolute path-----------------------
+Welcome to file1.txt
+Core Java Practice
+-----------------method 3 read file using java.util.Scanner----------------------
+readContentsOfFile() -&gt; file2.getAbsolutePath(): E:\Backup\JavaPrep\practiceProjects\CoreJavaPractice\target\classes\file1.txt
+Welcome to file1.txt
+Core Java Practice
+----------method 4 - read file using java.io.InputStream --------------
+stringBuffer: Welcome to file1.txt
+Core Java Practice
+
+---------- method 5 using JDK 8 Collection streams ------------
+Welcome to file1.txt
+Core Java Practice
+Done
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">Delete file</div><div class="panel-body">
+<pre ><code>
+import java.net.URL;
+import java.io.File;
+
+public void deleteFile() {
+	URL url = getClass().getClassLoader().getResource(&quot;file2.txt&quot;);
+	File file = new File(url.getPath());
+	File parentDirectory = new File(file.getParent());
+
+	// before file delete
+	System.out.println(&quot;--- before delete-----&quot;);
+	String[] filesList = parentDirectory.list();
+	for (String fileName : filesList) {
+	    System.out.println(&quot;fileName: &quot; + fileName);
+	}
+
+	file.delete();
+
+	//after file delete
+	System.out.println(&quot;--- after delete-----&quot;);
+	filesList = parentDirectory.list();
+	for (String fileName : filesList) {
+	    System.out.println(&quot;fileName: &quot; + fileName);
+	}
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">Copy file</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
+
+public void copyFile() throws IOException {
+	// method 1
+	System.out.println(&quot;------ using java.io.InputStream ------------&quot;);
+	File outputFile = new File(&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1-copy1.txt&quot;);
+	byte[] buffer = new byte[1024];
+	int length = 0;
+
+	try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(&quot;file1.txt&quot;);
+		OutputStream outputStream = new FileOutputStream(outputFile);) {
+	    while ((length = inputStream.read(buffer)) &gt; 0) {
+		outputStream.write(buffer, 0, length);
+	    }
+	}
+	System.out.println(&quot;java.io.InputStream -&gt; file copied&quot;);
+
+	// method 2
+	System.out.println(&quot;--------using java.nio.channels.FileChannel ----------&quot;);
+	URL url = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File source = new File(url.getPath());
+	File destination = new File(&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1-copy2.txt&quot;);
+
+	try (FileInputStream sourceInputStream = new FileInputStream(source);
+		FileChannel sourceChannel = sourceInputStream.getChannel();
+		FileOutputStream destOutputStream = new FileOutputStream(destination);
+		FileChannel destChannel = destOutputStream.getChannel();) {
+	    destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+	}
+
+	System.out.println(&quot;java.nio.channels.FileChannel -&gt; file copied&quot;);
+
+	// method 3 - from java 7
+	System.out.println(&quot;----- using java.nio.file.Files ----------&quot;);
+	URL url2 = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File source2 = new File(url2.getPath());
+	File destination2 = new File(&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\file1-copy3.txt&quot;);
+	Files.copy(source2.toPath(), destination2.toPath());
+	System.out.println(&quot;java.nio.file.Files -&gt; file copied&quot;);
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">Create file</div><div class="panel-body">
+<pre ><code>
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
+public void createFile() throws IOException {
+	File file1 = new File(&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\new-file.txt&quot;);
+	boolean isFile1Created = file1.createNewFile();
+	System.out.println(&quot;isFile1Created: &quot; + isFile1Created);
+	System.out.println(&quot;FileIOPractice -&gt; createFile() -&gt; writing file1 using BufferedWriter&quot;);
+	try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file1));) {
+	    bufferedWriter.write(&quot;Hello new-file.txt&quot;);
+	}
+
+	File file2 = new File(&quot;E:\\Backup\\JavaPrep\\practiceProjects\\CoreJavaPractice\\src\\main\\resources\\new-file2.txt&quot;);
+	boolean isFile2Created = file2.createNewFile();
+	System.out.println(&quot;isFile2Created: &quot; + isFile2Created);
+	System.out.println(&quot;FileIOPractice -&gt; createFile() -&gt; writing file2 using OutputStream&quot;);
+	String fileData = &quot;New file created. Let's write some data&quot;;
+	byte[] fileDataAsByteArray = fileData.getBytes(StandardCharsets.UTF_8);
+	try (OutputStream outputStream = new FileOutputStream(file2);) {
+	    outputStream.write(fileDataAsByteArray, 0, fileDataAsByteArray.length);
+	}
+
+	System.out.println(&quot;files creation completed&quot;);
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">Reading Zip file</div><div class="panel-body">
+<pre ><code>
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+public void readZipFile() throws IOException {
+	URL url = getClass().getClassLoader().getResource(&quot;my-zip-file.zip&quot;);
+	try (ZipFile zipFile = new ZipFile(url.getPath());) {
+
+	    // reading all files in a zip file
+	    Enumeration&lt;? extends ZipEntry&gt; zipEntries = zipFile.entries();
+	    while (zipEntries.hasMoreElements()) {
+		ZipEntry zipEntry = zipEntries.nextElement();
+		if (zipEntry.isDirectory()) {
+		    System.out.println(&quot;Dir -&gt; &quot; + zipEntry.getName());
+		} else {
+		    System.out.println(&quot;File -&gt; &quot; + zipEntry.getName());
+		}
+	    }
+
+	    System.out.println(&quot;-----------------------------------------&quot;);
+
+	    // getting specific file in zip file
+	    ZipEntry file1Entry = zipFile.getEntry(&quot;my-zip-file/file1.txt&quot;);
+	    InputStream file1InputStream = zipFile.getInputStream(file1Entry);
+	    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file1InputStream));) {
+		StringBuffer content = new StringBuffer();
+		String line;
+		while ((line = bufferedReader.readLine()) != null) {
+		    content.append(line).append(&quot;\n&quot;);
+		}
+		System.out.println(&quot;file1 content: &quot; + content);
+	    }
+
+	    System.out.println(&quot;-----------------------------------------&quot;);
+
+	    // getting specific file in sub-folder in zip file
+	    ZipEntry file4Entry = zipFile.getEntry(&quot;my-zip-file/sub-folder/file4.txt&quot;);
+	    InputStream file4InputStream = zipFile.getInputStream(file4Entry);
+	    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file4InputStream));) {
+		StringBuffer content = new StringBuffer();
+		String line;
+		while ((line = bufferedReader.readLine()) != null) {
+		    content.append(line).append(&quot;\n&quot;);
+		}
+		System.out.println(&quot;file4 content: &quot; + content);
+	    }
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">Create Zip file with single file</div><div class="panel-body">
+<pre ><code>
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+public void createZipFileWithOneFile() {
+	byte[] buffer = new byte[1024];
+
+	// we are using try-with-resource, so closing of resources will be done automatically
+	try (FileOutputStream fos = new FileOutputStream(&quot;E:/Backup/JavaPrep/practiceProjects/CoreJavaPractice/src/main/resources/myZip.zip&quot;);
+		ZipOutputStream zos = new ZipOutputStream(fos);
+		InputStream is = getClass().getClassLoader().getResourceAsStream(&quot;file1.txt&quot;);) {
+
+	    System.out.println(&quot;fos: &quot; + fos);
+	    System.out.println(&quot;zos: &quot; + zos);
+	    System.out.println(&quot;is: &quot; + is);
+
+	    ZipEntry zipEntry = new ZipEntry(&quot;file1.log&quot;);
+	    zos.putNextEntry(zipEntry);
+
+	    int length;
+	    while ((length = is.read(buffer)) &gt; 0) {
+		zos.write(buffer, 0, length);
+	    }
+
+	    zos.closeEntry();
+
+	    System.out.println(&quot;Zip file created&quot;);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="12"><div class="panel-heading">Create zip file with files present in a folder</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+public void createZipWithFilesInFolder() throws IOException {
+	List&lt;String&gt; sourceFileNamesList = new ArrayList&lt;&gt;();
+	String sourceFolder = &quot;E:/Backup/JavaPrep/practiceProjects/CoreJavaPractice/src/main/resources/folder1&quot;;
+	String outputZipFile = &quot;E:/Backup/JavaPrep/practiceProjects/CoreJavaPractice/src/main/resources/myZip2.zip&quot;;
+
+	//get all files names in a source folder
+	//if this directory contains sub-directories, iterate recursively to get all file names
+	//refer listFilesAndDirectories(File directory) method in this class
+	File sourceDirectory = new File(sourceFolder);
+	String[] sourceFileNames = sourceDirectory.list();
+	for (String sourceFileName : sourceFileNames) {
+	    int startIndex = Integer.parseInt(String.valueOf(sourceDirectory.length()));
+	    int endIndex = sourceFileName.length();
+	    sourceFileNamesList.add(sourceFileName.substring(startIndex, endIndex));
+	}
+
+	System.out.println(&quot;sourceFileNamesList: &quot; + sourceFileNamesList);
+
+	// create zip file
+	byte[] buffer = new byte[1024];
+
+	try (FileOutputStream fos = new FileOutputStream(outputZipFile); ZipOutputStream zos = new ZipOutputStream(fos);) {
+	    for (String file : sourceFileNamesList) {
+
+		// to read file using class loader that file should be in class path else we need to complete path of file and create input stream
+		try (InputStream is = getClass().getClassLoader().getResourceAsStream(file);) {
+		    ZipEntry zipEntry = new ZipEntry(file);
+		    zos.putNextEntry(zipEntry);
+
+		    int length;
+		    while ((length = is.read(buffer)) &gt; 0) {
+			zos.write(buffer, 0, length);
+		    }
+
+		    System.out.println(&quot;File Added: &quot; + file);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
+	System.out.println(&quot;Zip file created&quot;);
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="13"><div class="panel-heading">Method to get current project directory</div><div class="panel-body">
+<pre ><code>
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
+
+public void getCurrentProjectDirectory() {
+	// method 1
+	String projectDirectory1 = System.getProperty(&quot;user.dir&quot;);
+	System.out.println(&quot;FileIOPractice -&gt; getCurrentDirectory() -&gt; projectDirectory1: &quot; + projectDirectory1);
+
+	// method 2
+	String projectDirectory2 = Paths.get(&quot;&quot;).toAbsolutePath().toString();
+	System.out.println(&quot;FileIOPractice -&gt; getCurrentDirectory() -&gt; projectDirectory2: &quot; + projectDirectory2);
+
+	// method 3
+	String projectDirectory3 = Paths.get(&quot;.&quot;).toAbsolutePath().normalize().toString();
+	System.out.println(&quot;FileIOPractice -&gt; getCurrentDirectory() -&gt; projectDirectory3: &quot; + projectDirectory3);
+
+	// method 4
+	URL projectDirectory4 = getClass().getProtectionDomain().getCodeSource().getLocation();
+	System.out.println(&quot;FileIOPractice -&gt; getCurrentDirectory() -&gt; projectDirectory4: &quot; + projectDirectory4);
+
+	// method 5
+	String myCurrentDir = System.getProperty(&quot;user.dir&quot;)
+		+ File.separator
+		+ System.getProperty(&quot;sun.java.command&quot;).substring(0, System.getProperty(&quot;sun.java.command&quot;).lastIndexOf(&quot;.&quot;))
+			.replace(&quot;.&quot;, File.separator);
+	System.out.println(&quot;FileIOPractice -&gt; getCurrentDirectory() -&gt; myCurrentDir: &quot; + myCurrentDir);
+    }
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">Print file with line numbers</div><div class="panel-body">
+file1.txt
+<pre><code>
+Welcome to file1.txt
+Core Java Practice
+</code></pre>
+<pre ><code>
+public void lineNumberReader() throws IOException {
+	URL url = getClass().getClassLoader().getResource(&quot;file1.txt&quot;);
+	File file = new File(url.getPath());
+
+	Reader reader = new FileReader(file);
+	try (LineNumberReader lineNumberReader = new LineNumberReader(reader)) {
+
+	    String line;
+	    while (null != (line = lineNumberReader.readLine()))
+		System.out.println(lineNumberReader.getLineNumber() + &quot;: &quot; + line);
+	}
+    }
+</code></pre>
+<em>Ouptut</em>
+<pre><code>
+1: Welcome to file1.txt
+2: Core Java Practice
+</code></pre>
+</div></div>
+
+</div>

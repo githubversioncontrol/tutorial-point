@@ -1,0 +1,1412 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Create Class object if we know class name compile time</a></li>
+	<li><a ng-click="navigate(2)">Create Class object if we know fully packaged class name at run time</a></li>
+	<li><a ng-click="navigate(3)">Get Class object from actual object</a></li>
+	<li><a ng-click="navigate(4)">Create instance of a class where class has zero argument constructor</a></li>
+	<li><a ng-click="navigate(5)">Create instance of a class where class has argumented constructor</a></li>
+	<li><a ng-click="navigate(6)">Create instance of a class where class has argumented constructor and constructor is taking primitive int as argument</a></li>
+	<li><a ng-click="navigate(7)">Get Super Class object of our class</a></li>
+	<li><a ng-click="navigate(8)">Calling a method with zero arguments</a></li>
+	<li><a ng-click="navigate(9)">Calling method with String as argument</a></li>
+	<li><a ng-click="navigate(10)">Call method with String array as argument</a></li>
+	<li><a ng-click="navigate(11)">Get interfaces implements by class</a></li>
+	<li><a ng-click="navigate(12)">Calling method whose argument is List&lt;String&gt;</a></li>
+	<li><a ng-click="navigate(13)">Create String array class</a></li>
+	<li><a ng-click="navigate(14)">Get Method Name, Modifier, Return Type</a></li>
+	<li><a ng-click="navigate(15)">Get Parameter name and parameter type</a></li>
+	<li><a ng-click="navigate(16)">class Level Annotations</a></li>
+	<li><a ng-click="navigate(17)">Field Level Annotations</a></li>
+	<li><a ng-click="navigate(18)">Method Level Annotations</a></li>
+	<li><a ng-click="navigate(19)">Parameter Level Annotations</a></li>
+	<li><a ng-click="navigate(20)">getFields() - To get public fields</a></li>
+	<li><a ng-click="navigate(21)">getDeclaredFields() - To get public/private fields</a></li>
+	<li><a ng-click="navigate(22)">Set value to public fields. To set private fields, we have to use setter</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Class object if we know class name compile time</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+public void classObject() {
+	Class&lt;ReflectionModel1&gt; classObject = ReflectionModel1.class;
+	System.out.println(&quot;classObject: &quot; + classObject);
+}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Create Class object if we know fully packaged class name at run time</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+public void classObject2() {
+try {
+	Class&lt;?&gt; classObject = Class.forName(&quot;core.java.reflection.model.ReflectionModel1&quot;);
+	System.out.println(&quot;classObject: &quot; + classObject);
+} catch (ClassNotFoundException e) {
+	e.printStackTrace();
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel1
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Get Class object from actual object</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import core.java.reflection.model.ReflectionModel1;
+
+public void classObject3() {
+		ReflectionModel1 reflectionModel1 = new ReflectionModel1();
+		Class&lt;?&gt; classObject = reflectionModel1.getClass();
+		System.out.println(&quot;classObject: &quot; + classObject);
+	}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel1
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Create instance of a class where class has zero argument constructor</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+public void createInstance() {
+		try {
+			Class&lt;ReflectionModel1&gt; classObject = ReflectionModel1.class;
+			ReflectionModel1 reflectionModel1 = classObject.newInstance();
+			System.out.println(&quot;classObject: &quot; + classObject);
+			System.out.println(&quot;reflectionModel1: &quot; + reflectionModel1);
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel1
+reflectionModel1: core.java.reflection.model.ReflectionModel1@6a41eaa2
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Create instance of a class where class has argumented constructor</div><div class="panel-body">
+<em>ReflectionModel2.java</em>
+<pre>
+package core.java.reflection.model;
+
+public class ReflectionModel2 {
+
+	private String name;
+	private int number;
+
+	public ReflectionModel2(String name) {
+		this.name = name;
+	}
+
+	public ReflectionModel2(int number) {
+		this.number = number;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import core.java.reflection.model.ReflectionModel2;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalAccessException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void createInstance2() {
+		try {
+			Class&lt;ReflectionModel2&gt; classObject = ReflectionModel2.class;
+			Constructor&lt;ReflectionModel2&gt; constructorObject = classObject.getConstructor(String.class);
+
+			ReflectionModel2 reflectionModel2 = constructorObject.newInstance(&quot;Jack&quot;);
+
+			System.out.println(&quot;classObject: &quot; + classObject);
+			System.out.println(&quot;constructorObject: &quot; + constructorObject);
+			System.out.println(&quot;reflectionModel2: &quot; + reflectionModel2 + &quot;, name: &quot;
+					+ reflectionModel2.getName());
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel2
+constructorObject: public core.java.reflection.model.ReflectionModel2(java.lang.String)
+reflectionModel2: core.java.reflection.model.ReflectionModel2@6a41eaa2, name: Jack
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Create instance of a class where class has argumented constructor and constructor is taking primitive int as argument</div><div class="panel-body">
+<em>ReflectionModel2.java</em>
+<pre>
+package core.java.reflection.model;
+
+public class ReflectionModel2 {
+
+	private String name;
+	private int number;
+
+	public ReflectionModel2(String name) {
+		this.name = name;
+	}
+
+	public ReflectionModel2(int number) {
+		this.number = number;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel2;
+import java.lang.reflect.Constructor;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void createInstance3() {
+		try {
+			Class&lt;ReflectionModel2&gt; classObject = ReflectionModel2.class;
+			Constructor&lt;ReflectionModel2&gt; constructorObject = classObject.getConstructor(int.class);
+
+			ReflectionModel2 reflectionModel2 = constructorObject.newInstance(10);
+
+			System.out.println(&quot;classObject: &quot; + classObject);
+			System.out.println(&quot;constructorObject: &quot; + constructorObject);
+			System.out.println(&quot;reflectionModel2: &quot; + reflectionModel2 + &quot;, number: &quot;
+					+ reflectionModel2.getNumber());
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+	}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel2
+constructorObject: public core.java.reflection.model.ReflectionModel2(int)
+reflectionModel2: core.java.reflection.model.ReflectionModel2@6a41eaa2, number: 10
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">Get Super Class object of our class</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+
+public void getSuperClass() {
+		Class&lt;ReflectionModel1&gt; classObject = ReflectionModel1.class;
+		Class&lt;? super ReflectionModel1&gt; superClassObject = classObject.getSuperclass();
+
+		System.out.println(&quot;classObject: &quot; + classObject);
+		System.out.println(&quot;superClassObject: &quot; + superClassObject);
+	}
+</pre>
+<em>Output</em>
+<pre>
+classObject: class core.java.reflection.model.ReflectionModel1
+superClassObject: class java.lang.Object
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">Calling a method with zero arguments</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalAccessException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void callingMethodWithZeroArguments() {
+		try {
+			Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+			ReflectionModel1 reflectionModel1 = klass.newInstance();
+			Method methodObject = klass.getMethod(&quot;method1&quot;);
+			methodObject.invoke(reflectionModel1);
+
+			System.out.println(&quot;klass: &quot; + klass);
+			System.out.println(&quot;reflectionModel1: &quot; + reflectionModel1);
+			System.out.println(&quot;methodObject: &quot; + methodObject);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+ReflectionModel1.method1()
+klass: class core.java.reflection.model.ReflectionModel1
+reflectionModel1: core.java.reflection.model.ReflectionModel1@6a41eaa2
+methodObject: public void core.java.reflection.model.ReflectionModel1.method1()
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">Calling method with String as argument</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalAccessException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void callingMethodWithStringArgument() {
+		try {
+			Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+			ReflectionModel1 reflectionModel1 = klass.newInstance();
+			Method methodObject = klass.getMethod(&quot;method2&quot;, String.class);
+			methodObject.invoke(reflectionModel1, &quot;Jack&quot;);
+
+			System.out.println(&quot;klass: &quot; + klass);
+			System.out.println(&quot;reflectionModel1: &quot; + reflectionModel1);
+			System.out.println(&quot;methodObject: &quot; + methodObject);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+</pre>
+<em>Output</em>
+<pre>
+Hello: Jack
+klass: class core.java.reflection.model.ReflectionModel1
+reflectionModel1: core.java.reflection.model.ReflectionModel1@6a41eaa2
+methodObject: public void core.java.reflection.model.ReflectionModel1.method2(java.lang.String)
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">Call method with String array as argument</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalAccessException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void callingMethodWithStringArrayAsArgument() {
+try {
+	Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+	ReflectionModel1 reflectionModel1 = klass.newInstance();
+	Method methodObject = klass.getMethod(&quot;method3&quot;, Array.newInstance(String.class, 1).getClass());
+	List&lt;String&gt; names = Arrays.asList(&quot;Jack&quot;, &quot;Jill&quot;, &quot;John&quot;);
+	methodObject.invoke(reflectionModel1, new Object[] { names.toArray() });
+
+	System.out.println(&quot;klass: &quot; + klass);
+	System.out.println(&quot;reflectionModel1: &quot; + reflectionModel1);
+	System.out.println(&quot;methodObject: &quot; + methodObject);
+	} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+		| IllegalArgumentException | InvocationTargetException e) {
+		e.printStackTrace();
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+Jack
+Jill
+John
+klass: class core.java.reflection.model.ReflectionModel1
+reflectionModel1: core.java.reflection.model.ReflectionModel1@1f36e637
+methodObject: public void core.java.reflection.model.ReflectionModel1.method3(java.lang.String[])
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">Get interfaces implements by class</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Get interfaces imlpemented by class using reflection api. We have to use classObject.getInterfaces() method.
+</pre>
+<em>IReflection3.java</em>
+<pre>
+package core.java.reflection.model;
+
+public interface IReflection3 {
+
+}
+</pre>
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+import java.util.Arrays;
+
+public void getImplementedInterfaces() {
+		Class&lt;ReflectionModel1&gt; classObject = ReflectionModel1.class;
+		Class&lt;?&gt;[] interfaces = classObject.getInterfaces();
+
+		Arrays.stream(interfaces).forEach(interfaceName -&gt; {
+			System.out.println(interfaceName.getName());
+		});
+	}
+</pre>
+<em>Output</em>
+<pre>
+java.io.Serializable
+core.java.reflection.model.IReflection3
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="12"><div class="panel-heading">Calling method whose argument is List&lt;String&gt;</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Call a method whose argument is List of String
+</pre>
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+}
+</pre>
+<em>Test Method:</em>
+<pre>
+import java.lang.Class;
+import core.java.reflection.model.ReflectionModel1;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.NoSuchMethodException;
+import java.lang.SecurityException;
+import java.lang.InstantiationException;
+import java.lang.IllegalAccessException;
+import java.lang.IllegalArgumentException;
+import java.lang.reflect.InvocationTargetException;
+
+public void callingMethodWithStringListAsArgument() {
+try {
+  Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+  ReflectionModel1 reflectionModel1 = klass.newInstance();
+  Method method = klass.getMethod(&quot;method4&quot;, List.class);
+  List&lt;String&gt; names = Arrays.asList(&quot;jack&quot;, &quot;jill&quot;, &quot;john&quot;);
+  method.invoke(reflectionModel1, names);
+ } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
+     | IllegalArgumentException | InvocationTargetException e) {
+   e.printStackTrace();
+ }
+}
+</pre>
+<em>Output</em>
+<pre>
+jack
+jill
+john
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="13"><div class="panel-heading">Create String array class</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Create String array class using reflection api. Set and Get values using reflection api
+</pre>
+<em>Test Method</em>
+<pre>
+import java.lang.reflect.Array;
+import java.lang.Class;
+import java.lang.NegativeArraySizeException;
+import java.lang.ClassNotFoundException;
+
+public void createStringArray() {
+ try {
+  Object stringArray = Array.newInstance(Class.forName(&quot;java.lang.String&quot;), 3);
+  Array.set(stringArray, 0, &quot;jack&quot;);
+  Array.set(stringArray, 1, &quot;jill&quot;);
+  Array.set(stringArray, 2, &quot;john&quot;);
+
+  System.out.println(Array.get(stringArray, 0));
+  System.out.println(Array.get(stringArray, 1));
+  System.out.println(Array.get(stringArray, 2));
+ } catch (NegativeArraySizeException | ClassNotFoundException e) {
+   e.printStackTrace();
+ }
+}
+</pre>
+<em>Output</em>
+<pre>
+jack
+jill
+john
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">Get Method Name, Modifier, Return Type</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings({ &quot;unused&quot; })
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public String publicField1;
+	public Long publicField2;
+
+	private Integer privateField1;
+	private Integer privateField2;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+	public void method5(Integer arg0, String arg1, List&lt;String&gt; list, Map&lt;String, String&gt; map) {
+		System.out.println(&quot;ReflecitonModel1.method5&quot;);
+	}
+
+	public Integer getPrivateField1() {
+		return privateField1;
+	}
+
+	public void setPrivateField1(Integer privateField1) {
+		this.privateField1 = privateField1;
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import java.lang.Class;
+import java.util.Arrays;
+import java.lang.reflect.Method;
+
+public void getAllMethods() {
+ Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+ Method[] methods = klass.getMethods();
+ Arrays.stream(methods).forEach(
+  method -&gt; {
+   System.out.println(&quot;name: &quot; + method.getName() + &quot;, modifier: &quot; + method.getModifiers()
+	+ &quot;, return type: &quot; + method.getReturnType());
+   });
+}
+</pre>
+<em>Output</em>
+<pre>
+name: method1, modifier: 1, return type: void
+name: method4, modifier: 1, return type: void
+name: method5, modifier: 1, return type: void
+name: method3, modifier: 1, return type: void
+name: method2, modifier: 1, return type: void
+name: wait, modifier: 17, return type: void
+name: wait, modifier: 17, return type: void
+name: wait, modifier: 273, return type: void
+name: equals, modifier: 1, return type: boolean
+name: toString, modifier: 1, return type: class java.lang.String
+name: hashCode, modifier: 257, return type: int
+name: getClass, modifier: 273, return type: class java.lang.Class
+name: notify, modifier: 273, return type: void
+name: notifyAll, modifier: 273, return type: void
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="15"><div class="panel-heading">Get Parameter name and parameter type</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings({ &quot;unused&quot; })
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public String publicField1;
+	public Long publicField2;
+
+	private Integer privateField1;
+	private Integer privateField2;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+	public void method5(Integer arg0, String arg1, List&lt;String&gt; list, Map&lt;String, String&gt; map) {
+		System.out.println(&quot;ReflecitonModel1.method5&quot;);
+	}
+
+	public Integer getPrivateField1() {
+		return privateField1;
+	}
+
+	public void setPrivateField1(Integer privateField1) {
+		this.privateField1 = privateField1;
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void getMethodParamters() {
+try {
+ Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+ Method method = klass.getMethod(&quot;method5&quot;, Integer.class, String.class, List.class, Map.class);
+ Parameter[] parameters = method.getParameters();
+ Arrays.stream(parameters).forEach(parameter -&gt; {
+   System.out.println(&quot;param name: &quot; + parameter.getName() + &quot;, type: &quot; + parameter.getType());
+	 });
+} catch (NoSuchMethodException | SecurityException e) {
+ e.printStackTrace();
+}
+}
+</pre>
+<em>Output</em>
+<pre>
+param name: arg0, type: class java.lang.Integer
+param name: arg1, type: class java.lang.String
+param name: list, type: interface java.util.List
+param name: map, type: interface java.util.Map
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="16"><div class="panel-heading">class Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ClassLevelAnnotation {
+
+    String stringValue() default &quot;class default string value&quot;;
+
+    int intValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void classLevelAnnotation() {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	ClassLevelAnnotation[] classLevelAnnotations = (ClassLevelAnnotation[]) classObject.getAnnotationsByType(ClassLevelAnnotation.class);
+
+	for (ClassLevelAnnotation classLevelAnnotation : classLevelAnnotations) {
+	    System.out.println(classLevelAnnotation.stringValue());
+	    System.out.println(classLevelAnnotation.intValue());
+	}
+
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+class default string value
+20
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="17"><div class="panel-heading">Field Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface FieldLevelAnnotation {
+
+    String stringValue() default &quot;field default string value&quot;;
+
+    String[] stringValues();
+
+    long longValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void fieldLevelAnnotation() throws NoSuchFieldException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Field field = classObject.getField(&quot;fieldWithAnnotation&quot;);
+	FieldLevelAnnotation[] fieldLevelAnnotations = (FieldLevelAnnotation[]) field.getAnnotationsByType(FieldLevelAnnotation.class);
+
+	for (FieldLevelAnnotation annotation : fieldLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.longValue());
+	    String[] stringValues = annotation.stringValues();
+	    System.out.println(stringValues[0] + &quot;, &quot; + stringValues[1]);
+	}
+    }
+</code></pre>
+<h4  class="output">Output</h4>
+<pre><code>
+field default string value
+30
+value1, value2
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="18"><div class="panel-heading">Method Level Annotations</div><div class="panel-body">
+<pre><code>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MethodLevelAnnotation {
+
+    String stringValue();
+
+    double doubleValue();
+}
+</code></pre>
+<pre><code>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+    public void parametersWithAnnotation(
+	    @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) String argument1) {
+
+    }
+
+}
+</code></pre>
+<pre><code>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void methodLevelAnnotation() throws NoSuchMethodException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Method method = classObject.getMethod(&quot;methodWithAnnotation&quot;);
+
+	MethodLevelAnnotation[] methodLevelAnnotations = (MethodLevelAnnotation[]) method.getAnnotationsByType(MethodLevelAnnotation.class);
+
+	for (MethodLevelAnnotation annotation : methodLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.doubleValue());
+	}
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+method level annotation string vlaue
+10.25
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="19"><div class="panel-heading">Parameter Level Annotations</div><div class="panel-body">
+<pre>
+package core.java.annotations.model;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface ParameterLevelAnnotation {
+
+    String stringValue();
+
+    float floatValue();
+}
+</pre>
+<pre>
+package core.java.annotations.model;
+
+@ClassLevelAnnotation(intValue = 20)
+public class ClassWithAnnotations {
+
+    @FieldLevelAnnotation(longValue = 30L, stringValues = { &quot;value1&quot;, &quot;value2&quot; })
+    public String fieldWithAnnotation;
+
+    @MethodLevelAnnotation(stringValue = &quot;method level annotation string vlaue&quot;, doubleValue = 10.25)
+    public void methodWithAnnotation() {
+
+    }
+
+  public void parametersWithAnnotation(
+   @ParameterLevelAnnotation(stringValue = &quot;parameter level annotation string value&quot;, floatValue = 1.23f) 
+   String argument1) {
+   
+   }
+
+}
+</pre>
+<pre>
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import core.java.annotations.model.ClassLevelAnnotation;
+import core.java.annotations.model.ClassWithAnnotations;
+import core.java.annotations.model.FieldLevelAnnotation;
+import core.java.annotations.model.MethodLevelAnnotation;
+import core.java.annotations.model.ParameterLevelAnnotation;
+
+public void parameterAnnotations() throws NoSuchMethodException, SecurityException {
+	Class&lt;ClassWithAnnotations&gt; classObject = ClassWithAnnotations.class;
+	Method method = classObject.getMethod(&quot;parametersWithAnnotation&quot;, new Class[] { String.class });
+	Parameter[] parameters = method.getParameters();
+
+	System.out.println(parameters[0].getName());
+
+	Parameter parameter = parameters[0];
+	ParameterLevelAnnotation[] parameterLevelAnnotations = (ParameterLevelAnnotation[]) parameter
+		.getAnnotationsByType(ParameterLevelAnnotation.class);
+
+	for (ParameterLevelAnnotation annotation : parameterLevelAnnotations) {
+	    System.out.println(annotation.stringValue());
+	    System.out.println(annotation.floatValue());
+	}
+    }
+</pre>
+<em>Output</em>
+<pre>
+argument1
+parameter level annotation string value
+1.23
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="20"><div class="panel-heading">getFields() - To get public fields</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings({ &quot;unused&quot; })
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public String publicField1;
+	public Long publicField2;
+
+	private Integer privateField1;
+	private Integer privateField2;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+	public void method5(Integer arg0, String arg1, List&lt;String&gt; list, Map&lt;String, String&gt; map) {
+		System.out.println(&quot;ReflecitonModel1.method5&quot;);
+	}
+
+	public Integer getPrivateField1() {
+		return privateField1;
+	}
+
+	public void setPrivateField1(Integer privateField1) {
+		this.privateField1 = privateField1;
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void getPublicFields() {
+ Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+ Field[] fields = klass.getFields();
+ Arrays.stream(fields).forEach(field -&gt; {
+  System.out.println(field.getType() + &quot; &quot; + field.getName());
+ });
+}
+</pre>
+<em>Output</em>
+<pre>
+class java.lang.String publicField1
+class java.lang.Long publicField2
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="21"><div class="panel-heading">getDeclaredFields() - To get public/private fields</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings({ &quot;unused&quot; })
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public String publicField1;
+	public Long publicField2;
+
+	private Integer privateField1;
+	private Integer privateField2;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+	public void method5(Integer arg0, String arg1, List&lt;String&gt; list, Map&lt;String, String&gt; map) {
+		System.out.println(&quot;ReflecitonModel1.method5&quot;);
+	}
+
+	public Integer getPrivateField1() {
+		return privateField1;
+	}
+
+	public void setPrivateField1(Integer privateField1) {
+		this.privateField1 = privateField1;
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void getPrivateFields() {
+ Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+ Field[] fields = klass.getDeclaredFields();
+ Arrays.stream(fields).forEach(field -&gt; {
+  System.out.println(field.getType() + &quot; &quot; + field.getName());
+ });
+}
+</pre>
+<em>Output</em>
+<pre>
+long serialVersionUID
+class java.lang.String publicField1
+class java.lang.Long publicField2
+class java.lang.Integer privateField1
+class java.lang.Integer privateField2
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="22"><div class="panel-heading">Set value to public fields. To set private fields, we have to use setter</div><div class="panel-body">
+<em>ReflectionModel1.java</em>
+<pre>
+package core.java.reflection.model;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings({ &quot;unused&quot; })
+public class ReflectionModel1 extends Object implements Serializable, IReflection3 {
+
+	private static final long serialVersionUID = -2693156947838409146L;
+
+	public String publicField1;
+	public Long publicField2;
+
+	private Integer privateField1;
+	private Integer privateField2;
+
+	public void method1() {
+		System.out.println(&quot;ReflectionModel1.method1()&quot;);
+	}
+
+	public void method2(String name) {
+		System.out.println(&quot;Hello: &quot; + name);
+	}
+
+	public void method3(String[] names) {
+		Arrays.stream(names).forEach(System.out::println);
+	}
+
+	public void method4(List&lt;String&gt; names) {
+		names.stream().forEach(System.out::println);
+	}
+
+	public void method5(Integer arg0, String arg1, List&lt;String&gt; list, Map&lt;String, String&gt; map) {
+		System.out.println(&quot;ReflecitonModel1.method5&quot;);
+	}
+
+	public Integer getPrivateField1() {
+		return privateField1;
+	}
+
+	public void setPrivateField1(Integer privateField1) {
+		this.privateField1 = privateField1;
+	}
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+public void setPublicFields() {
+ try {
+  Class&lt;ReflectionModel1&gt; klass = ReflectionModel1.class;
+  ReflectionModel1 reflectionModel1 = new ReflectionModel1();
+
+  Field publicField1 = klass.getField(&quot;publicField1&quot;);
+  publicField1.set(reflectionModel1, &quot;jack&quot;);
+
+  System.out.println(&quot;reflectionModel1.publicField1: &quot; + reflectionModel1.publicField1);
+ } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+  e.printStackTrace();
+ }
+}
+</pre>
+<em>Output</em>
+<pre>
+reflectionModel1.publicField1: jack
+</pre>
+</div></div>
+
+</div>

@@ -1,0 +1,213 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using maven from cmd</div><div class="panel-body">
+<pre>
+mvn archetype:generate -DgroupId=com.easymock.practice -DartifactId=EasyMockPractice -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/easymock/1-easymockExceptionHandling.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.easymock.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;EasyMockPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;EasyMockPractice&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.easymock&lt;/groupId&gt;
+			&lt;artifactId&gt;easymock&lt;/artifactId&gt;
+			&lt;version&gt;3.5&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">build.gradle</div><div class="panel-body">
+<pre>
+apply plugin: 'java'
+
+sourceSets { 
+	main.java.srcDir 'src/main/java'
+	test.java.srcDir 'src/test/java'
+}
+
+repositories { 
+	mavenCentral()
+}
+
+dependencies { 
+	compile 'junit:junit:4.12'
+	compile 'org.easymock:easymock:3.5'
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">CalculateService4.java</div><div class="panel-body">
+<em>Explanation:</em>
+<pre>
+Interface to which we will create mock using EasyMock annotation @Mock
+</pre>
+<pre>
+package easy.mock.exception;
+
+public interface CalculateService4 {
+
+	public &lt;T&gt; T add(T t1, T t2);
+
+	public &lt;T&gt; T subtract(T t1, T t2);
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MathApplication4.java</div><div class="panel-body">
+<em>Explanation:</em>
+<pre>
+class which is using above interface
+</pre>
+<pre>
+package easy.mock.exception;
+
+public class MathApplication4 {
+
+	private CalculateService4 calculateService4;
+
+	public void setCalculateService4(CalculateService4 calculateService4) {
+		this.calculateService4 = calculateService4;
+	}
+
+	public &lt;T&gt; T add(T t1, T t2) {
+		return calculateService4.add(t1, t2);
+	}
+
+	public &lt;T&gt; T subtract(T t1, T t2) {
+		return calculateService4.subtract(t1, t2);
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Test4.java</div><div class="panel-body">
+<em>Explanation:</em>
+<pre>
+Test class with test cases
+</pre>
+<pre>
+package easy.mock.exception;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+<em>// @RunWith attaches a runner with the test class to initialize the test data</em>
+@RunWith(EasyMockRunner.class)
+public class Test4 {
+
+	<em>// @TestSubject annotation is used to identify class which is going to use the mock object</em>
+	@TestSubject
+	private MathApplication4 mathApplication4 = new MathApplication4();
+
+	<em>// @Mock annotation is used to create the mock object to be injected</em>
+	@Mock
+	private CalculateService4 calculateService4;
+
+	@Test(expected = RuntimeException.class)
+	public void add() {
+		<em>/*java.lang.Exception: Unexpected exception, expected&lt;java.lang.RuntimeException&gt; but was&lt;java.lang.AssertionError&gt;
+		Caused by: java.lang.AssertionError: Unexpected method call CalculateService4.add(10 (int), 20 (int)):
+				CalculateService4.add(isA(int), isA(int)): expected: 1, actual: 0*/
+		/*EasyMock.expect(calculateService4.add(EasyMock.isA(int.class), EasyMock.isA(int.class))).andThrow(
+				new RuntimeException(&quot;Exception thrown from test case&quot;));*/</em>
+
+		<em>// since add method is generic we need to pass Integer wrapper class for Class object.</em>
+		EasyMock.expect(calculateService4.add(EasyMock.isA(Integer.class), EasyMock.isA(Integer.class)))
+				.andThrow(new RuntimeException(&quot;Exception thrown from test case&quot;));
+
+		EasyMock.replay(calculateService4);
+		mathApplication4.add(10, 20);
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App4.java</div><div class="panel-body">
+<em>Explanation:</em>
+<pre>
+main class to execute test cases
+</pre>
+<pre>
+package easy.mock.exception;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class App4 {
+
+	public static void main(String[] args) {
+		Result result = JUnitCore.runClasses(Test4.class);
+
+		for (Failure failure : result.getFailures()) {
+			System.out.println(failure.toString());
+		}
+
+		System.out.println(&quot;result.wasSuccessful(): &quot; + result.wasSuccessful());
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+result.wasSuccessful(): true
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/easymock/2-easymockExceptionHandling.jpg" />
+</div></div>

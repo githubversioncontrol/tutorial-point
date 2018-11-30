@@ -1,0 +1,51 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create ngInclude.html</li>
+	<li>Create ngInclude2.html</li>
+	<li>Create ngInclude.js. Add it in ngInclude.html</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ngInclude.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;ngInclude&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;ngInclude.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+    &lt;h3 style=&quot;text-align: center;&quot;&gt;&#123; &#123;message&#125; &#125;&lt;/h3&gt;
+    &lt;hr/&gt;
+    &lt;div ng-include=&quot; 'ngInclude2.html' &quot;/&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ngInclude2.html</div><div class="panel-body">
+<pre ><code>
+&lt;h3&gt;ngInclude2 HTML file&lt;/h3&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ngInclude.js</div><div class="panel-body">
+<pre ><code>
+(function(){
+    var app = angular.module(&quot;moduleName&quot;,[]);
+
+    app.controller(&quot;mainController&quot;, function($scope){
+        $scope.message = &quot;Welcome to Angular ngInclude Demo - Open in Firefox - Chrome is giving cross orgin access allowed issue&quot;;
+    });
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/angular1/1-ngInclude.jpg"/>
+</div></div>

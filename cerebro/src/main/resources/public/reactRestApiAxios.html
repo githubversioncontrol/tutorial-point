@@ -1,0 +1,267 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create react-crud-app app. This will take some time.
+<em>cmd&gt; create-react-app react-rest-api-axios</em>
+3. Install axios in the application and save it to package.json.
+<em>cmd&gt; npm install --save axios</em>
+3. Open this folder in any editor (visual-code, sublime etc)
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactRestApiAxios.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Axios from 'axios';
+
+<em>// component to hit github api</em>
+class GitHubAPI extends Component {
+  state = {
+    gitHubResponse: &quot;Click Button to get the data&quot;,
+    gitHubUserDetails: &quot;Enter username and click button to get details&quot;
+  }
+
+  callGitHubApi = (event) =&gt; {
+    event.preventDefault();
+    let url = &quot;https://api.github.com/&quot;;
+    console.log(&quot;callGithubApi: &quot;+url);
+
+    Axios.get(url).then(response =&gt; {
+      let gitHubResponse = this.state.gitHubResponse;
+      gitHubResponse = response.data;
+      console.log(gitHubResponse);
+      this.setState({
+        gitHubResponse: gitHubResponse
+      });
+    });
+
+  }
+
+  getGithubUserDetails = (event) =&gt; {
+    event.preventDefault();
+    let url = &quot;https://api.github.com/users/&quot; + this.refs.gitHubUsername.value;
+    console.log(url);
+
+    Axios.get(url).then(response =&gt; {
+      let gitHubUserDetails = this.state.gitHubUserDetails;
+      gitHubUserDetails = response.data;
+      console.log(gitHubUserDetails);
+      this.setState({
+        gitHubUserDetails: gitHubUserDetails
+      });
+    });
+
+    this.refs.gitHubUsername.value = &quot;&quot;;
+
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h3&gt;Call Git Hub API: &lt;/h3&gt;
+        &lt;button onClick={this.callGitHubApi}&gt; Call Github &lt;/button&gt;
+        &lt;pre&gt;
+          {JSON.stringify(this.state.gitHubResponse)}
+        &lt;/pre&gt;
+
+        &lt;hr /&gt;
+        &lt;h3&gt; Get Github user details: &lt;/h3&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;Enter github username&quot; ref=&quot;gitHubUsername&quot; /&gt;
+        &lt;button onClick={this.getGithubUserDetails}&gt; Get User Details &lt;/button&gt;
+        &lt;pre&gt;
+          &lt;img className=&quot;thumbnail&quot; src={this.state.gitHubUserDetails.avatar_url} alt=&quot;&quot; title={this.state.gitHubUserDetails.name} /&gt;&lt;br /&gt;
+          {JSON.stringify(this.state.gitHubUserDetails)}
+        &lt;/pre&gt;
+      &lt;/div&gt;
+    );
+  }
+
+}
+
+<em>// component to hit our API get requests - make sure api is running - else change url</em>
+class OurGetApi extends Component {
+  state = {
+    ourApiResponse: &quot;Click Button to get data&quot;,
+    ourApiResponse2: &quot;Click Button to get data&quot;
+  }
+
+  callOurAPI = (event) =&gt; {
+    event.preventDefault();
+    let url = &quot;http://localhost:9091/SpringRest/method1&quot;;
+
+    Axios.get(url).then(response =&gt; {
+      let ourApiResponse = this.state.ourApiResponse;
+      ourApiResponse = response.data;
+      console.log(ourApiResponse);
+      this.setState({
+        ourApiResponse: ourApiResponse
+      });
+    });
+  }
+
+  callOurAPI2 = (event) =&gt; {
+    event.preventDefault();
+    let url = &quot;http://localhost:9091/SpringRest/method8&quot;;
+
+    Axios.get(url).then(response =&gt; {
+      let ourApiResponse2 = this.state.ourApiResponse2;
+      ourApiResponse2 = response.data;
+      console.log(ourApiResponse2);
+      this.setState({
+        ourApiResponse2: ourApiResponse2
+      });
+    });
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h3&gt;Our API Get Request with Text Response. Make sure you add CORS extension added and enabled before execution:&lt;/h3 &gt;
+        &lt;h4&gt;SpringRest - spring.rest.get.GetRequests.method1()&lt;/h4&gt;
+        &lt;button onClick={this.callOurAPI}&gt; Call Our API Text Response&lt;/button&gt;
+        &lt;pre&gt;
+          {JSON.stringify(this.state.ourApiResponse)}
+        &lt;/pre&gt;
+
+        &lt;hr /&gt;
+        &lt;h3&gt;Our API Get Request with JSON Response. Make sure you add CORS extension added and enabled before execution:&lt;/h3 &gt;
+        &lt;h4&gt;SpringRest - spring.rest.get.GetRequests.method8()&lt;/h4&gt;
+        &lt;button onClick={this.callOurAPI2}&gt; Call Our API JSON Response&lt;/button&gt;
+        &lt;pre&gt;
+          {JSON.stringify(this.state.ourApiResponse2)}
+        &lt;/pre&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+<em>// component to hit our API post requests - make sure api is running - else change url</em>
+class OurPostAPi extends Component {
+  state = {
+    postApiResponse: &quot;Click Button to get data&quot;
+  }
+
+  callPostAPI = (event) =&gt; {
+    event.preventDefault();
+    let localUrl = &quot;http://localhost:9091/SpringRest/method1&quot;;
+    let localUrlBody = { &quot;id&quot;: &quot;10&quot;, &quot;name&quot;: &quot;testing1&quot;, &quot;address&quot;: &quot;testing2&quot; };
+    console.log(&quot;localUrl: &quot; + localUrl);
+
+    // let thirdPartyUrl = &quot;https://reqres.in/api/users&quot;;
+    // let thiedPartyUrlBody = { &quot;name&quot;: &quot;morpheus&quot;, &quot;job&quot;: &quot;leader&quot; };
+    // console.log(&quot;thirdPartyUrl: &quot; + thirdPartyUrl);
+
+    Axios.post(localUrl, localUrlBody).then(response =&gt; {
+      console.log(&quot;response: &quot; + JSON.stringify(response.data));
+      let postApiResponse = this.state.postApiResponse;
+      postApiResponse = JSON.stringify(response.data);
+      this.setState({
+        postApiResponse: postApiResponse
+      });
+    }).catch(error =&gt; {
+      this.setState({
+        postApiResponse: error
+      });
+    });
+
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h3&gt;Our API Post Request with JSON Response. &lt;/h3&gt;
+        &lt;button onClick={this.callPostAPI}&gt; Call Post API &lt;/button&gt;
+        &lt;pre&gt;
+          {JSON.stringify(this.state.postApiResponse)}
+        &lt;/pre&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;img className=&quot;App-logo&quot; src={logo} alt=&quot;Logo&quot; /&gt;
+        &lt;hr /&gt;
+
+        &lt;GitHubAPI /&gt;
+        &lt;hr /&gt;
+
+        &lt;OurGetApi /&gt;
+        &lt;hr /&gt;
+
+        &lt;OurPostAPi /&gt;
+        &lt;hr /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.css</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+1. Added thumbnail style
+</pre>
+<pre>
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.thumbnail {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100px;
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactRestApiAxios.jpg"/>
+<img class="img-responsive" ng-src="images/react/3-reactRestApiAxios.jpg"/>
+</div></div>

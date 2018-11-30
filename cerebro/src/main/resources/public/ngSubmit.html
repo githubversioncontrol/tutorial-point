@@ -1,0 +1,58 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create ngSubmit.html</li>
+	<li>Create ngSubmit.js. Add it in ngSubmit.html</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ngSubmit.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;ngSubmit&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;ngSubmit.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+    &lt;h3 style=&quot;text-align:center;&quot;&gt;&#123; &#123;message&#125; &#125;&lt;/h3&gt;
+    &lt;hr/&gt;
+    &lt;h3&gt;&#123; &#123;formSubmittedMessage&#125; &#125;&lt;/h3&gt;
+    &lt;form name=&quot;ngSubmit Form&quot; ng-submit=&quot;formSubmitted()&quot;&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;Enter mandatory text field&quot; ng-model=&quot;enteredText&quot; required/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">ngSubmit.js</div><div class="panel-body">
+<pre ><code>
+(function(){
+    var app = angular.module(&quot;moduleName&quot;,[]);
+
+    app.controller(&quot;mainController&quot;, function($scope){
+        $scope.message = &quot;Welcome to Angular ngSubmit Directive Demo&quot;;
+
+        $scope.formSubmitted = function(){
+            $scope.formSubmittedMessage = &quot;Form Submitted with text: &quot;+$scope.enteredText;
+        }
+    });
+
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<ul>
+	<li>Before:</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/1-ngSubmit.jpg"/></li>
+	<li>After:</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/2-ngSubmit.jpg"/></li>
+</ul>
+</div></div>

@@ -1,0 +1,78 @@
+<div class="page-header" id="1">
+    <h3>Setup Sonarqube to run with Sonar Scanner</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps for setting sonarqub</div><div class="panel-body">
+<ul>
+	<li>Download the latest sonarqube</li>
+	<li>Download sonar scanner</li>
+	<li>Configure sonar scanner about the project details</li>
+	<li>Run sonarqube</li>
+	<li>Run sonar scanner</li>
+	<li>Open the report in the browser</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Download the latest sonarqube</div><div class="panel-body">
+<ul>
+	<li>Download the latest sonarqube from <a href="https://www.sonarqube.org/downloads/"  target="_blank">here</a></li>
+	<li>I downloaded sonarqube-6.3.1 </li>
+	<li>Unzip it</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Download sonar scanner</div><div class="panel-body">
+<ul>
+	<li>Download the sonar scanner from <a href="https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner"  target="_blank">here</a></li>
+	<li>Download by clicking on Windows 64 bit (or) Any</li>
+	<li>Unzip it</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Configure sonar scanner about the project details</div><div class="panel-body">
+<ul>
+	<li>I am configuring maven project</li>
+	<li> Go to unzipped sonar-scanner-3.0.1.733/conf, open sonar-scanner.properties using any editor</li>
+	<li>Give the following properties to configure the project:
+	<pre><code>
+sonar.projectKey=CoreJavaPractice
+sonar.projectName=CoreJavaPractice
+sonar.projectVersion=1.0
+sonar.language=java
+sonar.projectBaseDir=E:/Backup/JavaPrep/practiceProjects/CoreJavaPractice
+sonar.sources=src/main/java
+sonar.binaries=target/classes
+sonar.verbose=true
+	</code></pre>
+	</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Run sonarqube</div><div class="panel-body">
+<ul>
+	<li>Open command prompt</li>
+	<li>Go to unzipped folder/sonarqube-6.3.1/bin/windows-x86-64</li>
+	<li>Run StartSonar.bat</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarSetup1.jpg"/></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Run sonar scanner</div><div class="panel-body">
+<ul>
+	<li>Open command prompt</li>
+	<li>Go to sonar scanner unzipped folder/sonar-scanner-3.0.1.733/bin</li>
+	<li>Run sonar-scanner.bat</li>
+	<li>Starting the sonar scanner</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarSetup2.jpg"/></li>
+	<li>Sonar scanner completed and generated the report at <em>http://localhost:9000/dashboard/index/CoreJavaPractice</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarSetup3.jpg"/></li>
+	<li>This will scan the project we configured in properties file and generates report</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Open the report in the browser</div><div class="panel-body">
+<ul>
+	<li>Open the link <em>http://localhost:9000/dashboard/index/CoreJavaPractice</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/tools/sonarSetup4.jpg"/></li>
+</ul>
+</div></div>

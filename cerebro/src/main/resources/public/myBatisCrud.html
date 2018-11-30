@@ -1,0 +1,567 @@
+<div class="panel panel-primary"><div class="panel-heading">Create core java project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.mybatis.practice -DartifactId=MyBatisPractice -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/mybatis/1-myBatisCrud.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.mybatis.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;MyBatisPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;MyBatisPractice&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- MyBatis --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+			&lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+			&lt;version&gt;3.3.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- H2 --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;1.4.193&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">scripts.sql</div><div class="panel-body">
+<pre><code>
+drop table student if exists;
+
+drop sequence student_seq if exists;
+
+CREATE SEQUENCE STUDENT_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+create table student(
+	id number(38),
+	name varchar2(50),
+	course varchar2(50),
+	START_DATE date,
+	END_DATE date,
+	constraint student_pk primary key(id)
+);
+
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jack','Java',parsedatetime('01-07-2017', 'dd-mm-yyyy'),parsedatetime('01-08-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jill','Groovy',parsedatetime('01-09-2017', 'dd-mm-yyyy'),parsedatetime('01-10-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jim','Scala',parsedatetime('01-11-2017', 'dd-mm-yyyy'),parsedatetime('01-12-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'John','Python',parsedatetime('01-01-2017', 'dd-mm-yyyy'),parsedatetime('01-02-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Scott','Spock',parsedatetime('01-03-2017', 'dd-mm-yyyy'),parsedatetime('01-04-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Mike','H20',parsedatetime('01-07-2017', 'dd-mm-yyyy'),parsedatetime('01-08-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Rick','Spark',parsedatetime('01-05-2017', 'dd-mm-yyyy'),parsedatetime('01-06-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Rich','Kafka',parsedatetime('01-07-2018', 'dd-mm-yyyy'),parsedatetime('01-08-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Emy','Spring',parsedatetime('01-02-2018', 'dd-mm-yyyy'),parsedatetime('01-03-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Stott','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Mahesh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Suresh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Ramesh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+
+COMMIT;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MyBatisConfiguration.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE configuration PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+	
+	&lt;typeAliases&gt;
+		&lt;typeAlias type=&quot;com.mybatis.crud.practice.Student&quot; alias=&quot;StudentAlias&quot;/&gt;
+		&lt;typeAlias type=&quot;com.mybatis.crud.practice.Student2&quot; alias=&quot;Student2Alias&quot;/&gt;
+	&lt;/typeAliases&gt;
+
+	&lt;environments default=&quot;development&quot;&gt;
+		&lt;environment id=&quot;development&quot;&gt;
+			&lt;transactionManager type=&quot;JDBC&quot;/&gt;
+			
+			&lt;dataSource type=&quot;POOLED&quot;&gt;
+				&lt;property name=&quot;driver&quot; value=&quot;org.h2.Driver&quot;/&gt;
+				&lt;property name=&quot;url&quot; value=&quot;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/MyBatisProjects/MyBatisPractice/src/test/java/com/mybatis/crud/practice/db;MV_STORE=FALSE&quot;/&gt;
+				&lt;property name=&quot;username&quot; value=&quot;admin&quot;/&gt;
+				&lt;property name=&quot;password&quot; value=&quot;admin&quot;/&gt;
+			&lt;/dataSource&gt;
+		&lt;/environment&gt;
+	&lt;/environments&gt;
+	
+	&lt;mappers&gt;
+		&lt;mapper resource=&quot;mappers/insertMapper.xml&quot;/&gt;
+		&lt;mapper resource=&quot;mappers/readMapper.xml&quot;/&gt;
+		&lt;mapper resource=&quot;mappers/updateMapper.xml&quot;/&gt;
+		&lt;mapper resource=&quot;mappers/deleteMapper.xml&quot;/&gt;
+	&lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">insertMapper.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;mapper namespace=&quot;Student&quot;&gt;
+
+	&lt;!-- Insert query --&gt;
+	&lt;insert id=&quot;insertQuery&quot; parameterType=&quot;StudentAlias&quot;&gt;
+		insert into student(id, name, course, start_date, end_date) values (#{id}, #{name},#{course},#{courseStartDate}, #{courseEndDate})
+	&lt;/insert&gt;
+	
+&lt;/mapper&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">readMapper.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;mapper namespace=&quot;Student&quot;&gt;
+
+	&lt;!-- Read queries --&gt;
+	&lt;resultMap id=&quot;allColumnsResultMap&quot; type=&quot;StudentAlias&quot;&gt;
+		&lt;result property=&quot;id&quot; column=&quot;ID&quot;/&gt;
+		&lt;result property=&quot;name&quot; column=&quot;NAME&quot;/&gt;
+		&lt;result property=&quot;course&quot; column=&quot;COURSE&quot;/&gt;
+		&lt;result property=&quot;courseStartDate&quot; column=&quot;START_DATE&quot;/&gt;
+		&lt;result property=&quot;courseEndDate&quot; column=&quot;END_DATE&quot;/&gt;
+	&lt;/resultMap&gt;
+	
+	&lt;resultMap id=&quot;nameAndCourseColumns&quot; type=&quot;Student2Alias&quot;&gt;
+		&lt;result property=&quot;name&quot; column=&quot;NAME&quot;/&gt;
+		&lt;result property=&quot;course&quot; column=&quot;COURSE&quot;/&gt;
+	&lt;/resultMap&gt;
+	
+	&lt;!-- get all records --&gt;
+	&lt;select id=&quot;getAll&quot; resultMap=&quot;allColumnsResultMap&quot;&gt;
+		select * from student
+	&lt;/select&gt;
+	
+	&lt;select id=&quot;getById&quot; parameterType=&quot;int&quot; resultMap=&quot;allColumnsResultMap&quot;&gt;
+		select * from student where id = #{id}
+	&lt;/select&gt;
+	
+	&lt;select id=&quot;getByNameLike&quot; parameterType=&quot;string&quot; resultMap=&quot;allColumnsResultMap&quot;&gt;
+		select * from student where name like #{inputName}
+	&lt;/select&gt;
+	
+	&lt;select id=&quot;getByNameAndCourse&quot; parameterType=&quot;map&quot; resultMap=&quot;allColumnsResultMap&quot;&gt;
+		select * from student where name like #{inputName} and course like #{inputCourse}
+	&lt;/select&gt;
+	
+	&lt;select id=&quot;getNameAndCourse&quot; resultMap=&quot;nameAndCourseColumns&quot;&gt;
+		select name, course from student
+	&lt;/select&gt;
+	
+&lt;/mapper&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">updateMapper.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;mapper namespace=&quot;Student&quot;&gt;
+
+	&lt;!-- update query --&gt;
+	&lt;update id=&quot;updateQuery&quot; parameterType=&quot;map&quot;&gt;
+		update student set course=#{inputCourse} where name=#{inputName}
+	&lt;/update&gt;
+&lt;/mapper&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">deleteMapper.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;mapper namespace=&quot;Student&quot;&gt;
+
+	&lt;!-- update query --&gt;
+	&lt;delete id=&quot;deleteQuery&quot; parameterType=&quot;string&quot;&gt;
+		delete from student where name like #{inputName}
+	&lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<pre><code>
+package com.mybatis.crud.practice;
+
+import java.util.Date;
+
+public class Student {
+
+	private Integer id;
+	private String name;
+	private String course;
+	private Date courseStartDate;
+	private Date courseEndDate;
+
+	public Student() {
+	}
+
+	public Student(Integer id, String name, String course, Date courseStartDate, Date courseEndDate) {
+		this.id = id;
+		this.name = name;
+		this.course = course;
+		this.courseStartDate = courseStartDate;
+		this.courseEndDate = courseEndDate;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public Date getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	public void setCourseStartDate(Date courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+
+	public Date getCourseEndDate() {
+		return courseEndDate;
+	}
+
+	public void setCourseEndDate(Date courseEndDate) {
+		this.courseEndDate = courseEndDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student (id=&quot; + id + &quot;, name=&quot; + name + &quot;, course=&quot; + course + &quot;, courseStartDate=&quot;
+				+ courseStartDate + &quot;, courseEndDate=&quot; + courseEndDate + &quot;)&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student2.java</div><div class="panel-body">
+<pre><code>
+package com.mybatis.crud.practice;
+
+public class Student2 {
+
+	private String name;
+	private String course;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student2 (name=&quot; + name + &quot;, course=&quot; + course + &quot;)&quot;;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">InsertPractice.java</div><div class="panel-body">
+<pre><code>
+package com.mybatis.crud.practice;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Date;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Test;
+
+public class InsertPractice {
+
+	@Test
+	public void insert() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
+		try (SqlSession sqlSession = sqlSessionFactory.openSession();) {
+			Student student = new Student(21, &quot;Jack&quot;, &quot;Java&quot;, new Date(), new Date());
+
+			// insert record
+			sqlSession.insert(&quot;Student.insertQuery&quot;, student);
+			sqlSession.commit();
+		}
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">getAll - select * from student</div><div class="panel-body">
+<pre><code>
+public void read() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			List&lt;Student&gt; list = sqlSession.selectList(&quot;Student.getAll&quot;);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Student (id=5, name=Scott, course=Spock, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=6, name=Mike, course=H20, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=7, name=Rick, course=Spark, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=8, name=Rich, course=Kafka, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=9, name=Emy, course=Spring, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=11, name=Mahesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=12, name=Suresh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=13, name=Ramesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=10, name=Stott, course=MyBatis2, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">getById - select * from student where id = #{id}</div><div class="panel-body">
+<pre><code>
+public void read2() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			List&lt;Student&gt; list = sqlSession.selectList(&quot;Student.getById&quot;, 10);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Student (id=10, name=Stott, course=MyBatis2, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">getByNameLike - select * from student where name like #{inputName}</div><div class="panel-body">
+<pre><code>
+public void read3() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			List&lt;Student&gt; list = sqlSession.selectList(&quot;Student.getByNameLike&quot;, &quot;S%&quot;);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Student (id=5, name=Scott, course=Spock, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=12, name=Suresh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=10, name=Stott, course=MyBatis2, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">getByNameAndCourse - select * from student where name like #{inputName} and course like #{inputCourse}</div><div class="panel-body">
+<pre><code>
+public void read4() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			Map&lt;String, String&gt; inputMap = new HashMap&lt;&gt;();
+			inputMap.put(&quot;inputName&quot;, &quot;R%&quot;);
+			inputMap.put(&quot;inputCourse&quot;, &quot;S%&quot;);
+			List&lt;Student&gt; list = sqlSession.selectList(&quot;Student.getByNameAndCourse&quot;, inputMap);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Student (id=7, name=Rick, course=Spark, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">getNameAndCourse - select name, course from student</div><div class="panel-body">
+<pre><code>
+public void read5() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			List&lt;Student2&gt; list = sqlSession.selectList(&quot;Student.getNameAndCourse&quot;);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Student2 (name=Scott, course=Spock)
+Student2 (name=Mike, course=H20)
+Student2 (name=Rick, course=Spark)
+Student2 (name=Rich, course=Kafka)
+Student2 (name=Emy, course=Spring)
+Student2 (name=Mahesh, course=Hibernate)
+Student2 (name=Suresh, course=Hibernate)
+Student2 (name=Ramesh, course=Hibernate)
+Student2 (name=Stott, course=MyBatis2)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">UpdatePractice.java</div><div class="panel-body">
+<pre><code>
+public void update1() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			Map&lt;String, String&gt; inputMap = new HashMap&lt;&gt;();
+			inputMap.put(&quot;inputCourse&quot;, &quot;MyBatis2&quot;);
+			inputMap.put(&quot;inputName&quot;, &quot;Stott&quot;);
+
+			// read records
+			List&lt;Student&gt; list = sqlSession.selectList(&quot;Student.getByNameLike&quot;, &quot;Stott&quot;);
+			System.out.println(&quot;----- Before -------&quot;);
+			list.stream().forEach(System.out::println);
+
+			// execute update
+			sqlSession.update(&quot;Student.updateQuery&quot;, inputMap);
+			sqlSession.commit();
+
+			// read records
+			list = sqlSession.selectList(&quot;Student.getByNameLike&quot;, &quot;Stott&quot;);
+			System.out.println(&quot;----- After -------&quot;);
+			list.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+----- Before -------
+Student (id=10, name=Stott, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+----- After -------
+Student (id=10, name=Stott, course=MyBatis2, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DeletePractice.java</div><div class="panel-body">
+<pre><code>
+public void delete1() throws IOException {
+		Reader reader = Resources.getResourceAsReader(&quot;MyBatisConfiguration.xml&quot;);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+			List&lt;Student&gt; allStudents = sqlSession.selectList(&quot;Student.getAll&quot;);
+			System.out.println(&quot;----- Before ------&quot;);
+			allStudents.stream().forEach(System.out::println);
+
+			// execute update
+			sqlSession.delete(&quot;Student.deleteQuery&quot;, &quot;J%&quot;);
+			sqlSession.commit();
+
+			allStudents = sqlSession.selectList(&quot;Student.getAll&quot;);
+			System.out.println(&quot;----- After ------&quot;);
+			allStudents.stream().forEach(System.out::println);
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+----- Before ------
+Student (id=1, name=Jack, course=Java, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=2, name=Jill, course=Groovy, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=3, name=Jim, course=Scala, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=4, name=John, course=Python, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=5, name=Scott, course=Spock, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=6, name=Mike, course=H20, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=7, name=Rick, course=Spark, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=8, name=Rich, course=Kafka, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=9, name=Emy, course=Spring, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=10, name=Stott, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=11, name=Mahesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=12, name=Suresh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=13, name=Ramesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+----- After ------
+Student (id=5, name=Scott, course=Spock, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=6, name=Mike, course=H20, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=7, name=Rick, course=Spark, courseStartDate=Sun Jan 01 00:00:00 IST 2017, courseEndDate=Sun Jan 01 00:00:00 IST 2017)
+Student (id=8, name=Rich, course=Kafka, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=9, name=Emy, course=Spring, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=10, name=Stott, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=11, name=Mahesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=12, name=Suresh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+Student (id=13, name=Ramesh, course=Hibernate, courseStartDate=Mon Jan 01 00:00:00 IST 2018, courseEndDate=Mon Jan 01 00:00:00 IST 2018)
+</code></pre>
+</div></div>

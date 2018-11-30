@@ -1,0 +1,910 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">About this example</div><div class="panel-body">
+<ul>
+<li>Using Spring JPA with Spring MVC</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Web project using Maven from cmd</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.mvc.jpa -DartifactId=SpringMvcJpa -Dversion=1.0.SNAPSHOT -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<ul>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/1-springMvcJpa.jpg" /></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/8-springMvcJpa.jpg" /></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.mvc.jpa&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringMvcJpa&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringMvcJpa Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	<em>&lt;!-- properties --&gt;</em>
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+		&lt;spring.version&gt;4.3.6.RELEASE&lt;/spring.version&gt;
+		&lt;h2.version&gt;1.4.193&lt;/h2.version&gt;
+		&lt;hibernate.version&gt;5.2.6.Final&lt;/hibernate.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+			&lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+			&lt;version&gt;2.5&lt;/version&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;jstl&lt;/groupId&gt;
+			&lt;artifactId&gt;jstl&lt;/artifactId&gt;
+			&lt;version&gt;1.2&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;provided&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;${h2.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+			&lt;version&gt;${hibernate.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.transaction&lt;/groupId&gt;
+			&lt;artifactId&gt;jta&lt;/artifactId&gt;
+			&lt;version&gt;1.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringMvcJpa&lt;/finalName&gt;
+		&lt;plugins&gt;
+
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;fork&gt;false&lt;/fork&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+				&lt;version&gt;2.2.1&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;attach-source&lt;/id&gt;
+						&lt;phase&gt;verify&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;jar&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-javadoc-plugin&lt;/artifactId&gt;
+				&lt;version&gt;2.9&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;generate-javadoc&lt;/id&gt;
+						&lt;phase&gt;verify&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;jar&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre><code>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+	version=&quot;3.0&quot;&gt;
+	&lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+
+	&lt;context-param&gt;
+		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+		&lt;param-value&gt;classpath:/jpaContext.xml&lt;/param-value&gt;
+	&lt;/context-param&gt;
+
+	&lt;listener&gt;
+		&lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+	&lt;/listener&gt;
+
+	&lt;servlet&gt;
+		&lt;servlet-name&gt;springServlet&lt;/servlet-name&gt;
+		&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+			&lt;param-value&gt;/WEB-INF/springConfig.xml&lt;/param-value&gt;
+		&lt;/init-param&gt;
+	&lt;/servlet&gt;
+
+	&lt;servlet-mapping&gt;
+		&lt;servlet-name&gt;springServlet&lt;/servlet-name&gt;
+		&lt;url-pattern&gt;*.spring&lt;/url-pattern&gt;
+	&lt;/servlet-mapping&gt;
+	
+	<em>&lt;!-- on lazy load we will get LaziInitializationException. By using this filter we can increase the scope of Hibernate session 
+	and solve this exception--&gt;</em>
+	&lt;filter&gt;
+		&lt;filter-name&gt;openEntityManagerInViewFilter&lt;/filter-name&gt;
+		&lt;filter-class&gt;org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter&lt;/filter-class&gt;
+	&lt;/filter&gt;
+
+	&lt;filter-mapping&gt;
+		&lt;filter-name&gt;openEntityManagerInViewFilter&lt;/filter-name&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/filter-mapping&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">springConfig.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+	xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+	xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+&lt;context:component-scan base-package=&quot;jpa.hello.world.controller&quot;/&gt;
+&lt;context:annotation-config/&gt;
+&lt;mvc:annotation-driven/&gt;
+
+&lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+	&lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot;/&gt;
+	&lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;/&gt;
+&lt;/bean&gt;
+
+&lt;!-- &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot; p:prefix=&quot;/WEB-INF/jsp/&quot; p:suffix=&quot;.jsp&quot;/&gt; --&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">scripts.sql</div><div class="panel-body">
+<pre><code>
+DROP TABLE EMPLOYEE;
+
+DROP TABLE DEPT;
+
+CREATE TABLE DEPT(
+DEPT_ID NUMBER PRIMARY KEY,
+DEPT_NAME VARCHAR(100)
+);
+
+CREATE TABLE EMPLOYEE(
+EMPLOYEE_ID NUMBER PRIMARY KEY,
+FIRST_NAME VARCHAR(500),
+LAST_NAME VARCHAR(500),
+SALARY NUMBER(10,2),
+JOINING_DATE DATE,
+DEPARTMENT_DEPT_ID NUMBER REFERENCES DEPT(DEPT_ID)
+);
+
+
+
+CREATE SEQUENCE EMPLOYEE_SEQUENCE
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE DEPT_SEQUENCE
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">persistence.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence_2_0.xsd&quot;
+	version=&quot;2.0&quot;&gt;
+	
+	&lt;persistence-unit name=&quot;punit&quot;/&gt;
+	
+&lt;/persistence&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">jpaContext.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+	xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+	xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd&quot;&gt;
+
+&lt;context:annotation-config /&gt;
+
+<em>&lt;!-- If we don't declare this here we will get an exception. --&gt;</em>
+	&lt;context:component-scan base-package=&quot;jpa.hello.world&quot;/&gt;
+
+&lt;bean class=&quot;org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor&quot; /&gt;
+
+<em>&lt;!-- hibernate.hbm2ddl.auto possible values create, create-drop, update, validate, none 
+	create = will create our data base
+	create-drop = will create data base when we start our application and drop it when we stopped our application
+	update = will update if any fields we change but not delete anything we have added already
+	validate = typically run in production when we are finished working on an application. This will go through and
+			   verify that what we have in our database
+	none = will not do anything. everything we have to do manually 
+	--&gt;</em>
+	&lt;bean id=&quot;myEntityManagerFactory&quot; class=&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;&gt;
+		&lt;property name=&quot;persistenceUnitName&quot; value=&quot;punit&quot; /&gt;
+		&lt;property name=&quot;dataSource&quot; ref=&quot;myDataSource&quot; /&gt;
+		&lt;property name=&quot;jpaVendorAdapter&quot; ref=&quot;hibernateJpaVendorAdapter&quot; /&gt;
+		&lt;property name=&quot;jpaPropertyMap&quot;&gt;
+			&lt;map&gt;
+				&lt;entry key=&quot;hibernate.dialect&quot; value=&quot;org.hibernate.dialect.H2Dialect&quot; /&gt;
+				&lt;entry key=&quot;hibernate.hbm2ddl.auto&quot; value=&quot;none&quot; /&gt;
+				&lt;entry key=&quot;hibernate.format_sql&quot; value=&quot;true&quot; /&gt;
+			&lt;/map&gt;
+		&lt;/property&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id=&quot;hibernateJpaVendorAdapter&quot; class=&quot;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&quot;&gt;
+		&lt;property name=&quot;showSql&quot; value=&quot;true&quot; /&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id=&quot;myTransactionManager&quot; class=&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;&gt;
+		&lt;property name=&quot;entityManagerFactory&quot; ref=&quot;myEntityManagerFactory&quot;&gt;&lt;/property&gt;
+	&lt;/bean&gt;
+
+	&lt;tx:annotation-driven transaction-manager=&quot;myTransactionManager&quot; /&gt;
+
+	&lt;bean id=&quot;myDataSource&quot; class=&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;&gt;
+		&lt;property name=&quot;driverClassName&quot; value=&quot;org.h2.Driver&quot; /&gt;
+		&lt;property name=&quot;url&quot; value=&quot;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/Spring/SpringORMProjects/SpringMvcJpa/src/main/resources/springJpa;MV_STORE=FALSE&quot; /&gt;
+		&lt;property name=&quot;username&quot; value=&quot;root&quot; /&gt;
+		&lt;property name=&quot;password&quot; value=&quot;password&quot; /&gt;
+	&lt;/bean&gt;
+	
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MyController.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import jpa.hello.world.model.Department;
+import jpa.hello.world.model.Employee;
+import jpa.hello.world.service.DepartmentService;
+import jpa.hello.world.service.EmployeeService;
+
+@Controller
+public class MyController {
+
+	@Autowired
+	@Qualifier(value = &quot;employeeService&quot;)
+	private EmployeeService employeeService;
+
+	@Autowired
+	@Qualifier(&quot;departmentService&quot;)
+	private DepartmentService departmentService;
+
+	<em>/**
+	 * Index page
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/index&quot;, method = RequestMethod.GET)
+	public String index() {
+		return &quot;index&quot;;
+	}
+
+	<em>/**
+	 * Method to render employee form page
+	 * @param employee
+	 * @param modelAndView
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/showEmployeeForm&quot;, method = RequestMethod.GET)
+	public ModelAndView employeeForm(@ModelAttribute(&quot;employeeModel&quot;) Employee employee, ModelAndView modelAndView) {
+		modelAndView.setViewName(&quot;saveEmployee&quot;);
+		return modelAndView;
+	}
+
+	<em>/**
+	 * Method to save employee
+	 * @param employee
+	 * @param modelAndView
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/saveEmployee&quot;, method = RequestMethod.POST)
+	public ModelAndView saveEmployeeResults(@ModelAttribute(&quot;employeeModel&quot;) Employee employee,
+			ModelAndView modelAndView) {
+
+		List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+		employees.add(employee);
+		Department department = new Department(&quot;Product_Development&quot;, employees);
+		employee.setDepartment(department);
+
+		departmentService.save(department);
+		modelAndView.addObject(&quot;employee&quot;, employee);
+		modelAndView.setViewName(&quot;saveEmployeeResults&quot;);
+
+		return modelAndView;
+	}
+
+	<em>/**
+	 * Method to get all employees and display
+	 * @param modelAndView
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/allEmployees&quot;, method = RequestMethod.GET)
+	public ModelAndView showAllEmployees(ModelAndView modelAndView) {
+		List&lt;Employee&gt; employees = employeeService.getAllEmployees();
+		modelAndView.addObject(&quot;employees&quot;, employees);
+		modelAndView.setViewName(&quot;allEmployees&quot;);
+		return modelAndView;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Department.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.model;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;DEPT&quot;)
+public class Department {
+
+	private Long deptId;
+	private String deptName;
+	private List&lt;Employee&gt; employees;
+
+	public Department(String deptName, List&lt;Employee&gt; employees) {
+		this.deptName = deptName;
+		this.employees = employees;
+	}
+
+	public Department() {
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;DEPT_SEQUENCE&quot;)
+	@SequenceGenerator(name = &quot;DEPT_SEQUENCE&quot;, sequenceName = &quot;DEPT_SEQUENCE&quot;, allocationSize = 1)
+	@Column(name = &quot;DEPT_ID&quot;)
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	@Column(name = &quot;DEPT_NAME&quot;)
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	@OneToMany(mappedBy = &quot;department&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List&lt;Employee&gt; getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List&lt;Employee&gt; employees) {
+		this.employees = employees;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Department [deptId=&quot; + deptId + &quot;, deptName=&quot; + deptName + &quot;, employees=&quot; + employees + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;EMPLOYEE&quot;)
+public class Employee {
+
+	private Long id;
+	private String firstName;
+	private String lastName;
+	private Double salary;
+	private Department department;
+
+	public Employee(String firstName, String lastName, Double salary, Department department) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.salary = salary;
+		this.department = department;
+	}
+
+	public Employee() {
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;employeeSequence&quot;)
+	@SequenceGenerator(name = &quot;employeeSequence&quot;, sequenceName = &quot;EMPLOYEE_SEQUENCE&quot;, allocationSize = 1)
+	@Column(name = &quot;EMPLOYEE_ID&quot;)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;FIRST_NAME&quot;)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	@Column(name = &quot;LAST_NAME&quot;)
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	@Column(name = &quot;SALARY&quot;)
+	public Double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+
+	@ManyToOne
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Employee [firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, salary=&quot; + salary + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DeparmentRepository.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.repository;
+
+import jpa.hello.world.model.Department;
+
+public interface DepartmentRepository {
+
+	public abstract Department save(Department department);
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DepartmentRepositoryImpl.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.repository.impl;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Repository;
+
+import jpa.hello.world.model.Department;
+import jpa.hello.world.repository.DepartmentRepository;
+
+@Repository(&quot;deparmentRepository&quot;)
+public class DepartmentRepositoryImpl implements DepartmentRepository {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public Department save(Department department) {
+		entityManager.persist(department);
+		return department;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeRepository.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.repository;
+
+import java.util.List;
+
+import jpa.hello.world.model.Employee;
+
+public interface EmployeeRepository {
+
+	public abstract List&lt;Employee&gt; getAllEmployees();
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeRepositoryImpl.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.repository.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import jpa.hello.world.model.Employee;
+import jpa.hello.world.repository.EmployeeRepository;
+
+@Repository(&quot;employeeRepository&quot;)
+public class EmployeeRepositoryImpl implements EmployeeRepository {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@SuppressWarnings({ &quot;unchecked&quot; })
+	@Override
+	public List&lt;Employee&gt; getAllEmployees() {
+		Query query = entityManager.createQuery(&quot;SELECT emp FROM Employee emp&quot;);
+		List&lt;Employee&gt; employees = query.getResultList();
+		return employees;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DepartmentService.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.service;
+
+import jpa.hello.world.model.Department;
+
+public interface DepartmentService {
+
+	public abstract Department save(Department department);
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DepartmentServiceImpl.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import jpa.hello.world.model.Department;
+import jpa.hello.world.repository.DepartmentRepository;
+import jpa.hello.world.service.DepartmentService;
+
+@Service(&quot;departmentService&quot;)
+public class DepartmentServiceImpl implements DepartmentService {
+
+	@Autowired
+	@Qualifier(&quot;deparmentRepository&quot;)
+	private DepartmentRepository departmentRepository;
+
+	@Transactional
+	@Override
+	public Department save(Department department) {
+		return departmentRepository.save(department);
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeService.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.service;
+
+import java.util.List;
+
+import jpa.hello.world.model.Employee;
+
+public interface EmployeeService {
+
+	public abstract List&lt;Employee&gt; getAllEmployees();
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeServiceImpl.java</div><div class="panel-body">
+<pre><code>
+package jpa.hello.world.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import jpa.hello.world.model.Employee;
+import jpa.hello.world.repository.EmployeeRepository;
+import jpa.hello.world.service.EmployeeService;
+
+@Service(&quot;employeeService&quot;)
+public class EmployeeServiceImpl implements EmployeeService {
+
+	@Autowired
+	@Qualifier(&quot;employeeRepository&quot;)
+	private EmployeeRepository employeeRepository;
+
+	@Override
+	public List&lt;Employee&gt; getAllEmployees() {
+		return employeeRepository.getAllEmployees();
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href=&quot;showEmployeeForm.spring&quot;&gt;Show Employee Form&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href=&quot;allEmployees.spring&quot;&gt;Get All Employees&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">saveEmployee.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%@taglib prefix=&quot;spring&quot; uri=&quot;http://www.springframework.org/tags/form&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;Employee Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	Welcome to Employee Form
+
+	&lt;spring:form method=&quot;post&quot; action=&quot;saveEmployee.spring&quot; commandName=&quot;employeeModel&quot;&gt;
+
+		&lt;table&gt;
+			&lt;tr&gt;
+				&lt;td&gt;First Name:&lt;/td&gt;
+				&lt;td&gt;&lt;spring:input path=&quot;firstName&quot; /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+
+			&lt;tr&gt;
+				&lt;td&gt;Last Name:&lt;/td&gt;
+				&lt;td&gt;&lt;spring:input path=&quot;lastName&quot; /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+
+			&lt;tr&gt;
+				&lt;td&gt;Salary:&lt;/td&gt;
+				&lt;td&gt;&lt;spring:input path=&quot;salary&quot; /&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td&gt;&lt;/td&gt;
+				&lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+			&lt;/tr&gt;
+		&lt;/table&gt;
+
+	&lt;/spring:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">saveEmployeeResults.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;Save Employee Results&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;table&gt;
+		&lt;tr&gt;
+			&lt;th&gt;First Name:&lt;/th&gt;
+			&lt;th&gt;Last Name: &lt;/th&gt;
+			&lt;th&gt;Salary:&lt;/th&gt;
+			&lt;th&gt;Department Name&lt;/th&gt;
+		&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td&gt;${employee.firstName}&lt;/td&gt;
+				&lt;td&gt;${employee.lastName}&lt;/td&gt;
+				&lt;td&gt;${employee.salary}&lt;/td&gt;
+				&lt;td&gt;${employee.department.deptName}&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">allEmployees.jsp</div><div class="panel-body">
+<pre><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+&lt;title&gt;All Employees&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table&gt;
+		&lt;tr&gt;
+			&lt;th&gt;First Name:&lt;/th&gt;
+			&lt;th&gt;Last Name: &lt;/th&gt;
+			&lt;th&gt;Salary:&lt;/th&gt;
+			&lt;th&gt;Department Name&lt;/th&gt;
+		&lt;/tr&gt;
+		&lt;c:forEach items=&quot;${employees}&quot; var=&quot;employee&quot;&gt;
+			&lt;tr&gt;
+				&lt;td&gt;${employee.firstName}&lt;/td&gt;
+				&lt;td&gt;${employee.lastName}&lt;/td&gt;
+				&lt;td&gt;${employee.salary}&lt;/td&gt;
+				&lt;td&gt;${employee.department.deptName}&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/c:forEach&gt;
+	&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Deploy in tomcat and start the server - output</div><div class="panel-body">
+<ul>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/2-springMvcJpa.jpg"/></li>
+	<li>click Show Employee Form link</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/3-springMvcJpa.jpg"/></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/4-springMvcJpa.jpg"/></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/5-springMvcJpa.jpg"/></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/6-springMvcJpa.jpg"/></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/7-springMvcJpa.jpg"/></li>
+</ul>
+</div></div>

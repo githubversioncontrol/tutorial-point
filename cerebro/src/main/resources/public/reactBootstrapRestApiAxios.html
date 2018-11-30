@@ -1,0 +1,186 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create project using create-react-app
+<em>cmd&gt; create-react-app react-bootstrap-spring-rest-poc1</em>
+3. Go inside above project
+<em>cmd&gt; cd react-bootstrap-spring-rest-poc1</em>
+4. Install react, react-dom and bootstrap into application and save to package.json
+<em>react-bootstrap-spring-rest-poc1&gt; npm install --save react react-dom 
+react-bootstrap-spring-rest-poc1&gt; npm install --save bootstrap</em>
+5. Install axios
+<em>react-bootstrap-spring-rest-poc1&gt; npm install --save axios</em>
+6. Add <em>import '../node_modules/bootstrap/dist/css/bootstrap.min.css';</em> entry to index.js
+7. Open application in any editor (VisualCode/Sublime etc)
+8. Update index.js and App.js
+9. VisualCode - View - Integrated Terminal - npm start
+10. Download SpringDataRestPractice Example from <a href="https://github.com/avinashbabudonthu/SpringDataRestPractice.git" target="_blank">github</a>
+11. Import the project into eclipe/STS
+12. Run the application spring.data.rest.MyApp. This application in running on port 9091. 
+Change the port in src/main/resources/application.properties if want to run on different port.
+13. If you are running on Firefox - add CORS plugin and enable to support React to Rest API call
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactBootstrapRestApiAxios.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.js</div><div class="panel-body">
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+registerServiceWorker();
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Axios from 'axios';
+
+class AddEmployeeForm extends Component {
+
+  saveEmployee = (event) =&gt; {
+    event.preventDefault();
+    // TODO hit REST API to save the object
+    this.props.addEmployee({ employeeName: this.refs.name.value, job: this.refs.job.value, salary: this.refs.salary.value })
+    this.refs.name.value = &quot;&quot;;
+    this.refs.job.value = &quot;&quot;;
+    this.refs.salary.value = &quot;&quot;;
+  }
+
+  getAllEmployees = (event) =&gt; {
+    event.preventDefault();
+    let url = &quot;http://localhost:9091/emps&quot;;
+    Axios.get(url).then(response =&gt; {
+      this.props.getEmployees(response);
+    }).catch(error =&gt; {
+      console.log(&quot;Errror&quot;);
+    });
+  }
+
+  render() {
+    return (
+      &lt;div className=&quot;container&quot;&gt;
+        &lt;h2&gt;Add Employee&lt;/h2&gt;
+        &lt;form onSubmit={this.saveEmployee}&gt;
+          &lt;div className=&quot;form-group&quot;&gt;
+            &lt;label &gt;Name:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; className=&quot;form-control&quot; id=&quot;name&quot; placeholder=&quot;Enter Name&quot; ref=&quot;name&quot;&gt;&lt;/input&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;form-group&quot;&gt;
+            &lt;label &gt;Course:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; className=&quot;form-control&quot; id=&quot;job&quot; placeholder=&quot;Enter Job&quot; ref=&quot;job&quot;&gt;&lt;/input&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;form-group&quot;&gt;
+            &lt;label &gt;Email:&lt;/label&gt;
+            &lt;input type=&quot;email&quot; className=&quot;form-control&quot; id=&quot;salary&quot; placeholder=&quot;Enter Salary&quot; ref=&quot;salary&quot;&gt;&lt;/input&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;checkbox&quot;&gt;
+            &lt;label&gt;&lt;input type=&quot;checkbox&quot; ref=&quot;remember&quot; /&gt; Remember me&lt;/label&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;submit&quot; className=&quot;btn btn-default&quot;&gt;Save Employee&lt;/button&gt;
+          &lt;button type=&quot;button&quot; className=&quot;btn btn-default&quot; onClick={this.getAllEmployees}&gt; Get Employees &lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class EmployeeRowComponent extends Component {
+  render(props) {
+    return (
+      &lt;tr&gt;
+        &lt;td&gt;{this.props.employeeName}&lt;/td&gt;
+        &lt;td&gt;{this.props.job}&lt;/td&gt;
+        &lt;td&gt;{this.props.salary}&lt;/td&gt;
+      &lt;/tr&gt;
+    );
+  }
+}
+
+class EmployeesListComponent extends Component {
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h2&gt;Employees&lt;/h2&gt;
+        &lt;table className=&quot;table table-hover&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Name&lt;/th&gt;
+              &lt;th&gt;Job&lt;/th&gt;
+              &lt;th&gt;Salary&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            {this.props.students.map(row =&gt; &lt;EmployeeRowComponent key={row.employeeName} {...row} /&gt;)}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class App extends Component {
+  state = {
+    rows: []
+  }
+
+  addStudent = (student) =&gt; {
+    this.setState(prevState =&gt; ({
+      rows: prevState.rows.concat(student)
+    }));
+  }
+
+  getStudents = (response) =&gt; {
+    console.log(response.data._embedded.emps);
+    this.setState(prevState =&gt; ({
+      rows: prevState.rows.concat(response.data._embedded.emps)
+    }));
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;div className=&quot;App&quot;&gt;
+          &lt;header className=&quot;App-header&quot;&gt;
+            &lt;img src={logo} className=&quot;App-logo&quot; alt=&quot;logo&quot; /&gt;
+            &lt;h1 className=&quot;App-title&quot;&gt;React + Bootstrap + Spring Boot Rest API + H2 POC&lt;/h1&gt;
+          &lt;/header&gt;
+        &lt;/div&gt;
+
+        &lt;div className=&quot;container&quot;&gt;
+          &lt;EmployeesListComponent students={this.state.rows} /&gt;
+
+          &lt;AddEmployeeForm addEmployee={this.addStudent} getEmployees={this.getStudents}/&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactBootstrapRestApiAxios.jpg"/>
+<img class="img-responsive" ng-src="images/react/3-reactBootstrapRestApiAxios.jpg"/>
+</div></div>

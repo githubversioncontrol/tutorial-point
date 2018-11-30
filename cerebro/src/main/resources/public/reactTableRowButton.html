@@ -1,0 +1,195 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create react-crud-app app. This will take some time.
+<em>cmd&gt; create-react-app react-crud-app</em>
+3. Install react, react-dom and bootstrap into application and save to package.json
+<em>react-crud-app&gt; npm install --save react react-dom 
+react-crud-app&gt; npm install --save bootstrap</em>
+4. Open project folder in any editor (visual-code, sublime etc)
+5. Add <em>import '../node_modules/bootstrap/dist/css/bootstrap.min.css';</em> entry to index.js
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactTableRowButton.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.js</div><div class="panel-body">
+<pre>
+1. Added import for bootstrap.min.css
+</pre>
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+registerServiceWorker();
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.css</div><div class="panel-body">
+<pre>
+1. Added style for icon (iconStyle)
+</pre>
+<pre>
+.App {
+  text-align: left;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.iconStyle {
+      cursor: pointer;
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import './App.css';
+import logo from './logo.svg';
+
+class App extends Component {
+
+  constructor(){
+    super();
+    this.state = {
+      todos: [],
+      title: &quot;React Todo Application&quot;,
+      counter: 0
+    }
+  }
+
+  addTodo = (event) =&gt; {
+    event.preventDefault();
+    let name = this.refs.name.value;
+    let completed = this.refs.completed.value;
+    let counter = this.state.counter;
+    counter = counter + 1;
+
+    let todo = {
+      name,
+      completed,
+      counter
+    }
+
+    let todos = this.state.todos;
+    todos.push(todo);
+    this.setState({
+      todos: todos,
+      counter: counter
+    });
+
+    this.refs.todoForm.reset();
+  }
+
+  removeTodo = (index) =&gt; {
+    let todos = this.state.todos;
+   
+    let newTodos = [];
+    for (let i = 0; i &lt; todos.length; i++) {
+      let val1 = todos[i];
+      if (val1.counter !== index) {
+        newTodos.push(val1);
+      }
+    }
+
+    this.setState({
+      todos: newTodos
+    });
+  }
+
+  render() {
+    let todos = this.state.todos;
+    
+    return (
+      &lt;div className=&quot;container&quot;&gt;
+         &lt;img className=&quot;App-logo&quot; src={logo} alt=&quot;Logo&quot; /&gt;
+        &lt;hr /&gt;
+
+        &lt;h3&gt;{this.state.title}&lt;/h3&gt;
+        &lt;hr /&gt;
+
+        &lt;form ref=&quot;todoForm&quot;&gt;
+          &lt;input type=&quot;text&quot; className=&quot;form-control&quot; placeholder=&quot;Enter Text&quot; ref=&quot;name&quot; /&gt; &lt;br /&gt;
+          &lt;input type=&quot;text&quot; className=&quot;form-control&quot; placeholder=&quot;Status&quot; ref=&quot;completed&quot; /&gt; &lt;br /&gt;
+          &lt;button type=&quot;button&quot; className=&quot;btn btn-default&quot;  onClick={this.addTodo}&gt;Add Todo &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;hr /&gt;
+        
+        &lt;h2&gt;Hover Rows&lt;/h2&gt;
+        &lt;table className=&quot;table table-hover&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Name&lt;/th&gt;
+              &lt;th&gt;Completed&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            {todos.map(todo =&gt; &lt;tr key={todo.counter}&gt;
+                &lt;td&gt;{todo.name}&lt;/td&gt;
+                &lt;td&gt;{todo.completed} &lt;/td&gt;
+                &lt;td&gt;&lt;button className=&quot;btn btn-default&quot; onClick={this.removeTodo.bind(null, todo.counter)}&gt;Delete&lt;/button&gt; &amp;nbsp;
+                &lt;span className=&quot;glyphicon glyphicon-trash iconStyle&quot; onClick={this.removeTodo.bind(null, todo.counter)}&gt;&lt;/span&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;)}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Initial page</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactTableRowButton.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Add records</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/3-reactTableRowButton.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Delete 3rd records</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/4-reactTableRowButton.jpg"/>
+</div></div>

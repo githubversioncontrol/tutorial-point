@@ -1,0 +1,95 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading"></div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Below example is done in <a href="https://jscomplete.com/repl/" target="_blank">jscomplete</a>
+</pre>
+<pre>
+const Card = (props) =&gt; {
+	return (
+  	&lt;div style={ {margin: '10px'}}&gt;
+    	&lt;img width=&quot;75&quot; src={props.avatar_url} /&gt;
+      &lt;div style={ {display: 'inline-block', marginLeft: 10}}&gt;
+      	&lt;div style={ {fontWeight: 'bold'}}&gt;{props.name}&lt;/div&gt;
+        &lt;div&gt;{props.company} &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+const CardList = (props) =&gt; {
+	return(
+  	&lt;div&gt;
+    	{props.cards.map(card =&gt; &lt;Card {...card} /&gt;)}
+    &lt;/div&gt;
+  );
+}
+
+class Form extends React.Component{
+	state = {
+  	username: &quot;&quot;
+  }
+	handleFormSubmit = (event) =&gt; {
+  	event.preventDefault();
+    console.log(&quot;https://api.github.com/users/&quot;+ this.state.username);
+    axios.get(&quot;https://api.github.com/users/&quot;+ this.state.username)
+    .then(resp =&gt; {
+      this.props.onSubmit(resp.data);
+      this.setState({username: &quot;&quot;});
+    });
+  }
+  
+	render(){
+  	return(
+    	&lt;form onSubmit={this.handleFormSubmit}&gt;
+      	&lt;input 
+        	value={this.state.username}
+          onChange={(event) =&gt; this.setState({username: event.target.value})}
+        	type=&quot;text&quot; placeHolder=&quot;Enter github username&quot;/&gt;
+        &lt;button type=&quot;submit&quot;&gt;Add User&lt;/button&gt;
+      &lt;/form&gt;
+    );
+  }
+}
+
+class App extends React.Component{
+	state= {
+  	cards: []
+}
+
+	addToCards = (cardData) =&gt; {
+  	// console.log(cardData);
+    this.setState(prevState =&gt; ({
+    	cards: prevState.cards.concat(cardData)
+    }));
+  }
+
+	render(){
+  	return(
+    	&lt;div&gt;
+      	&lt;Form onSubmit={this.addToCards}/&gt;
+        &lt;CardList cards={this.state.cards} /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(&lt;App /&gt;, mountNode);
+</pre>
+<em>Sample Data</em>
+<pre>
+https://api.github.com/users/angular
+https://api.github.com/users/avinashbabudonthu
+https://api.github.com/users/facebook
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactGetDataFromGithub.jpg"/>
+</div></div>

@@ -1,0 +1,288 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Install latest version of node. npm will be installed along with node</li>
+	<li>we need npm to create React project</li>
+	<li>Create Project folder</li>
+	<li>go above created project folder in command prompt</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Root Folder and Initialize</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>mkdir reactApp
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm init
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Install babel and babel-cli using npm</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install -g babel
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install -g babel-cli
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Install webpack and update in package.json as dependency</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+--save command will update package.json adding package as dependency
+</pre>
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install webpack --save
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install webpack-dev-server --save
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Install react and react-dom</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install react --save
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install react-dom --save
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Install other babel plugins</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install babel-core
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install babel-loader
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install babel-preset-react
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install babel-preset-es2015
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create files needed for React JS application</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>touch index.html
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>touch App.jsx
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>touch main.js
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>touch webpack.config.js
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">webpack.config.js</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Open webpack.config.js file and add the following code. We are setting webpack entry point to be main.js. 
+Output path is the place where bundled app will be served. We are also setting the development server to 8080 port. 
+You can choose any port you want.
+
+And lastly, we are setting babel loaders to search for js files, and use es2015 and react presets that 
+we installed before.
+</pre>
+<pre>
+var config = {
+   entry: './main.js',
+   output: {
+      path:'/',
+      filename: 'index.js',
+   },
+   devServer: {
+      inline: true,
+      port: 9092
+   },
+   module: {
+      loaders: [
+         {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+               presets: ['es2015', 'react']
+            }
+         }
+      ]
+   }
+}
+module.exports = config;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Install webpack-dev-server</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld>npm install webpack-dev-server -g
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.jsx</div><div class="panel-body">
+<pre>
+import React from 'react';
+
+class Button extends React.Component {
+    render() {
+        return (
+            &lt;button type=&quot;button&quot;&gt;{this.props.name}&lt;/button&gt;
+        );
+    }
+}
+
+class StudentList extends React.Component {
+    render() {
+        return (
+            &lt;div&gt;
+                &lt;table&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Firstname&lt;/th&gt;
+                            &lt;th&gt;Lastname&lt;/th&gt;
+                            &lt;th&gt;Age&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;Jill&lt;/td&gt;
+                            &lt;td&gt;Smith&lt;/td&gt;
+                            &lt;td&gt;19&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;Eve&lt;/td&gt;
+                            &lt;td&gt;Jackson&lt;/td&gt;
+                            &lt;td&gt;21&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+class App extends React.Component {
+    render() {
+        let i = 10;
+
+        let myStyle = {
+            color: '#F00'
+        };
+
+        return (
+            &lt;div&gt;
+                &lt;h1&gt;Hello World&lt;/h1&gt;
+                &lt;h2&gt;Hello World 2&lt;/h2&gt;
+                &lt;h3&gt;Hello World 3&lt;/h3&gt;
+                &lt;p style={myStyle}&gt;This is paragraph with style attribute&lt;/p&gt;    
+                {10+10}
+
+                &lt;h3&gt;{i &gt; 5 ? 'TRUE' : 'FALSE'}&lt;/h3&gt;
+                &lt;h3&gt;{i &gt; 10 ? 'TRUE' : 'FALSE'}&lt;/h3&gt;
+
+                &lt;hr /&gt;
+                &lt;h3&gt;Buttons:&lt;/h3&gt;
+                &lt;Button name=&quot;Add&quot; /&gt;
+                &lt;Button name=&quot;Edit&quot; /&gt;
+                &lt;Button name=&quot;Delete&quot; /&gt;
+
+                &lt;hr /&gt;
+                &lt;h1&gt;Student List&lt;/h1&gt;
+                &lt;StudentList /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.html</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+This is just regular HTML. We are setting div id = "app" as a root element for our app and adding index.js script, 
+which is our bundled app file
+</pre>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;React App&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;index.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">main.js</div><div class="panel-body">
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.jsx';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('app'));
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">package.json</div><div class="panel-body">
+<pre>
+{
+  &quot;name&quot;: &quot;reactjshelloworld&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;React JS Hello World Example&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;webpack-dev-server --hot&quot;
+  },
+  &quot;keywords&quot;: [
+    &quot;react&quot;,
+    &quot;reactjs&quot;,
+    &quot;reactjs&quot;,
+    &quot;hello&quot;,
+    &quot;world&quot;
+  ],
+  &quot;author&quot;: &quot;Avinash Babu Donthu&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;dependencies&quot;: {
+    &quot;babel-core&quot;: &quot;^6.26.0&quot;,
+    &quot;babel-loader&quot;: &quot;^7.1.2&quot;,
+    &quot;babel-preset-es2015&quot;: &quot;^6.24.1&quot;,
+    &quot;babel-preset-react&quot;: &quot;^6.24.1&quot;,
+    &quot;react&quot;: &quot;^16.1.1&quot;,
+    &quot;react-dom&quot;: &quot;^16.1.1&quot;,
+    &quot;webpack&quot;: &quot;^3.8.1&quot;,
+    &quot;webpack-dev-server&quot;: &quot;^2.9.4&quot;
+  }
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Execute application</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld&gt;npm start
+Project is running at http://localhost:9092/
+webpack output is served from /
+webpack: wait until bundle finished: /
+Hash: 7bd46f496fb95e791cf3
+Version: webpack 3.8.1
+Time: 20537ms
+   Asset     Size  Chunks                    Chunk Names
+index.js  1.05 MB       0  [emitted]  [big]  main
+   [2] ./node_modules/react/index.js 190 bytes {0} [built]
+  [16] multi (webpack)-dev-server/client?http://localhost:9092 ./main.js 40 bytes {0} [built]
+  [17] (webpack)-dev-server/client?http://localhost:9092 7.95 kB {0} [built]
+  [18] ./node_modules/url/url.js 23.3 kB {0} [built]
+  [25] ./node_modules/strip-ansi/index.js 161 bytes {0} [built]
+  [27] ./node_modules/loglevel/lib/loglevel.js 7.86 kB {0} [built]
+  [28] (webpack)-dev-server/client/socket.js 1.05 kB {0} [built]
+  [30] (webpack)-dev-server/client/overlay.js 3.73 kB {0} [built]
+  [31] ./node_modules/ansi-html/index.js 4.26 kB {0} [built]
+  [32] ./node_modules/html-entities/index.js 231 bytes {0} [built]
+  [35] (webpack)/hot nonrecursive ^\.\/log$ 170 bytes {0} [built]
+  [37] (webpack)/hot/emitter.js 75 bytes {0} [built]
+  [39] ./main.js 470 bytes {0} [built]
+  [43] ./node_modules/react-dom/index.js 1.36 kB {0} [built]
+  [52] ./App.jsx 3.37 kB {0} [built]
+    + 38 hidden modules
+webpack: Compiled successfully.
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactHelloWorld.jpg"/>
+</div></div>

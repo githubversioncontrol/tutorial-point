@@ -1,0 +1,769 @@
+<div class="panel panel-primary"><div class="panel-heading">Create core java project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.hibernate.practice -DartifactId=HibernatePractice1 -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/hibernate4/1-hibernate4Hql.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.hibernate.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;HibernatePractice1&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;HibernatePractice1&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+			&lt;version&gt;4.3.6.Final&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javassist&lt;/groupId&gt;
+			&lt;artifactId&gt;javassist&lt;/artifactId&gt;
+			&lt;version&gt;3.12.1.GA&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-annotations&lt;/artifactId&gt;
+			&lt;version&gt;3.5.6-Final&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate&lt;/artifactId&gt;
+			&lt;version&gt;3.2.3.ga&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;1.4.193&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax.transaction&lt;/groupId&gt;
+			&lt;artifactId&gt;jta&lt;/artifactId&gt;
+			&lt;version&gt;1.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">scripts.sql</div><div class="panel-body">
+<pre><code>
+DROP TABLE STUDENT IF EXISTS;
+
+drop sequence student_seq if exists;
+
+CREATE SEQUENCE STUDENT_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE TABLE STUDENT(
+	ID NUMBER(10),
+	NAME VARCHAR2(50),
+	COURSE VARCHAR2(50),
+	START_DATE DATE,
+	END_DATE DATE,
+	CONSTRAINT STUDENT_PK PRIMARY KEY(ID)
+);
+
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jack','Java',parsedatetime('01-07-2017', 'dd-mm-yyyy'),parsedatetime('01-08-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jill','Groovy',parsedatetime('01-09-2017', 'dd-mm-yyyy'),parsedatetime('01-10-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Jim','Scala',parsedatetime('01-11-2017', 'dd-mm-yyyy'),parsedatetime('01-12-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'John','Python',parsedatetime('01-01-2017', 'dd-mm-yyyy'),parsedatetime('01-02-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Scott','Spock',parsedatetime('01-03-2017', 'dd-mm-yyyy'),parsedatetime('01-04-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Mike','H20',parsedatetime('01-07-2017', 'dd-mm-yyyy'),parsedatetime('01-08-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Rick','Spark',parsedatetime('01-05-2017', 'dd-mm-yyyy'),parsedatetime('01-06-2017','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Rich','Kafka',parsedatetime('01-07-2018', 'dd-mm-yyyy'),parsedatetime('01-08-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Emy','Spring',parsedatetime('01-02-2018', 'dd-mm-yyyy'),parsedatetime('01-03-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Stott','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Mahesh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Suresh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+INSERT INTO STUDENT(ID, NAME, COURSE, START_DATE, END_DATE) VALUES (STUDENT_SEQ.NEXTVAL, 'Ramesh','Hibernate',parsedatetime('01-04-2018', 'dd-mm-yyyy'),parsedatetime('01-05-2018','dd-mm-yyyy'));
+
+COMMIT;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">hibernate-hql.cfg.xml</div><div class="panel-body">
+<pre><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; 
+&lt;!DOCTYPE hibernate-configuration SYSTEM &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;
+&lt;hibernate-configuration&gt;
+	&lt;session-factory&gt;
+		&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.H2Dialect&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;org.h2.Driver&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/HibernateProjects/HibernatePractice1/src/test/java/com/hibernate/hql/practice/db;MV_STORE=FALSE&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.username&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.connection.password&quot;&gt;admin&lt;/property&gt;
+		&lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;
+		&lt;property name=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/property&gt;
+		
+		&lt;mapping class=&quot;com.hibernate.hql.practice.Student&quot;/&gt;
+	&lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<pre><code>
+package com.hibernate.hql.practice;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;STUDENT&quot;)
+public class Student {
+
+	private Integer id;
+	private String name;
+	private String course;
+	private Date startDate;
+	private Date endDate;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;studentSequence&quot;)
+	@SequenceGenerator(name = &quot;studentSequence&quot;, sequenceName = &quot;STUDENT_SEQ&quot;, allocationSize = 1)
+	@Column(name = &quot;ID&quot;)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;NAME&quot;)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = &quot;COURSE&quot;)
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	@Column(name = &quot;START_DATE&quot;)
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	@Column(name = &quot;END_DATE&quot;)
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student (id=&quot; + id + &quot;, name=&quot; + name + &quot;, course=&quot; + course + &quot;, startDate=&quot; + startDate
+				+ &quot;, endDate=&quot; + endDate + &quot;)&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">HQL Examples</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(1)">SELECT * FROM STUDENT</a></li>
+		<li><a ng-click="navigate(2)">SELECT STUDENT_NAME, COURSE FROM STUDENT</a></li>
+		<li><a ng-click="navigate(3)">SELECT * FROM STUDENT WHERE STUDENT_NAME LIKE '%ABC%'</a></li>
+		<li><a ng-click="navigate(4)">SELECT * FROM STUDENT WHERE NAME LIKE ? ORDER BY COURSE DESC</a></li>
+		<li><a ng-click="navigate(5)">SELECT * FROM STUDENT WHERE (NAME = ? AND COURSE = ?)</a></li>
+		<li><a ng-click="navigate(6)">SELECT * FROMS STUDENT WHERE (NAME LIKE ? OR COURSE = ?)</a></li>
+		<li><a ng-click="navigate(7)">UPDATE STUDENT SET COURSE = 'NEW_COURSE_VALUE' WHERE NAME = 'Jill'</a></li>
+		<li><a ng-click="navigate(8)">delete from student where name = 'Mahesh'</a></li>
+		<li><a ng-click="navigate(9)">select count(id), sum(id), avg(id), max(id), min(id) from student</a></li>
+		<li><a ng-click="navigate(10)">uniqueResult method</a></li>
+		<li><a ng-click="navigate(11)">SELECT * FROM STUDENT WHERE LOWER(NAME) LIKE 'j%'</a></li>
+		<li><a ng-click="navigate(12)">select distinct course from student</a></li>
+		<li><a ng-click="navigate(13)">select * from STUDENT where ID<>3</a></li>
+		<li><a ng-click="navigate(14)">select * from STUDENT where COURSE in (? , ?)</a></li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">SELECT * FROM STUDENT</div><div class="panel-body">
+<pre ><code>
+public void method1() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;From Student&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// get iterator</em>
+		System.out.println(&quot;----- query for iterator -------&quot;);
+		Iterator&lt;Student&gt; studentIterator = query.iterate();
+		studentIterator.forEachRemaining(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=5, name=Scott, course=Spock, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=6, name=Mike, course=H20, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=9, name=Emy, course=Spring, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=12, name=Mahesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+----- query for iterator -------
+Hibernate: select student0_.ID as col_0_0_ from STUDENT student0_
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=5, name=Scott, course=Spock, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=6, name=Mike, course=H20, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=9, name=Emy, course=Spring, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=12, name=Mahesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">SELECT STUDENT_NAME, COURSE FROM STUDENT</div><div class="panel-body">
+<pre ><code>
+public void method2() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;select student.name, student.course, student.startDate from Student student&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Object[]&gt; studentsList = query.list();
+		studentsList.stream().forEach(row -&gt; {
+			System.out.println(row[0] + &quot;, &quot; + row[1] + &quot;, &quot; + row[2]);
+		});
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.NAME as col_0_0_, student0_.COURSE as col_1_0_, student0_.START_DATE as col_2_0_ from STUDENT student0_
+Jack, Java, 2017-01-01 00:00:00.0
+Jill, Groovy, 2017-01-01 00:00:00.0
+Jim, Scala, 2017-01-01 00:00:00.0
+John, Python, 2017-01-01 00:00:00.0
+Scott, Spock, 2017-01-01 00:00:00.0
+Mike, H20, 2017-01-01 00:00:00.0
+Rick, Spark, 2017-01-01 00:00:00.0
+Rich, Kafka, 2018-01-01 00:00:00.0
+Emy, Spring, 2018-01-01 00:00:00.0
+Stott, Hibernate, 2018-01-01 00:00:00.0
+Mahesh, Hibernate, 2018-01-01 00:00:00.0
+Suresh, Hibernate, 2018-01-01 00:00:00.0
+Ramesh, Hibernate, 2018-01-01 00:00:00.0
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">SELECT * FROM STUDENT WHERE STUDENT_NAME LIKE 'J%'</div><div class="panel-body">
+<pre ><code>
+public void method3() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.name like 'J%'&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Student&gt; studentsList = query.list();
+		studentsList.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.NAME like 'J%'
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">SELECT * FROM STUDENT WHERE NAME LIKE ? ORDER BY COURSE DESC</div><div class="panel-body">
+<pre ><code>
+public void method4() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.name like :name order by student.course desc&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;J%&quot;);
+
+		List&lt;Student&gt; studentsList = query.list();
+		studentsList.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.NAME like ? order by student0_.COURSE desc
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">SELECT * FROM STUDENT WHERE (NAME = ? AND COURSE = ?)</div><div class="panel-body">
+<pre ><code>
+public void method5() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.name = :name and student.course = :course&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;John&quot;);
+		query.setParameter(&quot;course&quot;, &quot;Python&quot;);
+
+		List&lt;Student&gt; studentsList = query.list();
+		studentsList.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.NAME=? and student0_.COURSE=?
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">SELECT * FROMS STUDENT WHERE (NAME LIKE ? OR COURSE = ?)</div><div class="panel-body">
+<pre ><code>
+public void method6() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.name like :name or student.course = :course&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;Jill&quot;);
+		query.setParameter(&quot;course&quot;, &quot;Python&quot;);
+
+		List&lt;Student&gt; studentsList = query.list();
+		studentsList.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.NAME like ? or student0_.COURSE=?
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">UPDATE STUDENT SET COURSE = 'NEW_COURSE_VALUE' WHERE NAME = 'Jill'</div><div class="panel-body">
+<pre ><code>
+public void update() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute insert query</em>
+		Student student = new Student();
+		student.setName(&quot;Mahesh&quot;);
+		student.setCourse(&quot;JPA&quot;);
+		student.setStartDate(new Date());
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.MONTH, 1);
+		student.setEndDate(calendar.getTime());
+
+		session.beginTransaction();
+		session.save(student);
+		session.getTransaction().commit();
+
+		<em>// execute select query</em>
+		String queryString = &quot;From Student&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// execute update query</em>
+		queryString = &quot;update Student student set student.course = :course where student.name = :name&quot;;
+		query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;Mahesh&quot;);
+		query.setParameter(&quot;course&quot;, &quot;Eclipselink&quot;);
+
+		session.beginTransaction();
+		query.executeUpdate();
+		session.getTransaction().commit();
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: call next value for STUDENT_SEQ
+Hibernate: insert into STUDENT (COURSE, END_DATE, NAME, START_DATE, ID) values (?, ?, ?, ?, ?)
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=5, name=Scott, course=Spock, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=6, name=Mike, course=H20, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=9, name=Emy, course=Spring, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=12, name=Mahesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=15, name=Mahesh, course=JPA, startDate=Sun Aug 06 18:26:53 IST 2017, endDate=Wed Sep 06 18:26:53 IST 2017)
+Hibernate: update STUDENT set COURSE=? where NAME=?
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">delete from student where name = 'Mahesh'</div><div class="panel-body">
+<pre ><code>
+public void delete() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;delete from Student student where student.name = :name&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;Mahesh&quot;);
+
+		session.beginTransaction();
+		query.executeUpdate();
+		session.getTransaction().commit();
+
+		<em>// execute select query</em>
+		queryString = &quot;From Student&quot;;
+		query = session.createQuery(queryString);
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: delete from STUDENT where NAME=?
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=5, name=Scott, course=Spock, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=6, name=Mike, course=H20, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=9, name=Emy, course=Spring, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">select count(id), sum(id), avg(id), max(id), min(id) from student</div><div class="panel-body">
+<pre ><code>
+public void aggregateFunctions() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;select count(id), sum(id), avg(id), max(id), min(id) from Student&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Object[]&gt; resultList = query.list();
+		resultList.stream().forEach(row -&gt; {
+			System.out.println(row[0] + &quot;, &quot; + row[1] + &quot;, &quot; + row[2] + &quot;, &quot; + row[3] + &quot;, &quot; + row[4]);
+		});
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select count(student0_.ID) as col_0_0_, sum(student0_.ID) as col_1_0_, avg(cast(student0_.ID as double)) as col_2_0_, max(student0_.ID) as col_3_0_, min(student0_.ID) as col_4_0_ from STUDENT student0_
+12, 82, 6.833333333333333, 14, 1
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">uniqueResult method</div><div class="panel-body">
+<pre ><code>
+public void uniqueResult() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.id = :id&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;id&quot;, 3);
+
+		<em>// If return result is only one object then we can call uniqueResult() object.
+		// If return result contains more than one object NonUniqueResultException will be thrown</em>
+		Student student = (Student) query.uniqueResult();
+		System.out.println(student);
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.ID=?
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">SELECT * FROM STUDENT WHERE LOWER(NAME) LIKE 'j%'</div><div class="panel-body">
+<pre ><code>
+public void method7() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query - method 1</em>
+		String queryString = &quot;from Student student where lower(student.name) like :name&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;j%&quot;);
+
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// execute query - method 2</em>
+		queryString = &quot;from Student student where upper(student.name) like :name&quot;;
+		query = session.createQuery(queryString);
+		query.setParameter(&quot;name&quot;, &quot;R%&quot;);
+
+		students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where lower(student0_.NAME) like ?
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=3, name=Jim, course=Scala, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where upper(student0_.NAME) like ?
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="12"><div class="panel-heading">select distinct course from student</div><div class="panel-body">
+<pre ><code>
+public void method8() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;select distinct student.course from Student student&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;String&gt; courseList = query.list();
+		courseList.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select distinct student0_.COURSE as col_0_0_ from STUDENT student0_
+Java
+Hibernate
+H20
+Scala
+Kafka
+Spock
+Python
+Spark
+Groovy
+Spring
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="13"><div class="panel-heading">select * from STUDENT where ID&lt;&gt;3</div><div class="panel-body">
+<pre ><code>
+public void method9() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.id &lt;&gt; 3&quot;;
+		Query query = session.createQuery(queryString);
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.ID&lt;&gt;3
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=2, name=Jill, course=Groovy, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=4, name=John, course=Python, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=5, name=Scott, course=Spock, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=6, name=Mike, course=H20, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=7, name=Rick, course=Spark, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=8, name=Rich, course=Kafka, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=9, name=Emy, course=Spring, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">select * from STUDENT where COURSE in (? , ?)</div><div class="panel-body">
+<pre ><code>
+public void method10() {
+		<em>// create org.hibernate.Session</em>
+		Configuration configuration = new Configuration().configure(&quot;hibernate-hql.cfg.xml&quot;);
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		<em>// execute query</em>
+		String queryString = &quot;from Student student where student.course in (:courses)&quot;;
+		Query query = session.createQuery(queryString);
+		query.setParameterList(&quot;courses&quot;, Arrays.asList(&quot;Java&quot;, &quot;Hibernate&quot;));
+		List&lt;Student&gt; students = query.list();
+		students.stream().forEach(System.out::println);
+
+		<em>// close org.hibernate.Session</em>
+		session.close();
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hibernate: select student0_.ID as ID1_0_, student0_.COURSE as COURSE2_0_, student0_.END_DATE as END_DATE3_0_, student0_.NAME as NAME4_0_, student0_.START_DATE as START_DA5_0_ from STUDENT student0_ where student0_.COURSE in (? , ?)
+Student (id=1, name=Jack, course=Java, startDate=2017-01-01 00:00:00.0, endDate=2017-01-01 00:00:00.0)
+Student (id=10, name=Stott, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=13, name=Suresh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+Student (id=14, name=Ramesh, course=Hibernate, startDate=2018-01-01 00:00:00.0, endDate=2018-01-01 00:00:00.0)
+</code></pre>
+</div></div>

@@ -1,0 +1,609 @@
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Web project using Maven using jersey archetyepe. If we create using Jersey archetype required dependencies will be added to pom.xml</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=jresey.rest.practice -DartifactId=JerseyRestPractice -Dversion=1.0.SNAPSHOT -DarchetypeGroupId=org.glassfish.jersey.archetypes -DarchetypeArtifactId=jersey-quickstart-webapp -DarchetypeVersion=2.2 -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jerseyRest.jpg" />
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;jresey.rest.practice&lt;/groupId&gt;
+    &lt;artifactId&gt;JerseyRestPractice&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;JerseyRestPractice&lt;/name&gt;
+
+    &lt;build&gt;
+        &lt;finalName&gt;JerseyRestPractice&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.5.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.8&lt;/source&gt;
+                    &lt;target&gt;1.8&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.glassfish.jersey&lt;/groupId&gt;
+                &lt;artifactId&gt;jersey-bom&lt;/artifactId&gt;
+                &lt;version&gt;${jersey.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
+            <em>&lt;!-- use the following artifactId if you don't need servlet 2.x compatibility --&gt;
+            &lt;!-- artifactId&gt;jersey-container-servlet&lt;/artifactId --&gt;</em>
+        &lt;/dependency&gt;
+       <em> &lt;!-- uncomment this to get JSON support  --&gt;</em>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+        	&lt;groupId&gt;junit&lt;/groupId&gt;
+        	&lt;artifactId&gt;junit&lt;/artifactId&gt;
+        	&lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+       
+    &lt;/dependencies&gt;
+    &lt;properties&gt;
+        &lt;jersey.version&gt;2.2&lt;/jersey.version&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre ><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- This web.xml file is not required when using Servlet 3.0 container,
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html --&gt;
+&lt;web-app version=&quot;2.5&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;jersey.config.server.provider.packages&lt;/param-name&gt;
+           <em> &lt;!-- package where Jersey will look for REST classes --&gt;</em>
+            &lt;param-value&gt;jersey.rest.practice&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/webapi/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice.model;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+<em>// for XML response support</em>
+@XmlRootElement
+public class Employee {
+
+	private String firstName;
+	private String lastName;
+	private String designation;
+	private int age;
+
+	public Employee(String firstName, String lastName, String designation, int age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.designation = designation;
+		this.age = age;
+	}
+
+	public Employee() {
+	}
+
+	<em>// to change the tag name in returned xml</em>
+	@XmlElement(name = &quot;employee-firstname&quot;)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;[firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, designation=&quot; + designation + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">GetRequestsPractice.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import jersey.rest.practice.model.Employee;
+
+<em>/**
+ * REST class for all GET requests
+ * 
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+@Path(&quot;gets&quot;)
+public class GetRequestsPractice {
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets
+	 * 
+	 * @return
+	 */</em>
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String plainText1() {
+		return &quot;Plain Text 1&quot;;
+	}
+
+	<em>/**
+	 * Method handling HTTP GET requests. The returned object will be sent to the client as &quot;text/plain&quot; media type.
+	 * 
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/plainText2
+	 *
+	 * @return String that will be returned as a text/plain response.
+	 */</em>
+	@GET
+	@Path(&quot;/plainText2&quot;)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String plainText2() {
+		return &quot;Plain Text 2&quot;;
+	}
+
+	<em>/**
+	 * Return list of employees as XML
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/employeesXml
+	 */</em>
+	@GET
+	@Path(&quot;/employeesXml&quot;)
+	@Produces(MediaType.APPLICATION_XML)
+	public List&lt;Employee&gt; employeesXml() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;jack&quot;, &quot;A&quot;, &quot;SE&quot;, 22), new Employee(
+				&quot;jill&quot;, &quot;B&quot;, &quot;SE&quot;, 24), new Employee(&quot;joihn&quot;, &quot;C&quot;, &quot;SSE&quot;, 26), new Employee(
+				&quot;scott&quot;, &quot;D&quot;, &quot;SSE&quot;, 28));
+		return employees;
+	}
+
+	<em>/**
+	 * Return list of employees as JSON
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/employeesJson
+	 */</em>
+	@GET
+	@Path(&quot;/employeesJson&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List&lt;Employee&gt; employeesJson() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;jack&quot;, &quot;A&quot;, &quot;SE&quot;, 22), new Employee(
+				&quot;jill&quot;, &quot;B&quot;, &quot;SE&quot;, 24), new Employee(&quot;joihn&quot;, &quot;C&quot;, &quot;SSE&quot;, 26), new Employee(
+				&quot;scott&quot;, &quot;D&quot;, &quot;SSE&quot;, 28));
+		return employees;
+	}
+
+	<em>/**
+	 * Return list of employees as XML Or JSON
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/employeesXmlOrJson
+	 * Accept: application/xml -&gt; returns XML response
+	 * Accept: application/json -&gt; return JSON response
+	 */</em>
+	@GET
+	@Path(&quot;/employeesXmlOrJson&quot;)
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public List&lt;Employee&gt; employeesXmlOrJson() {
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(&quot;jack&quot;, &quot;A&quot;, &quot;SE&quot;, 22), new Employee(
+				&quot;jill&quot;, &quot;B&quot;, &quot;SE&quot;, 24), new Employee(&quot;joihn&quot;, &quot;C&quot;, &quot;SSE&quot;, 26), new Employee(
+				&quot;scott&quot;, &quot;D&quot;, &quot;SSE&quot;, 28));
+		return employees;
+	}
+
+	<em>/**
+	 * Return list of employees as XML Or JSON
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/employee/Suresh/B/SSE/32
+	 * Accept: application/xml -&gt; returns XML response
+	 * Accept: application/json -&gt; return JSON response
+	 */</em>
+	@GET
+	@Path(&quot;/employee/{firstName}/{lastName}/{desig}/{age}&quot;)
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Employee employee(@PathParam(&quot;firstName&quot;) String firstNameValue,
+			@PathParam(&quot;lastName&quot;) String lastNameValue,
+			@PathParam(&quot;desig&quot;) String designationValue, @PathParam(&quot;age&quot;) Integer ageValue) {
+		Employee employee = new Employee(firstNameValue, lastNameValue, designationValue, ageValue);
+		return employee;
+	}
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/employee/name1/name2/25
+	 * return Response with status
+	 */</em>
+	@GET
+	@Path(&quot;/employee/{firstName}/{lastName}/{age}&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response employeeWithStatusCodes(@PathParam(&quot;firstName&quot;) String firstNameValue,
+			@PathParam(&quot;lastName&quot;) String lastNameValue, @PathParam(&quot;age&quot;) Integer ageValue) {
+
+		if (ageValue &lt; 0 || ageValue &gt; 100) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		Employee employee = new Employee(firstNameValue, lastNameValue, &quot;SE&quot;, ageValue);
+		Response response = Response.ok().entity(employee).build();
+		return response;
+	}
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/getEmployees?firstName=name1&amp;firstName=name2&amp;lastName=nam3&amp;lastName=name4&amp;age=25
+	 * @param firstNames
+	 * @param lastNames
+	 * @return
+	 */</em>
+	@GET
+	@Path(&quot;/getEmployees&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEmployees(@QueryParam(value = &quot;firstName&quot;) List&lt;String&gt; firstNames,
+			@QueryParam(value = &quot;lastName&quot;) List&lt;String&gt; lastNames,
+			@QueryParam(&quot;age&quot;) Integer ageValue) {
+		System.out.println(&quot;getEmployees() -&gt; firstNames: &quot; + firstNames);
+		System.out.println(&quot;getEmployees() -&gt; lastNames: &quot; + lastNames);
+		System.out.println(&quot;getEmployees() -&gt; age: &quot; + ageValue);
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(firstNames.get(0), lastNames.get(0),
+				null, ageValue), new Employee(firstNames.get(1), lastNames.get(1), null, ageValue));
+
+		Response response = Response.ok().entity(new GenericEntity&lt;List&lt;Employee&gt;&gt;(employees) {}).build();
+		return response;
+	}
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/gets/getEmployeesWithHeaders
+	 * headers: firstName:firstName1, firstName:firstName2, lastName:lastName1, lastName:lastName2, age:25
+	 * @param firstNames
+	 * @param lastNames
+	 * @param ageValue
+	 * @return
+	 */</em>
+	@GET
+	@Path(&quot;/getEmployeesWithHeaders&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEmployeesWithHeaders(
+			@HeaderParam(value = &quot;firstName&quot;) List&lt;String&gt; firstNames,
+			@HeaderParam(value = &quot;lastName&quot;) List&lt;String&gt; lastNames,
+			@HeaderParam(&quot;age&quot;) Integer ageValue) {
+		<em>/*if we pass 2 header values with same key, both values will appended as 1 String and passed to List&lt;String&gt; as single value. So we need to split the String by comma(,)*/</em>
+		firstNames = Arrays.asList(firstNames.get(0).split(&quot;,&quot;));
+		lastNames = Arrays.asList(lastNames.get(0).split(&quot;,&quot;));
+
+		System.out.println(&quot;getEmployees() -&gt; firstNames: &quot; + firstNames);
+		System.out.println(&quot;getEmployees() -&gt; lastNames: &quot; + lastNames);
+		System.out.println(&quot;getEmployees() -&gt; age: &quot; + ageValue);
+		List&lt;Employee&gt; employees = Arrays.asList(new Employee(firstNames.get(0), lastNames.get(0),null, ageValue), 
+		new Employee(firstNames.get(1), lastNames.get(1), null, ageValue));
+
+		Response response = Response.ok().entity(new GenericEntity&lt;List&lt;Employee&gt;&gt;(employees) {}).build();
+		return response;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">GetRequestsPracticeClient.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice.client;
+
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import jersey.rest.practice.model.Employee;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+<em>/**
+ * Test class for GetRequestsPractice.java
+ * method names in the class and method names in GetRequestsPractice.java are same
+ * method in GetRequestsPracticeClient.java will represent test case for respective method in GetRequestsPractice
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+public class GetRequestsPracticeClient {
+
+	@Ignore
+	@Test
+	public void plainText1() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above..</em>
+		WebTarget webTarget = target.path(&quot;gets&quot;);
+		Builder builder = webTarget.request();
+		String response = builder.get(String.class);
+
+		System.out.println(&quot;plainText1() -&gt; response: &quot; + response);
+	}
+
+	@Ignore
+	@Test
+	public void plainText2() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/plainText2&quot;);
+		Builder builder = webTarget.request();
+		String response = builder.get(String.class);
+
+		System.out.println(&quot;plainText2() -&gt; response: &quot; + response);
+	}
+
+	@Ignore
+	@Test
+	public void employeesXml() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/employeesXml&quot;);
+		Builder builder = webTarget.request();
+
+		String response = builder.get(String.class);
+		System.out.println(&quot;employeeXml() -&gt; response: &quot; + response);
+
+		List&lt;Employee&gt; employees = builder.get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;employeesXml() -&gt; employees: &quot; + employees);
+	}
+
+	@Ignore
+	@Test
+	public void employeesJson() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/employeesJson&quot;);
+		Invocation.Builder builder = webTarget.request();
+
+		String response = builder.get(String.class);
+		System.out.println(&quot;employeeJson() -&gt; response: &quot; + response);
+
+		List&lt;Employee&gt; employees = builder.get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;employeesJson() -&gt; employees: &quot; + employees);
+	}
+
+	@Ignore
+	@Test
+	public void employeesXmlOrJson() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/employeesXmlOrJson&quot;);
+
+		Invocation.Builder xmlBuilder = webTarget.request(MediaType.APPLICATION_XML);
+		String xmlResponse = xmlBuilder.get(String.class);
+		System.out.println(&quot;employeesXmlOrJson() -&gt; xmlResponse: &quot; + xmlResponse);
+		List&lt;Employee&gt; employeesFromXml = xmlBuilder.get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;employeesXmlOrJson() -&gt; employeesFromXml: &quot; + employeesFromXml);
+
+		Invocation.Builder jsonBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		String jsonResponse = jsonBuilder.get(String.class);
+		System.out.println(&quot;employeesXmlOrJson() -&gt; jsonResponse: &quot; + jsonResponse);
+		List&lt;Employee&gt; employeesFromJson = jsonBuilder.get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;employeesXmlOrJson() -&gt; employeesFromJson: &quot; + employeesFromJson);
+	}
+
+	@Ignore
+	@Test
+	public void employee() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/employee/testFirstName/testLastName/testDesig/25&quot;);
+
+		Invocation.Builder xmlBuilder = webTarget.request(MediaType.APPLICATION_XML);
+		String xmlResponse = xmlBuilder.get(String.class);
+		System.out.println(&quot;employee() -&gt; xmlResponse: &quot; + xmlResponse);
+		Employee employeeFromXml = xmlBuilder.get(Employee.class);
+		System.out.println(&quot;employee() -&gt; employeeFromXml: &quot; + employeeFromXml);
+
+		Invocation.Builder jsonBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		String jsonResponse = jsonBuilder.get(String.class);
+		System.out.println(&quot;employee() -&gt; jsonResponse: &quot; + jsonResponse);
+		Employee employeeFromJson = jsonBuilder.get(Employee.class);
+		System.out.println(&quot;employee() -&gt; employeeFromJson: &quot; + employeeFromJson);
+	}
+
+	@Ignore
+	@Test
+	public void employeeWithStatusCodes() {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget = target.path(&quot;gets/employee/testFirstName/testLastName/25&quot;);
+		Invocation.Builder builder = webTarget.request();
+		Response validResponse = builder.get(Response.class);
+		System.out.println(&quot;employeeWithExceptionHandling() -&gt; validResponse: &quot; + validResponse);
+		System.out.println(&quot;employeeWithExceptionHandling() -&gt; validResponse.getStatus(): &quot; + validResponse.getStatus());
+		Employee employee = validResponse.readEntity(Employee.class);
+		System.out.println(&quot;employeeWithExceptionHandling() -&gt; employee: &quot; + employee);
+
+		<em>// path get appended to target String we have created above</em>
+		WebTarget webTarget2 = target.path(&quot;gets/employee/testFirstName/testLastName/-25&quot;);
+		Invocation.Builder builder2 = webTarget2.request();
+		Response invalidResponse = builder2.get(Response.class);
+		System.out.println(&quot;employeeWithExceptionHandling() -&gt; invalidResponse: &quot; + invalidResponse);
+		System.out.println(&quot;employeeWithExceptionHandling() -&gt; invalidResponse.getStatus(): &quot; + invalidResponse.getStatus());
+	}
+
+	@Ignore
+	@Test
+	public void getEmployees() {
+		URI uri = UriBuilder.fromUri(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;)
+				.path(&quot;/gets/getEmployees&quot;)
+				.queryParam(&quot;firstName&quot;, &quot;testFirstName1&quot;, &quot;testFirstName2&quot;)
+				.queryParam(&quot;lastName&quot;, &quot;testLastName1&quot;, &quot;testLastName2&quot;)
+				.queryParam(&quot;age&quot;, 25)
+				.build();
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(uri);
+
+		<em>// method 1 - get Response and get result</em>
+		Response response = target.request(MediaType.APPLICATION_JSON).get();
+		List&lt;Employee&gt; employees = response.readEntity(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;getEmployees() -&gt; employees: &quot; + employees);
+
+		<em>// method 2 - get list of employees directly</em>
+		List&lt;Employee&gt; employees2 = target.request(MediaType.APPLICATION_JSON).get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;getEmployees() -&gt; employees2: &quot; + employees2);
+	}
+
+	@Ignore
+	@Test
+	public void getEmployeesWithHeaders() {
+		MultivaluedMap&lt;String, Object&gt; headers = new MultivaluedHashMap&lt;&gt;();
+		headers.add(&quot;firstName&quot;, Arrays.asList(&quot;testFirstName1&quot;, &quot;testFirstName2&quot;));
+		headers.add(&quot;lastName&quot;, Arrays.asList(&quot;testLastName1&quot;, &quot;testLastName2&quot;));
+		headers.add(&quot;age&quot;, 25);
+
+		URI uri = UriBuilder.fromUri(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;).path(&quot;/gets/getEmployeesWithHeaders&quot;).build();
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(uri);
+
+		<em>// method 1 - get Response and get result</em>
+		Response response = target.request(MediaType.APPLICATION_JSON).headers(headers).get();
+		List&lt;Employee&gt; employees = response.readEntity(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;getEmployeesWithHeaders() -&gt; employees: &quot; + employees);
+
+		<em>// method 2 - get list of employees directly</em>
+		List&lt;Employee&gt; employees2 = target.request(MediaType.APPLICATION_JSON).headers(headers).get(new GenericType&lt;List&lt;Employee&gt;&gt;() {});
+		System.out.println(&quot;getEmployeesWithHeaders() -&gt; employees2: &quot; + employees2);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/plainText2</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employeesXml</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/3-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employeesJson</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/4-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employeesXmlOrJson</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/5-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employeesXmlOrJson</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/6-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employee/Suresh/B/SSE/32</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/7-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employee/name1/name2/25</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/8-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/employee/name1/name2/-25</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/11-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/getEmployees?firstName=name1&firstName=name2&lastName=nam3&lastName=name4&age=25</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/9-jerseyRestGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/gets/getEmployeesWithHeaders</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/10-jerseyRestGet.jpg"/>
+</div></div>

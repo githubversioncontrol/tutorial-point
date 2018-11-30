@@ -1,0 +1,92 @@
+<div class="panel panel-primary"><div class="panel-heading">template.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;ngRoute Template&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;template.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+    &lt;h3 style=&quot;text-align: center;&quot;&gt;Template HTML&lt;/h3&gt;
+    &lt;hr/&gt;
+    &lt;a ng-href=&quot;#page1&quot;&gt;Page 1&lt;/a&gt;&lt;br/&gt;
+    &lt;a ng-href=&quot;#page2&quot;&gt;Page 2&lt;/a&gt;&lt;br/&gt;
+    &lt;a ng-href=&quot;#page3/paramValue1&quot;&gt;Page 3 with paramValue1&lt;/a&gt;&lt;br/&gt;
+    &lt;a ng-href=&quot;#page3/paramValue2&quot;&gt;Page 3 with paramValue2&lt;/a&gt;&lt;br/&gt;
+    &lt;a ng-href=&quot;#default&quot;&gt;Default&lt;/a&gt;
+    &lt;hr/&gt;
+    &lt;div ng-view&gt;&lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">default.html</div><div class="panel-body">
+<pre ><code>
+&lt;h2&gt;Default page&lt;/h2&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">page1.html</div><div class="panel-body">
+<pre ><code>
+&lt;h2&gt;Welcome to page1&lt;/h2&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">page2.html</div><div class="panel-body">
+<pre ><code>
+&lt;h2&gt; Welcome to page2 &lt;/h2&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">page3.html</div><div class="panel-body">
+<pre ><code>
+&lt;h2&gt; Welcome to Page3: {{param1}} &lt;/h2&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">template.js</div><div class="panel-body">
+<pre ><code>
+(function(){
+    var app = angular.module(&quot;moduleName&quot;, [&quot;ngRoute&quot;]);
+
+    app.config(function($routeProvider){
+        $routeProvider
+                .when(&quot;/default&quot;, {templateUrl: &quot;default.html&quot;, controller: &quot;mainController&quot;})
+                .when(&quot;/page1&quot;, {templateUrl: &quot;page1.html&quot;, controller: &quot;mainController&quot;})
+                .when(&quot;/page2&quot;, {templateUrl: &quot;page2.html&quot;, controller: &quot;mainController&quot;})
+                .when(&quot;/page3/:param1&quot;, {templateUrl: &quot;page3.html&quot;, controller: &quot;mainController&quot;})
+                .otherwise({redirectTo: &quot;/default&quot;});
+    });
+
+    app.controller(&quot;mainController&quot;, function($scope, $routeParams){
+        $scope.message = &quot;Welcome to Angular Template and Routing&quot;;
+        $scope.param1 = $routeParams.param1;
+    });
+
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<ul>
+	<li><em>template.html</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/1-ngRouteTemplate.jpg"/></li>
+	<li><em>Click on Page 1 link</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/2-ngRouteTemplate.jpg"/></li>
+	<li><em>Click on Page 2 link</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/3-ngRouteTemplate.jpg"/></li>
+	<li><em>Click on Page 3 with paramValue1 link</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/4-ngRouteTemplate.jpg"/></li>
+	<li><em>Click on Page 3 with paramValue2 link</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/5-ngRouteTemplate.jpg"/></li>
+	<li><em>Click on Default link</em></li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/angular1/6-ngRouteTemplate.jpg"/></li>
+</ul>
+</div></div>

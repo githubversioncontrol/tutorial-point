@@ -1,0 +1,318 @@
+<!-- Sidebar -->
+        <!-- <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+            <ul class="nav sidebar-nav">
+                <li><a ng-click="navigate(7)">Create HashMap</a></li>
+				<li><a ng-click="navigate(1)">Sort Map by Key method1</a></li>
+				<li><a ng-click="navigate(2)">Sort Map by Key with java.util.Comparator</a></li>
+				<li><a ng-click="navigate(3)">Sort Map by value</a></li>
+				<li><a ng-click="navigate(4)">Iterate Map</a></li>
+				<li><a ng-click="navigate(5)">Check if key exists in a Map</a></li>
+				<li><a ng-click="navigate(6)">Map - Get default value if key is not found</a></li>
+				<li><a ng-click="navigate(8)">Get All Keys</a></li>
+				<li><a ng-click="navigate(9)">Get All Values</a></li>
+            </ul>
+        </nav> -->
+<!-- /#sidebar-wrapper -->
+
+<!-- <div class="panel panel-primary"><div class="panel-heading">Topics</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(7)">Create HashMap</a></li>
+		<li><a ng-click="navigate(1)">Sort Map by Key method1</a></li>
+		<li><a ng-click="navigate(2)">Sort Map by Key with java.util.Comparator</a></li>
+		<li><a ng-click="navigate(3)">Sort Map by value</a></li>
+		<li><a ng-click="navigate(4)">Iterate Map</a></li>
+		<li><a ng-click="navigate(5)">Check if key exists in a Map</a></li>
+		<li><a ng-click="navigate(6)">Map - Get default value if key is not found</a></li>
+		<li><a ng-click="navigate(8)">Get All Keys</a></li>
+		<li><a ng-click="navigate(9)">Get All Values</a></li>
+	</ul>
+</div></div> -->
+
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(7)">Create HashMap</a></li>
+		<li><a ng-click="navigate(1)">Sort Map by Key method1</a></li>
+		<li><a ng-click="navigate(2)">Sort Map by Key with java.util.Comparator</a></li>
+		<li><a ng-click="navigate(3)">Sort Map by value</a></li>
+		<li><a ng-click="navigate(4)">Iterate Map</a></li>
+		<li><a ng-click="navigate(5)">Check if key exists in a Map</a></li>
+		<li><a ng-click="navigate(6)">Map - Get default value if key is not found</a></li>
+		<li><a ng-click="navigate(8)">Get All Keys</a></li>
+		<li><a ng-click="navigate(9)">Get All Values</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+	
+<div class="panel panel-primary" id="7"><div class="panel-heading">Create HashMap</div><div class="panel-body">
+<pre><code>
+public void createHashMap() {
+		Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+		for (int i = 0; i &lt; 10; i++) {
+			map.put(&quot;&quot; + i, &quot;value&quot; + i);
+		}
+		System.out.println(&quot;map: &quot; + map);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+map: {0=value0, 1=value1, 2=value2, 3=value3, 4=value4, 5=value5, 6=value6, 7=value7, 8=value8, 9=value9}
+</code></pre>
+</div></div>	
+	
+<div class="panel panel-primary" id="1"><div class="panel-heading">Sort Map by Key method1</div><div class="panel-body">
+  	<pre><code>
+  public void sortMapByKeyMethod1() {
+	Map&lt;String, String&gt; unsortedMap = new HashMap&lt;&gt;();
+	unsortedMap.put(&quot;Z&quot;, &quot;z&quot;);
+	unsortedMap.put(&quot;Y&quot;, &quot;y&quot;);
+	unsortedMap.put(&quot;X&quot;, &quot;x&quot;);
+	unsortedMap.put(&quot;W&quot;, &quot;w&quot;);
+	unsortedMap.put(&quot;V&quot;, &quot;v&quot;);
+	unsortedMap.put(&quot;U&quot;, &quot;u&quot;);
+	unsortedMap.put(&quot;T&quot;, &quot;t&quot;);
+	unsortedMap.put(&quot;S&quot;, &quot;s&quot;);
+	unsortedMap.put(&quot;R&quot;, &quot;r&quot;);
+	System.out.println(&quot;unsortedMap: &quot; + unsortedMap);
+
+	Map&lt;String, String&gt; sortedMap = new TreeMap&lt;&gt;(unsortedMap);
+	System.out.println(&quot;sortedMap: &quot; + sortedMap);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+unsortedMap: {R=r, S=s, T=t, U=u, V=v, W=w, X=x, Y=y, Z=z}
+sortedMap: {R=r, S=s, T=t, U=u, V=v, W=w, X=x, Y=y, Z=z}
+</code></pre>
+</div></div>
+
+	
+<div class="panel panel-primary" id="2"><div class="panel-heading">Sort Map by Key with java.util.Comparator</div><div class="panel-body">
+  	<pre><code>
+  public void sortMapByKeyWithComparator() {
+	Map&lt;Integer, String&gt; unsortedMap = new HashMap&lt;&gt;();
+	unsortedMap.put(31, &quot;thirty one&quot;);
+	unsortedMap.put(42, &quot;forty two&quot;);
+	unsortedMap.put(27, &quot;twenty-seven&quot;);
+	unsortedMap.put(20, &quot;twenty&quot;);
+	unsortedMap.put(5, &quot;five&quot;);
+	unsortedMap.put(100, &quot;hundred&quot;);
+	unsortedMap.put(10, &quot;ten&quot;);
+	System.out.println(&quot;unsortedMap: &quot; + unsortedMap);
+
+	<em>// ascending order</em>
+	Map&lt;Integer, String&gt; ascendingSortedMap1 = new TreeMap&lt;&gt;(new Comparator&lt;Integer&gt;() {
+	    @Override
+	    public int compare(Integer arg0, Integer arg1) {
+		return arg0.compareTo(arg1);
+	    }
+	});
+	ascendingSortedMap1.putAll(unsortedMap);
+	System.out.println(&quot;sortMapByKeyWithComparator-&gt; ascendingSortedMap1: &quot; + ascendingSortedMap1);
+
+	<em>//ascending order from java 8</em>
+	Map&lt;Integer, String&gt; ascendingSortedMap2 = new TreeMap&lt;&gt;((arg0, arg1) -&gt; {
+	    return arg0.compareTo(arg1);
+	});
+	ascendingSortedMap2.putAll(unsortedMap);
+	System.out.println(&quot;sortMapByKeyWithComparator -&gt; ascendingSortedMap2: &quot; + ascendingSortedMap2);
+
+	<em>// descending order</em>
+	Map&lt;Integer, String&gt; descendingSortedMap1 = new TreeMap&lt;&gt;(new Comparator&lt;Integer&gt;() {
+	    @Override
+	    public int compare(Integer arg0, Integer arg1) {
+		return arg1.compareTo(arg0);
+	    }
+	});
+	descendingSortedMap1.putAll(unsortedMap);
+	System.out.println(&quot;sortMapByKeyWithComparator -&gt; descendingSortedMap1: &quot; + descendingSortedMap1);
+
+	<em>//descending order from java 8</em>
+	Map&lt;Integer, String&gt; descendingSortedMap2 = new TreeMap&lt;&gt;((arg0, arg1) -&gt; {
+	    return arg1.compareTo(arg0);
+	});
+	descendingSortedMap2.putAll(unsortedMap);
+	System.out.println(&quot;sortMapByKeyWithComparator -&gt; descendingSortedMap2: &quot; + descendingSortedMap2);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+unsortedMap: {20=twenty, 100=hundred, 5=five, 42=forty two, 10=ten, 27=twenty-seven, 31=thirty one}
+sortMapByKeyWithComparator-&gt; ascendingSortedMap1: {5=five, 10=ten, 20=twenty, 27=twenty-seven, 31=thirty one, 42=forty two, 100=hundred}
+sortMapByKeyWithComparator -&gt; ascendingSortedMap2: {5=five, 10=ten, 20=twenty, 27=twenty-seven, 31=thirty one, 42=forty two, 100=hundred}
+sortMapByKeyWithComparator -&gt; descendingSortedMap1: {100=hundred, 42=forty two, 31=thirty one, 27=twenty-seven, 20=twenty, 10=ten, 5=five}
+sortMapByKeyWithComparator -&gt; descendingSortedMap2: {100=hundred, 42=forty two, 31=thirty one, 27=twenty-seven, 20=twenty, 10=ten, 5=five}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Sort Map by value</div><div class="panel-body">
+  <pre><code>
+  public void sortMapByValue() {
+	Map&lt;String, Integer&gt; unsortedMap = new HashMap&lt;&gt;();
+	unsortedMap.put(&quot;j&quot;, 65);
+	unsortedMap.put(&quot;a&quot;, 24);
+	unsortedMap.put(&quot;l&quot;, 32);
+	unsortedMap.put(&quot;s&quot;, 27);
+	unsortedMap.put(&quot;w&quot;, 15);
+	unsortedMap.put(&quot;f&quot;, 20);
+	System.out.println(&quot;sortMapByValue -&gt; unsortedMap: &quot; + unsortedMap);
+
+	List&lt;Map.Entry&lt;String, Integer&gt;&gt; list1 = new ArrayList&lt;&gt;(unsortedMap.entrySet());
+	Collections.sort(list1, new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;() {
+
+	    @Override
+	    public int compare(Map.Entry&lt;String, Integer&gt; arg0, Map.Entry&lt;String, Integer&gt; arg1) {
+		return arg0.getValue().compareTo(arg1.getValue());
+	    }
+	});
+
+	Map&lt;String, Integer&gt; sortedMap1ByValue = new LinkedHashMap&lt;&gt;();
+	for (Map.Entry&lt;String, Integer&gt; entry : list1) {
+	    sortedMap1ByValue.put(entry.getKey(), entry.getValue());
+	}
+	System.out.println(&quot;sortMapByValue -&gt; sortedMap1ByValue: &quot; + sortedMap1ByValue);
+
+	<em>// from java 8</em>
+	List&lt;Map.Entry&lt;String, Integer&gt;&gt; list2 = new ArrayList&lt;&gt;(unsortedMap.entrySet());
+	Collections.sort(list2, (arg0, arg1) -&gt; {
+	    return arg0.getValue().compareTo(arg1.getValue());
+	});
+
+	Map&lt;String, Integer&gt; sortedMap2ByValue = new LinkedHashMap&lt;&gt;();
+	for (Map.Entry&lt;String, Integer&gt; entry : list1) {
+	    sortedMap2ByValue.put(entry.getKey(), entry.getValue());
+	}
+	System.out.println(&quot;sortMapByValue -&gt; sortedMap2ByValue: &quot; + sortedMap2ByValue);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+sortMapByValue -&gt; unsortedMap: {a=24, s=27, f=20, w=15, j=65, l=32}
+sortMapByValue -&gt; sortedMap1ByValue: {w=15, f=20, a=24, s=27, l=32, j=65}
+sortMapByValue -&gt; sortedMap2ByValue: {w=15, f=20, a=24, s=27, l=32, j=65}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Iterate Map</div><div class="panel-body">
+  <pre><code>
+  public void iterateMap() {
+	Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+	map.put(&quot;Z&quot;, &quot;z&quot;);
+	map.put(&quot;Y&quot;, &quot;y&quot;);
+	map.put(&quot;X&quot;, &quot;x&quot;);
+
+	<em>//method 1</em>
+	System.out.println(&quot;--------- method1------------&quot;);
+	Set&lt;Map.Entry&lt;String, String&gt;&gt; entries = map.entrySet();
+	for (Map.Entry&lt;String, String&gt; entry : entries) {
+	    System.out.println(entry.getKey() + &quot; : &quot; + entry.getValue());
+	}
+
+	<em>//method 2 from java 8</em>
+	System.out.println(&quot;------method 2 from java 8--------&quot;);
+	map.forEach((key, value) -&gt; {
+	    System.out.println(key + &quot; : &quot; + value);
+	});
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+--------- method1------------
+X : x
+Y : y
+Z : z
+------method 2 from java 8--------
+X : x
+Y : y
+Z : z
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Check if key exists in a Map</div><div class="panel-body">
+  <pre><code>
+  public void checkIfKeyExistsInMap() {
+	Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+	map.put(&quot;Z&quot;, &quot;z&quot;);
+	map.put(&quot;Y&quot;, &quot;y&quot;);
+	map.put(&quot;X&quot;, &quot;x&quot;);
+
+	System.out.println(&quot;map: &quot; + map);
+
+	System.out.println(&quot;checkIfKeyExistsInMap -&gt; map.containsKey(\&quot;Z\&quot;): &quot; + map.containsKey(&quot;Z&quot;));
+	System.out.println(&quot;checkIfKeyExistsInMap -&gt; map.containsKey(\&quot;z\&quot;): &quot; + map.containsKey(&quot;z&quot;));
+	System.out.println(&quot;checkIfKeyExistsInMap -&gt; map.containsKey(\&quot;A\&quot;): &quot; + map.containsKey(&quot;A&quot;));
+	System.out.println(&quot;checkIfKeyExistsInMap -&gt; map.containsKey(\&quot;a\&quot;): &quot; + map.containsKey(&quot;a&quot;));
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+map: {X=x, Y=y, Z=z}
+checkIfKeyExistsInMap -&gt; map.containsKey(&quot;Z&quot;): true
+checkIfKeyExistsInMap -&gt; map.containsKey(&quot;z&quot;): false
+checkIfKeyExistsInMap -&gt; map.containsKey(&quot;A&quot;): false
+checkIfKeyExistsInMap -&gt; map.containsKey(&quot;a&quot;): false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Map - Get default value if key is not found</div><div class="panel-body">
+<pre><code>
+import java.util.Map;
+import java.util.HashMap;
+
+@Test
+public void getDefault() {
+ Map&lt;Integer, String&gt; map = new HashMap&lt;&gt;();
+ map.put(1, &quot;one&quot;);
+ 
+ System.out.println(map.get(1));
+System.out.println(map.getOrDefault(0, &quot;No mapping Found&quot;));
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+one
+No mapping Found
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">Get All Keys</div><div class="panel-body">
+<pre><code>
+public void getAllKeys() {
+		Map&lt;Integer, String&gt; map = new HashMap&lt;&gt;();
+		for (int i = 0; i &lt; 10; i++) {
+			map.put(i, &quot;value&quot; + i);
+		}
+		Set&lt;Integer&gt; keys = map.keySet();
+		System.out.println(&quot;keys: &quot; + keys);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+keys: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">Get All Values</div><div class="panel-body">
+<pre><code>
+public void getAllValues() {
+		Map&lt;Integer, String&gt; map = new HashMap&lt;&gt;();
+		for (int i = 0; i &lt; 10; i++) {
+			map.put(i, &quot;value&quot; + i);
+		}
+		Collection&lt;String&gt; values = map.values();
+		System.out.println(&quot;values: &quot; + values);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+values: [value0, value1, value2, value3, value4, value5, value6, value7, value8, value9]
+</code></pre>
+</div></div>
+
+</div>

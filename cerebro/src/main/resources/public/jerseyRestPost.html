@@ -1,0 +1,325 @@
+<div class="page-header">
+    <h3>Restful web services with Jersey implementation - POST requests</h3>      
+</div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Web project using Maven using jersey archetyepe. If we create using Jersey archetype required dependencies will be added to pom.xml</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=jresey.rest.practice -DartifactId=JerseyRestPractice -Dversion=1.0.SNAPSHOT -DarchetypeGroupId=org.glassfish.jersey.archetypes -DarchetypeArtifactId=jersey-quickstart-webapp -DarchetypeVersion=2.2 -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jerseyRest.jpg" />
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;jresey.rest.practice&lt;/groupId&gt;
+    &lt;artifactId&gt;JerseyRestPractice&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;JerseyRestPractice&lt;/name&gt;
+
+    &lt;build&gt;
+        &lt;finalName&gt;JerseyRestPractice&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.5.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.8&lt;/source&gt;
+                    &lt;target&gt;1.8&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.glassfish.jersey&lt;/groupId&gt;
+                &lt;artifactId&gt;jersey-bom&lt;/artifactId&gt;
+                &lt;version&gt;${jersey.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
+            <em>&lt;!-- use the following artifactId if you don't need servlet 2.x compatibility --&gt;
+            &lt;!-- artifactId&gt;jersey-container-servlet&lt;/artifactId --&gt;</em>
+        &lt;/dependency&gt;
+       <em> &lt;!-- uncomment this to get JSON support  --&gt;</em>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+            &lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+        	&lt;groupId&gt;junit&lt;/groupId&gt;
+        	&lt;artifactId&gt;junit&lt;/artifactId&gt;
+        	&lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+       
+    &lt;/dependencies&gt;
+    &lt;properties&gt;
+        &lt;jersey.version&gt;2.2&lt;/jersey.version&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre ><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- This web.xml file is not required when using Servlet 3.0 container,
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html --&gt;
+&lt;web-app version=&quot;2.5&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;jersey.config.server.provider.packages&lt;/param-name&gt;
+            <em>&lt;!-- package where Jersey will look for REST classes --&gt;</em>
+            &lt;param-value&gt;jersey.rest.practice&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/webapi/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice.model;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+<em>// for XML response support</em>
+@XmlRootElement
+public class Employee {
+
+	private String firstName;
+	private String lastName;
+	private String designation;
+	private int age;
+
+	public Employee(String firstName, String lastName, String designation, int age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.designation = designation;
+		this.age = age;
+	}
+
+	public Employee() {
+	}
+
+	<em>// to change the tag name in returned xml</em>
+	@XmlElement(name = &quot;employee-firstname&quot;)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;[firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + &quot;, designation=&quot; + designation + &quot;, age=&quot; + age + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">PostRequestsPractice.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+
+import jersey.rest.practice.model.Employee;
+
+<em>/**
+ * REST class for all POST requests
+ * @author Avinash Babu Donthu
+ */</em>
+@Path(value = &quot;/posts&quot;)
+public class PostRequestsPractice {
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/posts/employeeAsUrlEncoded
+	 * firstName: Mahesh
+	 * lastName: A
+	 * designation: SE
+	 * age: 30
+	 * Body type in postman: x-www-form-urlencoded
+	 * @param formParams
+	 * @return
+	 */</em>
+	@POST
+	@Path(&quot;/employeeAsUrlEncoded&quot;)
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Employee employeeAsUrlEncoded(MultivaluedMap&lt;String, String&gt; formParams) {
+		Employee employee = new Employee();
+
+		System.out.println(formParams.getFirst(&quot;firstName&quot;));
+		System.out.println(formParams.getFirst(&quot;lastName&quot;));
+		System.out.println(formParams.getFirst(&quot;designation&quot;));
+		System.out.println(formParams.getFirst(&quot;age&quot;));
+
+		employee.setFirstName(formParams.getFirst(&quot;firstName&quot;));
+		employee.setLastName(formParams.getFirst(&quot;lastName&quot;));
+		employee.setDesignation(formParams.getFirst(&quot;designation&quot;));
+		employee.setAge(Integer.parseInt(formParams.getFirst(&quot;age&quot;)));
+
+		return employee;
+	}
+
+	<em>/**
+	 * URL: http://localhost:9091/JerseyRestPractice/webapi/posts/employeeAsObject
+	 * Json request body: {&quot;employee-firstname&quot;:&quot;Suresh&quot;,&quot;lastName&quot;: &quot;B&quot;, &quot;designation&quot;: &quot;SSE&quot;,&quot;age&quot;: 23	}
+	 * Accept: application/json
+	 * 
+	 * employee-firstname instead of firstName because we added @XmlElement(name = &quot;employee-firstname&quot;) in Employee class
+	 * @param employee
+	 * @return
+	 */</em>
+	@POST
+	@Path(&quot;/employeeAsObject&quot;)
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Employee employeeAsObject(Employee employee) {
+		System.out.println(employee.getFirstName());
+		System.out.println(employee.getLastName());
+		System.out.println(employee.getDesignation());
+		System.out.println(employee.getAge());
+
+		return employee;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">PostRequestsPracticeClient.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice.client;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import jersey.rest.practice.model.Employee;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+public class PostRequestsPracticeClient {
+
+	<em>/**
+	 * Test case for PostRequestsPractice.employeeAsObject()
+	 */</em>
+	@Ignore
+	@Test
+	public void employeeAsObject() {
+		Employee employee = new Employee(&quot;testFirstName&quot;, &quot;testLastName&quot;, &quot;testDesignation&quot;, 25);
+
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above..</em>
+		WebTarget webTarget = target.path(&quot;posts/employeeAsObject&quot;);
+		Invocation.Builder builder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = builder.post(Entity.entity(employee, MediaType.APPLICATION_JSON));
+		System.out.println(&quot;employeeAsObject() -&gt; response.getStatus(): &quot; + response.getStatus());
+		System.out.println(&quot;employeeAsObject() -&gt; employee: &quot; + response.readEntity(Employee.class));
+	}
+
+	<em>/**
+	 * Test case for PostRequestsPractice.employeeAsUrlEncoded()
+	 */</em>
+	@Ignore
+	@Test
+	public void employeeAsUrlEncoded() {
+		MultivaluedMap&lt;String, String&gt; map = new MultivaluedHashMap&lt;&gt;();
+		map.add(&quot;employee-firstname&quot;, &quot;testFirstName&quot;);
+		map.add(&quot;lastName&quot;, &quot;testLastName&quot;);
+		map.add(&quot;designation&quot;, &quot;testDesignation&quot;);
+		map.add(&quot;age&quot;, &quot;25&quot;);
+
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target(&quot;http://localhost:9091/JerseyRestPractice/webapi/&quot;);
+
+		<em>// path get appended to target String we have created above..</em>
+		WebTarget webTarget = target.path(&quot;posts/employeeAsUrlEncoded&quot;);
+		Invocation.Builder builder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = builder.post(Entity.form(map));
+		System.out.println(&quot;employeeAsUrlEncoded() -&gt; response.getStatus(): &quot; + response.getStatus());
+		System.out.println(&quot;employeeAsUrlEncoded() -&gt; employee: &quot; + response.readEntity(Employee.class));
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/employeeAsUrlEncoded</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jerseyRestPost.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/employeeAsObject</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-jerseyRestPost.jpg"/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Source Code</div><div class="panel-body">
+<a ng-href="https://github.com/avinashbabudonthu/JerseyRestPractice/archive/master.zip" target="_blank">Download Source Code from here</a>
+</div></div>

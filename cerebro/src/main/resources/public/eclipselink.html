@@ -1,0 +1,19 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+<ul>
+  <li><a ng-href="#eclipselinkGenerateMetaModel" ng-click="buildBreadCrumbs('Generate Meta Model', '#eclipselinkGenerateMetaModel')">Generate Meta Model</a></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">References</div><div class="panel-body">
+<ul>
+	<li><a ng-href="http://www.vogella.com/tutorials/JavaPersistenceAPI/article.html" target="_blank">Basics</a></li>
+	<li><a ng-href="https://www.ibm.com/developerworks/java/library/j-typesafejpa/index.html" target="_blank">JPQL, Criteria, Metamodel, Relationships, Projections/Selections, Tuple</a></li>
+</ul>
+</div></div>

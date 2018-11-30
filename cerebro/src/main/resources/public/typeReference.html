@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Calling static method with generic before and after JDK 8</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Calling static method with generic before and after JDK 8</div><div class="panel-body">
+<em>TypeReferenceValue.java</em>
+<pre>
+package core.java.java8.type.references;
+
+public class TypeReferenceValue&lt;T&gt; {
+
+	public static &lt;T&gt; T method1(T t) {
+		System.out.println(&quot;TypeReferenceValue.method1(): &quot; + t);
+		return t;
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;TypeReferenceValue.method2(): &quot; + t);
+		return t;
+	}
+}
+</pre>
+<em>Test Method:</em>
+<pre>
+import core.java.java8.type.references.TypeReferenceValue;
+
+public void method1() {
+ <em>// from java 8</em>
+ String result1 = TypeReferenceValue.method1(&quot;value1&quot;);
+ <em>// until java 7</em>
+ String result2 = TypeReferenceValue.&lt;String&gt; method1(&quot;value2&quot;);
+
+ TypeReferenceValue&lt;String&gt; obj1 = new TypeReferenceValue&lt;&gt;();
+ String result3 = obj1.method1(&quot;value3&quot;);
+ String result4 = obj1.method2(&quot;value4&quot;);
+
+ System.out.println(&quot;result1: &quot; + result1 + &quot;, result2: &quot; + result2 + &quot;, result3: &quot; + result3
+				+ &quot;, result4: &quot; + result4);
+}
+</pre>
+<em>Output</em>
+<pre>
+TypeReferenceValue.method1(): value1
+TypeReferenceValue.method1(): value2
+TypeReferenceValue.method1(): value3
+TypeReferenceValue.method2(): value4
+result1: value1, result2: value2, result3: value3, result4: value4
+</pre>
+</div></div>
+
+</div>

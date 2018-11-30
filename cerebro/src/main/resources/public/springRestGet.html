@@ -1,0 +1,688 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create web project using maven</li>
+	<li>Add these dependencies
+		<ul>
+			<li>spring-core</li>
+			<li>spring-web</li> 
+			<li>spring-webmvc</li>
+			<li>jackson-mapper-asl</li>
+			<li>jackson-databind</li>
+		</ul>
+	</li>
+	<li>Add org.springframework.web.servlet.DispatcherServlet to web.xml</li>
+	<li>Create spring config file</li>
+	<li>Create Rest Services with GET method</li>
+	<li>Deploy into tomcat</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create web project using Maven from cmd</div><div class="panel-body">
+<pre>
+mvn archetype:generate -DgroupId=spring.rest -DartifactId=SpringRest -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.rest&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringRest&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringRest Maven Webapp&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;properties&gt;
+		&lt;spring.version&gt;4.3.2.RELEASE&lt;/spring.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;javax&lt;/groupId&gt;
+			&lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+			&lt;version&gt;7.0&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		<em>&lt;!-- Spring --&gt;</em>
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.jackson&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-mapper-asl&lt;/artifactId&gt;
+			&lt;version&gt;1.9.13&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+			&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+			&lt;version&gt;2.5.0&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;SpringRest&lt;/finalName&gt;
+		&lt;pluginManagement&gt;
+			&lt;plugins&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+					&lt;version&gt;3.5.1&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;source&gt;1.8&lt;/source&gt;
+						&lt;target&gt;1.8&lt;/target&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+			&lt;/plugins&gt;
+		&lt;/pluginManagement&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre><code>
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+    	version=&quot;3.0&quot;&gt;
+  &lt;display-name&gt;Spring REST&lt;/display-name&gt;
+  &lt;servlet&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;springREST&lt;/servlet-name&gt;
+  	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">springREST-servlet.xml</div><div class="panel-body">
+<pre><code>
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;   xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;   xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+   xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;&gt;
+   
+   &lt;context:component-scan base-package=&quot;spring.rest&quot;/&gt;
+   &lt;mvc:annotation-driven/&gt;
+   
+   &lt;bean name=&quot;objectMapper&quot; class=&quot;com.fasterxml.jackson.databind.ObjectMapper&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+package spring.rest.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Employee {
+
+    private String id;
+    private String name;
+    private String address;
+
+    public Employee() {
+
+    }
+
+    public Employee(String name, String address) {
+	this.name = name;
+	this.address = address;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    public String getAddress() {
+	return address;
+    }
+
+    public void setAddress(String address) {
+	this.address = address;
+    }
+
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;Employee [id=&quot; + id + &quot;, name=&quot; + name + &quot;, address=&quot; + address + &quot;]&quot;;
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">GetRequest.java</div><div class="panel-body">
+<pre><code>
+package spring.rest.get;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import spring.rest.model.Employee;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+<em>/**
+ * class for writing REST web service using Spring with GET method
+ * @author Donthu Avinash Babu
+ */</em>
+@RestController
+public class GetRequests {
+
+    @Autowired
+    @Qualifier(&quot;objectMapper&quot;)
+    private ObjectMapper mapper;
+
+    <em>/**
+     * Method to return plain string as rest response
+     * 
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method1&quot;, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String method1() {
+	return &quot;Test method()&quot;;
+    }
+
+    <em>/**
+     * Method to return json String as response
+     * 
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method2&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String method2() {
+	Employee employee = new Employee(&quot;ramesh&quot;, &quot;address1&quot;);
+	String result = &quot;&quot;;
+	try {
+	    result = mapper.writeValueAsString(employee);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return result;
+    }
+
+   <em> /**
+     * Method to return JSON string as response but object will be converted to
+     * JSON automatically
+     */</em>
+    @RequestMapping(value = &quot;/method3&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Employee method3() {
+	Employee employee = new Employee(&quot;suresh&quot;, &quot;address1&quot;);
+	return employee;
+    }
+
+    <em>/**
+     * Method to return String as response {@link ResponseBody} added. this is
+     * difference between method1 and this method
+     * 
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method4&quot;, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public @ResponseBody String method4() {
+	return &quot;Test method4()&quot;;
+    }
+
+   <em> /**
+     * Method to return JSON as response
+     * 
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method5&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Employee method5() {
+	Employee employee = new Employee(&quot;mahesh&quot;, &quot;address5&quot;);
+	return employee;
+    }
+
+    <em>/**
+     * Method to access variable in URL.
+     * 
+     * @param var
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method6/{variable1}&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Employee method6(@PathVariable(value = &quot;variable1&quot;) String var) {
+	System.out.println(&quot;var: &quot; + var);
+	Employee employee = new Employee(&quot;mahesh&quot;, &quot;address5&quot;);
+	employee.setId(var);
+	return employee;
+    }
+
+    <em>/**
+     * Demo request parameter URL:
+     * http://localhost:9091/SpringRest/method7?id=10
+     * 
+     * @param var
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method7&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Employee method7(@RequestParam(value = &quot;id&quot;, required = false) String var) {
+	System.out.println(&quot;var: &quot; + var);
+	Employee employee = new Employee(&quot;mahesh&quot;, &quot;address5&quot;);
+	employee.setId(var);
+	return employee;
+    }
+
+    <em>/**
+     * list of objects as JSON value
+     * 
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method8&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method8() {
+	Employee employee1 = new Employee(&quot;test1&quot;, &quot;address1&quot;);
+	Employee employee2 = new Employee(&quot;test2&quot;, &quot;address2&quot;);
+	Employee employee3 = new Employee(&quot;test3&quot;, &quot;address3&quot;);
+	Employee employee4 = new Employee(&quot;test4&quot;, &quot;address4&quot;);
+
+	return Arrays.asList(employee1, employee2, employee3, employee4);
+    }
+
+    <em>/**
+     * URL contains name, address as request params like:
+     * baseURL?name=test&amp;address=test
+     * 
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method9&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method9(@RequestParam(value = &quot;name&quot;, required = true) String name,
+	    @RequestParam(value = &quot;address&quot;, required = false) String address) {
+	Employee employee1 = new Employee(&quot;test9&quot;, &quot;address9&quot;);
+	Employee employee2 = new Employee(name, address);
+	return Arrays.asList(employee1, employee2);
+    }
+
+    <em>/**
+     * URL contains name and address. Ex: /baseUrl/{name}/{address}
+     * 
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method10/{name}/{address}&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method10(@PathVariable(value = &quot;name&quot;) String name, @PathVariable(value = &quot;address&quot;) String address) {
+	Employee employee1 = new Employee(&quot;test10&quot;, &quot;address10&quot;);
+	Employee employee5 = new Employee(name, address);
+	return Arrays.asList(employee1, employee5);
+    }
+
+    <em>/**
+     * Passing request headers along with REST request. in Postman -&gt; Headers
+     * tab -&gt; give key-value pairs (for example: name-testing, address-testing)
+     * 
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method11&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method11(@RequestHeader(value = &quot;name&quot;) String name, @RequestHeader(value = &quot;address&quot;) String address) {
+	Employee employee1 = new Employee(&quot;test11&quot;, &quot;address11&quot;);
+	Employee employee5 = new Employee(name, address);
+	return Arrays.asList(employee1, employee5);
+    }
+
+   <em> /**
+     * Method to demonstrate that we can write GET service using
+     * {@link org.springframework.web.bind.annotation.GetMapping} annotation
+     * 
+     * @param name
+     * @param address
+     * @return
+     */</em>
+    @GetMapping(value = &quot;/method12/{name}/{address}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method12(@PathVariable(&quot;name&quot;) String name, @PathVariable(&quot;address&quot;) String address) {
+	Employee employee1 = new Employee(&quot;test12&quot;, &quot;address12&quot;);
+	Employee employee2 = new Employee(name, address);
+	return Arrays.asList(employee1, employee2);
+    }
+
+    <em>/**
+     * Return result as org.springframework.http.ResponseEntity&lt;List&lt;Employee&gt;&gt;
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method13&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity&lt;List&lt;Employee&gt;&gt; method13() {
+	Employee employee1 = new Employee(&quot;test1&quot;, &quot;address1&quot;);
+	Employee employee2 = new Employee(&quot;test2&quot;, &quot;address2&quot;);
+	Employee employee3 = new Employee(&quot;test3&quot;, &quot;address3&quot;);
+	Employee employee4 = new Employee(&quot;test4&quot;, &quot;address4&quot;);
+
+	List&lt;Employee&gt; list = Arrays.asList(employee1, employee2, employee3, employee4);
+	ResponseEntity&lt;List&lt;Employee&gt;&gt; responseEntity = new ResponseEntity&lt;List&lt;Employee&gt;&gt;(list, HttpStatus.OK);
+
+	return responseEntity;
+    }
+
+    <em>/**
+     * Sample URL: http://localhost:9091/SpringRest/method14?name=name1&amp;name=name2&amp;address=address1&amp;address=address2
+     * @param names
+     * @param addresses
+     * @return
+     */</em>
+    @RequestMapping(value = &quot;/method14&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List&lt;Employee&gt; method14(@RequestParam(&quot;name&quot;) List&lt;String&gt; names, @RequestParam(&quot;address&quot;) List&lt;String&gt; addresses) {
+	System.out.println(&quot;names: &quot; + names + &quot;, addresses: &quot; + addresses);
+	Employee employee1 = new Employee(names.get(0), addresses.get(0));
+	Employee employee2 = new Employee(names.get(1), addresses.get(1));
+	return Arrays.asList(employee1, employee2);
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">GetRequestClient.java</div><div class="panel-body">
+<pre><code>
+package spring.rest.get;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import spring.rest.model.Employee;
+
+<em>/**
+ * class to practice REST web service with GET method
+ * @author Donthu Avinash Babu
+ */</em>
+public class GetRequestsClient {
+
+    public static void main(String[] args) {
+	GetRequestsClient getRequestsClient = new GetRequestsClient();
+	getRequestsClient.method2();
+    }
+
+    <em>/**
+     * Rest Client for {@link GetRequests#method1()}
+     */</em>
+    public void method1() {
+	final String url = &quot;http://localhost:9091/SpringRest/method1&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method1() result: &quot; + result);
+    }
+
+   <em> /**
+     * Rest Client for {@link GetRequests#method2()}
+     */</em>
+    public void method2() {
+	final String url = &quot;http://localhost:9091/SpringRest/method2&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method2() result: &quot; + result);
+
+	Employee result2 = restTemplate.getForObject(url, Employee.class);
+	System.out.println(&quot;GetRequestClient.method2() result2: &quot; + result2);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method3()}
+     */</em>
+    public void method3() {
+	final String url = &quot;http://localhost:9091/SpringRest/method3&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method3() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method4()}
+     */</em>
+    public void method4() {
+	final String url = &quot;http://localhost:9091/SpringRest/method4&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method4() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method5()}
+     */</em>
+    public void method5() {
+	final String url = &quot;http://localhost:9091/SpringRest/method5&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method5() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method6()}
+     */</em>
+    public void method6() {
+	final String url = &quot;http://localhost:9091/SpringRest/method6/{variable1}&quot;;
+
+	Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+	params.put(&quot;variable1&quot;, &quot;10&quot;);
+
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class, params);
+
+	System.out.println(&quot;GetRequestClient.method6() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method7()}
+     */</em>
+    public void method7() {
+	final String url = &quot;http://localhost:9091/SpringRest/method7?id=20&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method7() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method8()}
+     */</em>
+    public void method8() {
+	final String url = &quot;http://localhost:9091/SpringRest/method8&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method8() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method9()}
+     */</em>
+    public void method9() {
+	final String url = &quot;http://localhost:9091/SpringRest/method9?name=restClientName&amp;address=restClientAddress&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+	System.out.println(&quot;GetRequestClient.method9() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method10()}
+     */</em>
+    public void method10() {
+	final String url = &quot;http://localhost:9091/SpringRest/method10/{name}/{address}&quot;;
+
+	Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+	params.put(&quot;name&quot;, &quot;restClientName&quot;);
+	params.put(&quot;address&quot;, &quot;restClientAddress&quot;);
+
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class, params);
+
+	System.out.println(&quot;GetRequestClient.method10() result: &quot; + result);
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method11()}
+     */</em>
+    public void method11() {
+	final String url = &quot;http://localhost:9091/SpringRest/method11&quot;;
+
+	HttpHeaders httpHeaders = new HttpHeaders();
+	httpHeaders.set(&quot;name&quot;, &quot;restClientName&quot;);
+	httpHeaders.set(&quot;address&quot;, &quot;restClientAddress&quot;);
+	HttpEntity&lt;String&gt; httpEntity = new HttpEntity&lt;String&gt;(&quot;parameters&quot;, httpHeaders);
+
+	RestTemplate restTemplate = new RestTemplate();
+	ResponseEntity&lt;String&gt; result = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+	System.out.println(&quot;GetRequestClient.method11() result: &quot; + result.getBody());
+    }
+
+    <em>/**
+     * Rest client for  {@link GetRequests#method12()}
+     */</em>
+    @Test
+    public void method12() {
+	final String url = &quot;http://localhost:9091/SpringRest/method12/{name}/{address}&quot;;
+
+	Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+	params.put(&quot;name&quot;, &quot;restClientName&quot;);
+	params.put(&quot;address&quot;, &quot;restClientAddress&quot;);
+
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class, params);
+
+	System.out.println(&quot;method12() result: &quot; + result);
+    }
+
+    <em>/**
+     * {@link GetRequests#method13()}
+     */</em>
+    @Test
+    public void method13() {
+	final String url = &quot;http://localhost:9091/SpringRest/method13&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+
+	System.out.println(&quot;method13() result: &quot; + result);
+    }
+
+    <em>/**
+     * {@link GetRequests#method14(java.util.List, java.util.List)}}
+     */</em>
+    @Test
+    public void method14() {
+	final String url = &quot;http://localhost:9091/SpringRest/method14?name=name1&amp;name=name2&amp;address=address1&amp;address=address2&quot;;
+	RestTemplate restTemplate = new RestTemplate();
+	String result = restTemplate.getForObject(url, String.class);
+
+	System.out.println(&quot;method14() result: &quot; + result);
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method1</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/2-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method2</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/3-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method3</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/4-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method4</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/5-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method5</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/6-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method6/123</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/7-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method7?id=123</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/8-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method8</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/9-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method9?name=jack&address=newyork</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/10-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method10/jack/newyork</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/11-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method11</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/12-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method12/jack/newyork</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/13-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method13</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/14-spring-rest.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/SpringRest/method14?name=name1&name=name2&address=address1&address=address2</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/15-spring-rest.jpg"/>
+</div></div>

@@ -1,0 +1,47 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create windowService.html</li>
+	<li>Create windowService.js. Add it in windowService.html</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">windowService.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;window service&lt;/title&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;windowService.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+&lt;h3 style=&quot;text-align: center;&quot;&gt; &#123; &#123;message&#125; &#125; &lt;/h3&gt;
+&lt;hr/&gt;
+Count Down: &#123; &#123;countDown&#125; &#125;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">windowService.js</div><div class="panel-body">
+<pre ><code>
+(function(){
+    var app = angular.module(&quot;moduleName&quot;, []);
+
+    app.controller(&quot;mainController&quot;, function($scope, $window, $http, $interval){
+        $scope.message = &quot;Welcome to Angular window service demo&quot;;
+        $scope.countDown = 5;
+
+        $scope.countDownTimer = function(){
+            $scope.countDown -= 1;
+            if($scope.countDown == 0){
+                $window.location.reload();
+            }
+        }
+
+        $interval($scope.countDownTimer, 1000, 5);
+    });
+}());
+</code></pre>
+</div></div>

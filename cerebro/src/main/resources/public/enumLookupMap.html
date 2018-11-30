@@ -1,0 +1,153 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create an enum</li>
+	<li>Create static HashMap</li>
+	<li>Initialize HashMap using static block</li>
+	<li>write public static method with string argument</li>
+	<li>return enum from Map using string argument passed</li>
+	<li>Reference
+		<ul>
+			<li><a ng-href="https://dzone.com/articles/java-enum-lookup-by-name-or-field-without-throwing" target="_blank">DZone</a>
+		</ul>
+	</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">CardSuitEnum.java</div><div class="panel-body">
+<pre ><code>
+package core.java.enums.model;
+
+import java.util.HashMap;
+import java.util.Map;
+
+enum CardColorEnum {
+	RED, BLACK;
+}
+
+public enum CardSuitEnum {
+	SPADE(&quot;Spade&quot;, &quot;S&quot;, CardColorEnum.RED), HEART(&quot;Heart&quot;, &quot;H&quot;, CardColorEnum.BLACK), DIAMOND(&quot;Diamond&quot;, &quot;D&quot;,
+			CardColorEnum.RED), CLUB(&quot;Club&quot;, &quot;C&quot;, CardColorEnum.BLACK);
+
+	private String cardName;
+	private String cardSymbol;
+	private CardColorEnum cardColor;
+	private static final Map&lt;String, CardSuitEnum&gt; lookupMap = new HashMap&lt;&gt;(CardSuitEnum.values().length);
+
+	static {
+		for (CardSuitEnum cardSuitEnum : CardSuitEnum.values()) {
+			lookupMap.put(cardSuitEnum.getCardName(), cardSuitEnum);
+		}
+	}
+
+	public static CardSuitEnum lookupByName(String name) {
+		return lookupMap.get(name);
+	}
+
+	private CardSuitEnum(String cardName, String cardSymbol, CardColorEnum cardColor) {
+		this.cardName = cardName;
+		this.cardSymbol = cardSymbol;
+		this.cardColor = cardColor;
+	}
+
+	public String getCardName() {
+		return cardName;
+	}
+
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+
+	public String getCardSymbol() {
+		return cardSymbol;
+	}
+
+	public void setCardSymbol(String cardSymbol) {
+		this.cardSymbol = cardSymbol;
+	}
+
+	public CardColorEnum getCardColor() {
+		return cardColor;
+	}
+
+	public void setCardColor(CardColorEnum cardColor) {
+		this.cardColor = cardColor;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">enumValueOf()</div><div class="panel-body">
+<pre ><code>
+/*** Very poor implementation - not preferable 
+* Using Enum.valueOf is great when you know the input is valid. However, if you pass in an invalid name, 
+* an exception will be thrown. In some cases, this is fine. Oftentimes. we would prefer to just ignore it and return null.
+*/
+@Test
+public void enumValueOf() {
+	System.out.println(CardSuitEnum.valueOf(&quot;SPADE&quot;));
+	try {
+		System.out.println(CardSuitEnum.valueOf(&quot;Spade&quot;));
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+SPADE
+java.lang.IllegalArgumentException: No enum constant core.java.enums.model.CardSuitEnum.Spade
+	at java.lang.Enum.valueOf(Enum.java:238)
+	at core.java.enums.model.CardSuitEnum.valueOf(CardSuitEnum.java:1)
+	at core.java.enums.ReadEnumPractice.enumValueOf(ReadEnumPractice.java:18)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">enumIteration()</div><div class="panel-body">
+<pre><code>
+/**
+	 * Find by iteration - better but not preferable
+	 */
+	@Test
+	public void enumIteration() {
+		String name = &quot;Diamond&quot;;
+		for (CardSuitEnum cardSuitEnum : CardSuitEnum.values()) {
+			if (name.equals(cardSuitEnum.getCardName())) {
+				System.out.println(cardSuitEnum);
+			}
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+DIAMOND
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">lookupMap()</div><div class="panel-body">
+<pre><code>
+/**
+* Best implementation - using static HashMap
+* Steps: 
+* 1. Create static HashMap in Enum
+* 2. write static block and initialize HashMap
+* 3. write a static method lookupName(String name) and return the Enum object using name
+*/
+@Test
+public void lookupMap() {
+	String name = &quot;Heart&quot;;
+	CardSuitEnum cardSuitEnum = CardSuitEnum.lookupByName(name);
+	System.out.println(&quot;cardSuitEnum: &quot; + cardSuitEnum);
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+cardSuitEnum: HEART
+</code></pre>
+</div></div>

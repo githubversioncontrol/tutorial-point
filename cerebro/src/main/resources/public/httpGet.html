@@ -1,0 +1,264 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Create Spring Boot application and write GET REST Web Service</li>
+		<li>Create httpGet.html</li>
+		<li>Add angular.js to httpGet.html script tag</li>
+		<li>Create httpGet.js file and add it to httpGet.html script tag</li>
+		<li>Start the REST service</li>
+		<li>Call REST Web Service from angular controller</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/angular1/1-httpGet.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.angular.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;AngularJSPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;${project.groupId} ${project.artifactId}&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;1.4.7.RELEASE&lt;/version&gt;
+	&lt;/parent&gt;
+
+	&lt;developers&gt;
+		&lt;developer&gt;
+			&lt;name&gt;Avinash Babu Donthu&lt;/name&gt;
+			&lt;email&gt;avinashbabu.donthu@gmail.com&lt;/email&gt;
+			&lt;organization&gt;Cerebro&lt;/organization&gt;
+		&lt;/developer&gt;
+	&lt;/developers&gt;
+
+	&lt;scm&gt;
+		&lt;connection&gt;scm:git:https://github.com/capitalone/Hygieia.git/&lt;/connection&gt;
+		&lt;developerConnection&gt;scm:git:https://github.com/avinashbabudonthu/AngularJS1Practice.git/&lt;/developerConnection&gt;
+		&lt;url&gt;https://github.com/avinashbabudonthu/AngularJS1Practice.git&lt;/url&gt;
+		&lt;tag&gt;HEAD&lt;/tag&gt;
+	&lt;/scm&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;AngularJSPractice&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">application.properties</div><div class="panel-body">
+<pre ><code>
+### logging properties
+logging.level.org.springframework=DEBUG
+
+### server properties
+server.port=9090
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre ><code>
+package com.angularjs;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class App {
+
+	public static void main(String[] args) {
+		SpringApplication.run(App.class, args);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre ><code>
+package com.angularjs.controller;
+
+import java.time.LocalDate;
+
+public class Employee {
+
+	private String name;
+	private LocalDate joiningDate;
+	private Long salary;
+
+	public Employee() {
+	}
+
+	public Employee(String name, LocalDate joiningDate, Long salary) {
+		this.name = name;
+		this.joiningDate = joiningDate;
+		this.salary = salary;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
+	}
+
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
+	}
+
+	public Long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Long salary) {
+		this.salary = salary;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">GetController.java</div><div class="panel-body">
+<pre ><code>
+package com.angularjs.controller;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class GetController {
+
+	@RequestMapping(value = &quot;/employee&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Employee getEmployee() {
+		Employee employee = new Employee(&quot;name1&quot;, LocalDate.now(Clock.systemDefaultZone()), 100000L);
+		return employee;
+	}
+
+	@RequestMapping(value = &quot;/employees&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List&lt;Employee&gt; getEmployees() {
+		List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+		for (int i = 1; i &lt;= 10; i++) {
+			employees.add(new Employee(&quot;name&quot; + i, LocalDate.now(Clock.systemDefaultZone()).plusDays(i), Long
+					.valueOf(9999 + i)));
+		}
+		return employees;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">httpGet.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+    &lt;title&gt;Http GET&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;httpGet.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+    &lt;h3 style=&quot;text-align: center;&quot;&gt;Response in JSON format&lt;/h3&gt;
+    Json: &#123; &#123; employee | json&#125; &#125;
+    &lt;hr/&gt;
+    &lt;h3&gt;If any error: &lt;/h3&gt;
+    &#123; &#123;errorMessage &#125; &#125;
+    &lt;hr/&gt;
+    &lt;h3&gt;Property wise Response:&lt;/h3&gt;
+    &lt;div&gt;Name: &#123; &#123;employee.name&#125; &#125; &lt;/div&gt;
+    &lt;div&gt;Joining Date: &#123; &#123;employee.joiningDate | date&#125; &#125;&lt;/div&gt;
+    &lt;div&gt;Salary: &#123; &#123;employee.salary | currency&#125; &#125;&lt;/div&gt;
+    &lt;div&gt;Url: &#123; &#123;calledUrl&#125; &#125;&lt;/div&gt;
+    &lt;div&gt;Status: &#123; &#123;status&#125; &#125;&lt;/div&gt;
+    &lt;div&gt;Method: &#123; &#123;method&#125; &#125;&lt;/div&gt;
+    &lt;hr/&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">httpGet.js</div><div class="panel-body">
+<pre ><code>
+(function () {
+    var app = angular.module(&quot;moduleName&quot;, []);
+
+    app.controller(&quot;mainController&quot;, function ($scope, $http) {
+
+    <em>// then function - 1st argument - success function</em>
+    <em>// then function - 2nd argument - error function</em>
+        $http.get(&quot;http://localhost:9090/employee&quot;).then(
+            function (response) {
+                console.log(response);
+                $scope.employee = response.data;
+                $scope.calledUrl= response.config.url;
+                $scope.status = response.status;
+                $scope.method = response.method;
+            }, function (reason) {
+                console.log(reason);
+                $scope.errorMessage = &quot;Could not fetch the data&quot;;
+            }
+        );
+
+    });
+
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/angular1/2-httpGet.jpg"/>
+</div></div>

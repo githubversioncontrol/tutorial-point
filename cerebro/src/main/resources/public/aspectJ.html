@@ -1,0 +1,95 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Add below entries in pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;dependency&gt;
+ &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+ &lt;artifactId&gt;aspectjrt&lt;/artifactId&gt;
+ &lt;version&gt;1.8.10&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+ &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;
+ &lt;version&gt;1.8.10&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+ &lt;version&gt;4.3.5.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">AspectJService.java</div><div class="panel-body">
+class on whose method aspect has to be executed:
+<pre ><code>
+package core.java.aspectj.model;
+
+public class AspectJService {
+
+    public void method1() {
+	System.out.println(&quot;AspectJService -&gt; method1()&quot;);
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">AspectJAspect.java</div><div class="panel-body">
+class in which advice is defined:
+<pre ><code>
+package core.java.aspectj.model;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
+@Aspect
+public class AspectJAspect {
+
+    @Before(&quot;execution(void method1())&quot;)
+    public void method1Advice() {
+	System.out.println(&quot;AspectJAdvice -&gt; method1Advice()&quot;);
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">AspectJAOPPractice.java</div><div class="panel-body">
+Test class:
+<pre ><code>
+package core.java.aspectj;
+
+import org.junit.Test;
+import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
+
+import core.java.aspectj.model.AspectJAspect;
+import core.java.aspectj.model.AspectJService;
+
+public class AspectJAOPPractice {
+
+    @Test
+    public void method1() {
+	AspectJAspect aspectJAspect = new AspectJAspect();
+	AspectJService aspectJService = new AspectJService();
+
+	AspectJProxyFactory proxyFactory = new AspectJProxyFactory(aspectJService);
+	proxyFactory.addAspect(aspectJAspect);
+
+	AspectJService service = proxyFactory.getProxy();
+	service.method1();
+
+    }
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+AspectJAdvice -> method1Advice()
+AspectJService -> method1()
+</code></pre>
+</div></div>

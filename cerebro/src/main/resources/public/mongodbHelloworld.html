@@ -1,0 +1,47 @@
+<div class="page-header" id="1">
+    <h3>Mongo DB Hello World</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create Maven core java project</li>
+	<li>Add mongo-java-driver as dependency in pom.xml</li>
+	<li>Run MongoDB with command mongod</li>
+	<li>Write Hello World program</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create maven core java project</div><div class="panel-body">
+<pre><code>
+E:\Backup\JavaPrep\practiceProjects\MongoDB>mvn archetype:generate -DgroupId=java.mongo.hello.world -DartifactId=JavaMongoHelloWorld -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] >>> maven-archetype-plugin:2.4:generate (default-cli) > generate-sources @ standalone-pom >>>
+[INFO]
+[INFO] <<< maven-archetype-plugin:2.4:generate (default-cli) < generate-sources @ standalone-pom <<<
+[INFO]
+[INFO] --- maven-archetype-plugin:2.4:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Batch mode
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-quickstart:1.0
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: basedir, Value: E:\Backup\JavaPrep\practiceProjects\MongoDB
+[INFO] Parameter: package, Value: java.mongo.hello.world
+[INFO] Parameter: groupId, Value: java.mongo.hello.world
+[INFO] Parameter: artifactId, Value: JavaMongoHelloWorld
+[INFO] Parameter: packageName, Value: java.mongo.hello.world
+[INFO] Parameter: version, Value: 1.0
+[INFO] project created from Old (1.x) Archetype in dir: E:\Backup\JavaPrep\practiceProjects\MongoDB\JavaMongoHelloWorld
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 17.912 s
+[INFO] Finished at: 2017-03-07T09:08:39+05:30
+[INFO] Final Memory: 13M/245M
+[INFO] ------------------------------------------------------------------------
+</code></pre>
+</div></div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="cerebro">
+<head>
+<title>Cerebro</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/cerebro.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="js/cerebro.js"></script>
+</head>
+<body ng-controller="cerebroController">
+
+<!-- Top Navigation bar -->
+<div ng-include=" 'topNavigation.html' " id="0"></div>
+
+<!-- Body Content -->
+<div class="container" style="margin-top:25px">
+
+<div class="page-header">
+    <h3>Page Header</h3>      
+  </div>
+
+<!-- Pagination -->
+<ul class="pager">
+  <li><a ng-href="#">Previous</a></li>
+  <li class="disabled">Previous</li>
+  <li><a ng-href="#"><span class="glyphicon glyphicon-home"></span> Home </a></li>
+  <li><a ng-href="#">Next</a></li>
+</ul>
+
+<div class="panel panel-primary"><div class="panel-heading">Other Pages</div><div class="panel-body">
+	<ul>
+		<li><a ng-href="#">Topic 1</a></li>
+	</ul>
+</div></div>
+	
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+	<ul>
+		<li><a ng-click="navigate(1)">Topic 1</a></li>
+		<li><a ng-click="navigate(2)">Topic 2</a></li>
+	</ul>
+</div></div>
+	
+<div class="panel panel-primary" id="1"><div class="panel-heading">Code Content Header</div><div class="panel-body">
+<pre ><code>
+Code Content
+</code></pre>
+<em>Output</em>
+<pre><code>
+Output content
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Code Content Header</div><div class="panel-body">
+<pre ><code>
+Code Content
+</code></pre>
+<em>Output</em>
+<pre><code>
+Output content
+</code></pre>
+</div></div>
+
+</div>
+</body></html>

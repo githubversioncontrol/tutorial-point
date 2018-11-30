@@ -1,0 +1,415 @@
+<div class="panel panel-primary"><div class="panel-heading">About this example</div><div class="panel-body">
+<ul>
+<li>Execute scripts in the same order as below</li>
+<li>DEPT table and Insert scripts</li>
+<li>EMP table and Insert scripts</li>
+<li>SALGRADE table and Insert scripts</li>
+<li>Department.java to map DEPT table</li>
+<li>Employee.java to map EMP table</li>
+<li>SalaryGrade.java to map SALGRADE table</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">DEPT table and Insert scripts</div><div class="panel-body">
+<pre><code>
+CREATE SEQUENCE DEPT_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE TABLE DEPT
+(
+ DEPTNO NUMBER(32)
+,DNAME VARCHAR2(50)
+,LOC VARCHAR2(50)
+,CONSTRAINT DEPTNO_PK PRIMARY KEY(DEPTNO)
+);
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES(10,'ACCOUNTING','NEW YORK');
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES(20,'RESEARCH','DALLAS');
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES(30,'SALES','CHICAGO');
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES(40,'OPERATIONS','BOSTON');
+ 
+COMMIT;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EMP table and Insert scripts</div><div class="panel-body">
+<pre><code>
+CREATE SEQUENCE EMP_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE TABLE EMP
+(
+ EMPNO NUMBER(32)
+,ENAME VARCHAR2(50)
+,DEPTNO NUMBER(32) CONSTRAINT DEPTNO_FK REFERENCES DEPT(DEPTNO) ON DELETE CASCADE
+,JOB VARCHAR2(50)
+,SAL NUMBER(32)
+,COMM NUMBER(32)
+,MGR NUMBER(32) CONSTRAINT MGR_FK REFERENCES EMP(EMPNO)
+,HIREDATE DATE
+,ACTIVE BOOLEAN
+,CONSTRAINT EMPNO_PK PRIMARY KEY(EMPNO)
+);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7839,'KING','PRESIDENT',NULL,parsedatetime('17-11-1981', 'dd-MM-yyyy'),5000,NULL,10);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7698,'BLAKE','MANAGER',7839,parsedatetime('01-05-1981', 'dd-MM-yyyy'),2850,NULL,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7782,'CLARK','MANAGER',7839,parsedatetime('09-06-1981', 'dd-MM-yyyy'),2450,NULL,10);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7566,'JONES','MANAGER',7839,parsedatetime('02-04-1981', 'dd-MM-yyyy'),2975,NULL,20);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7654,'MARTIN','SALESMAN',7698,parsedatetime('28-09-1981', 'dd-MM-yyyy'),1250,1400,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7499,'ALLEN','SALESMAN',7698,parsedatetime('20-02-1981', 'dd-MM-yyyy'),1600,300,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7844,'TURNER','SALESMAN',7698,parsedatetime('08-09-1981', 'dd-MM-yyyy'),1500,0,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7900,'JAMES','CLERK',7698,parsedatetime('03-12-1981', 'dd-MM-yyyy'),950,NULL,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7521,'WARD','SALESMAN',7698,parsedatetime('22-02-1981', 'dd-MM-yyyy'),1250,500,30);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7902,'FORD','ANALYST',7566,parsedatetime('03-12-1981', 'dd-MM-yyyy'),3000,NULL,20);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7369,'SMITH','CLERK',7902,parsedatetime('17-12-1980', 'dd-MM-yyyy'),800,NULL,20);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7788,'SCOTT','ANALYST',7566,parsedatetime('09-12-1982', 'dd-MM-yyyy'),3000,NULL,20);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7876,'ADAMS','CLERK',7788,parsedatetime('12-01-1983', 'dd-MM-yyyy'),1100,NULL,20);
+
+INSERT INTO EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO)
+VALUES (7934,'MILLER','CLERK',7782,parsedatetime('23-01-1982', 'dd-MM-yyyy'),1300,NULL,10);
+
+COMMIT;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">SALGRADE table and Insert scripts</div><div class="panel-body">
+<pre><code>
+CREATE SEQUENCE SALGRADE_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE TABLE SALGRADE
+(
+ HISAL NUMBER(32)
+,LOSAL NUMBER(32)
+,GRADE NUMBER(32)
+);
+
+INSERT INTO SALGRADE (HISAL, LOSAL, GRADE)
+VALUES (1, 700, 1200);
+
+INSERT INTO SALGRADE (HISAL, LOSAL, GRADE)
+VALUES (2, 1201, 1400);
+
+INSERT INTO SALGRADE (HISAL, LOSAL, GRADE)
+VALUES (3, 1401, 2000);
+
+INSERT INTO SALGRADE (HISAL, LOSAL, GRADE)
+VALUES (4, 2001, 3000);
+
+INSERT INTO SALGRADE (HISAL, LOSAL, GRADE)
+VALUES (5, 3001, 9999);
+
+COMMIT;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Department.java</div><div class="panel-body">
+<pre><code>
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;DEPT&quot;)
+public class Department {
+
+    private Integer id;
+    private String deptName;
+    private String location;
+    private Set&lt;Employee&gt; employees;
+
+    public Department(Integer id, String deptName, String location, Set&lt;Employee&gt; employees) {
+	this.id = id;
+	this.deptName = deptName;
+	this.location = location;
+	this.employees = employees;
+    }
+
+    public Department() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = &quot;DEPTNO&quot;)
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    @Column(name = &quot;DNAME&quot;)
+    public String getDeptName() {
+	return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+	this.deptName = deptName;
+    }
+
+    @Column(name = &quot;LOC&quot;)
+    public String getLocation() {
+	return location;
+    }
+
+    public void setLocation(String location) {
+	this.location = location;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;DEPTNO&quot;, referencedColumnName = &quot;DEPTNO&quot;)
+    public Set&lt;Employee&gt; getEmployees() {
+	return employees;
+    }
+
+    public void setEmployees(Set&lt;Employee&gt; employees) {
+	this.employees = employees;
+    }
+
+    @Override
+    public String toString() {
+	return &quot;Department [id=&quot; + id + &quot;, deptName=&quot; + deptName + &quot;, location=&quot; + location + &quot;, employees=&quot; + employees + &quot;]&quot;;
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;EMP&quot;)
+public class Employee {
+
+    private Integer id;
+    private String name;
+    private String job;
+    private Long salary;
+    private Long comm;
+    private Integer manager;
+    private Date hiredate;
+    private Boolean active;
+    private Department department;
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String name, String job, Long salary, Long comm, Integer manager, Date hiredate) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.job = job;
+	this.salary = salary;
+	this.comm = comm;
+	this.manager = manager;
+	this.hiredate = hiredate;
+    }
+
+    @Id
+    @Column(name = &quot;EMPNO&quot;)
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    @Column(name = &quot;ENAME&quot;)
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    @Column(name = &quot;JOB&quot;)
+    public String getJob() {
+	return job;
+    }
+
+    public void setJob(String job) {
+	this.job = job;
+    }
+
+    @Column(name = &quot;SAL&quot;)
+    public Long getSalary() {
+	return salary;
+    }
+
+    public void setSalary(Long salary) {
+	this.salary = salary;
+    }
+
+    @Column(name = &quot;COMM&quot;)
+    public Long getComm() {
+	return comm;
+    }
+
+    public void setComm(Long comm) {
+	this.comm = comm;
+    }
+
+    @Column(name = &quot;MGR&quot;)
+    public Integer getManager() {
+	return manager;
+    }
+
+    public void setManager(Integer manager) {
+	this.manager = manager;
+    }
+
+    @Column(name = &quot;HIREDATE&quot;)
+    public Date getHiredate() {
+	return hiredate;
+    }
+
+    public void setHiredate(Date hiredate) {
+	this.hiredate = hiredate;
+    }
+
+    @Column(name = &quot;ACTIVE&quot;)
+    public Boolean getActive() {
+	return active;
+    }
+
+    public void setActive(Boolean active) {
+	this.active = active;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = &quot;DEPTNO&quot;, referencedColumnName = &quot;DEPTNO&quot;)
+    public Department getDepartment() {
+	return department;
+    }
+
+    public void setDepartment(Department department) {
+	this.department = department;
+    }
+
+    @Override
+    public String toString() {
+    return &quot;Employee [id=&quot; + id + &quot;, name=&quot; + name + &quot;, job=&quot; + job + &quot;, salary=&quot; + salary + &quot;, comm=&quot; + comm + &quot;, manager=&quot; + manager
+    	+ &quot;, hiredate=&quot; + hiredate + &quot;, active=&quot; + active + &quot;, department=&quot; + department + &quot;]&quot;;
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">SalaryGrade.java</div><div class="panel-body">
+<pre><code>
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;SALGRADE&quot;)
+public class SalaryGrade {
+
+    private Long highSalary;
+    private Long lowSalary;
+    private Long grade;
+
+    public SalaryGrade(Long highSalary, Long lowSalary, Long grade) {
+	this.highSalary = highSalary;
+	this.lowSalary = lowSalary;
+	this.grade = grade;
+    }
+
+    public SalaryGrade() {
+    }
+
+    @Id
+    @Column(name = &quot;GRADE&quot;)
+    public Long getGrade() {
+	return grade;
+    }
+
+    public void setGrade(Long grade) {
+	this.grade = grade;
+    }
+
+    @Column(name = &quot;HISAL&quot;)
+    public Long getHighSalary() {
+	return highSalary;
+    }
+
+    public void setHighSalary(Long highSalary) {
+	this.highSalary = highSalary;
+    }
+
+    @Column(name = &quot;LOSAL&quot;)
+    public Long getLowSalary() {
+	return lowSalary;
+    }
+
+    public void setLowSalary(Long lowSalary) {
+	this.lowSalary = lowSalary;
+    }
+
+}
+</code></pre>
+</div></div>

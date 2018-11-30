@@ -1,0 +1,1139 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+    
+    <!-- Bread Crumbs -->
+    <li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+    
+    <li class="subGroupHeading">Examples</li>
+    <li><a ng-click="navigate(20)">Conventions for date format conversion</a></li>
+	<li><a ng-click="navigate(1)">Creating java.time.Clock object</a></li>
+	<li><a ng-click="navigate(2)">java.time.LocalDate</a></li>
+	<li><a ng-click="navigate(3)">java.time.LocalTime</a></li>
+	<li><a ng-click="navigate(4)">java.time.LocalDateTime</a></li>
+	<li><a ng-click="navigate(5)">java.time.ZonedDateTime</a></li>
+	<li><a ng-click="navigate(6)">java.time.Duration</a></li>
+	<li><a ng-click="navigate(31)">java.time.Period</a></li>
+	<li><a ng-click="navigate(32)">java.time.temporal.ChronoUnit</a></li>
+	<li><a ng-click="navigate(7)">Convert java.util.Date to java.time.LocalDate</a></li>
+	<li><a ng-click="navigate(8)">Convert java.time.LocalDate to java.util.Date</a></li>
+	<li><a ng-click="navigate(9)">Convert java.util.Date to java.time.LocalDateTime</a></li>
+	<li><a ng-click="navigate(10)">Convert java.time.LocalDateTime to java.util.Date</a></li>
+	<li><a ng-click="navigate(11)">Convert java.util.Date to java.time.LocalTime</a></li>
+	<li><a ng-click="navigate(12)">Convert java.util.Date to java.time.ZonedDateTime</a></li>
+	<li><a ng-click="navigate(13)">Convert java.time.ZonedDateTime to java.util.Date</a></li>
+	<li><a ng-click="navigate(14)">Convert java.time.LocalDateTime to java.time.ZonedDateTime</a></li>
+	<li><a ng-click="navigate(15)">Convert date formats</a></li>
+	<li><a ng-click="navigate(16)">Convert String java.util.Date</a></li>
+	<li><a ng-click="navigate(17)">Convert String java.time.LocalDate</a></li>
+	<li><a ng-click="navigate(18)">Print day from date</a></li>
+	<li><a ng-click="navigate(19)">Convert java.time.LocalDateTime to java.sql.Timestamp</a></li>
+	<li><a ng-click="navigate(21)">Add days, months and years to java.util.Date</a></li>
+	<li><a ng-click="navigate(22)">Check the date is past date or not</a></li>
+	<li><a ng-click="navigate(23)">Date Validation</a></li>
+	<li><a ng-click="navigate(24)">Convert LocalDate to String</a></li>
+	<li><a ng-click="navigate(25)">Calculate number of weekends between 2 dates</a></li>
+	<li><a ng-click="navigate(26)">Convert java.time.LocalDateTime to java.time.LocalDate</a></li>
+	<li><a ng-click="navigate(27)">Convert java.time.LocalDateTime to java.time.LocalTime</a></li>
+	<li><a ng-click="navigate(28)">Get Date based of year</a></li>
+	<li><a ng-click="navigate(29)">Number of days in a month</a></li>
+	<li><a ng-click="navigate(30)">Get Dates of all mondays of specific month</a></li>
+	<li><a ng-click="navigate(33)">Convert 12 hours date time format to 24 hours date time format</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+<div class="panel panel-primary" id="20"><div class="panel-heading">Conventions for date format conversion</div><div class="panel-body table-responsive">
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Symbol (or) method call</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>java.util.Date to String conversion</td>
+        <td>java.text.DateFormat.format</td>
+      </tr>
+      <tr>
+        <td>String to java.util.Date conversion</td>
+        <td>java.text.DateFormat.parse</td>
+      </tr>
+      <tr>
+        <td>String to java.time.LocalDate conversion</td>
+        <td>java.time.LocalDate.parse(stringDate, java.time.format.DateTimeFormatter.ofPattern(input-date-format))</td>
+      </tr>
+      <tr>
+      	<td>MM</td>
+      	<td>Month in Number format</td>
+      </tr>
+      <tr>
+      	<td>MMM</td>
+      	<td>Month in English in short form </td>
+      </tr>
+      <tr>
+      	<td>MMMM</td>
+      	<td>Month in English in full form </td>
+      </tr>
+      <tr>
+      	<td>dd</td>
+      	<td>Date in 2 digits</td>
+      </tr>
+      <tr>
+      	<td>d</td>
+      	<td>Date in single digit</td>
+      </tr>
+      <tr>
+      	<td>E (or) EEE</td>
+      	<td>Day in shot form</td>
+      </tr>
+      <tr>
+      	<td>EEEE</td>
+      	<td>Day in full form</td>
+      </tr>
+      <tr>
+      	<td>yyyy</td>
+      	<td>Four digit year</td>
+      </tr>
+      <tr>
+      	<td>HH</td>
+      	<td>24 hours timeline</td>
+      </tr>
+      <tr>
+      	<td>hh</td>
+      	<td>12 hours timeline</td>
+      </tr>
+      <tr>
+      	<td>mm</td>
+      	<td>Minutes</td>
+      </tr>
+      <tr>
+      	<td>ss</td>
+      	<td>Seconds</td>
+      </tr>
+      <tr>
+      	<td>a</td>
+      	<td>AM/PM</td>
+      </tr>
+      <tr>
+      	<td>Z</td>
+      	<td>Time Zone</td>
+      </tr>
+    </tbody>
+  </table>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Creating java.time.Clock object</div><div class="panel-body"><pre><code>
+public void clock() {
+	Clock clock = Clock.systemUTC();
+	System.out.println(&quot;clock.instant(): &quot; + clock.instant());
+	System.out.println(&quot;clock.millis(): &quot; + clock.millis());
+	System.out.println(&quot;clock.getZone(): &quot; + clock.getZone());
+    }
+ </code></pre>
+ <em>Output</em>
+ <pre><code>
+clock.instant(): 2017-01-07T08:03:26.122Z
+clock.millis(): 1483776206469
+clock.getZone(): Z
+ </code></pre>
+ </div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">java.time.LocalDate</div><div class="panel-body"><pre><code>
+  public void localDate() {
+	LocalDate localDate1 = LocalDate.now();
+	System.out.println(&quot;localDate: &quot; + localDate1);
+
+	Clock clock1 = Clock.systemUTC();
+	LocalDate localDate2 = LocalDate.now(clock1);
+	System.out.println(&quot;localDate2: &quot; + localDate2);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+localDate: 2017-01-07
+localDate2: 2017-01-07
+</code></pre>
+</div></div>
+ 
+ <div class="panel panel-primary" id="3"><div class="panel-heading">java.time.LocalTime</div><div class="panel-body"><pre><code>
+public void localTime() {
+	LocalTime localTime1 = LocalTime.now();
+	System.out.println(&quot;localTime1: &quot; + localTime1);
+
+	Clock clock1 = Clock.systemUTC();
+	LocalTime localTime2 = LocalTime.now(clock1);
+	System.out.println(&quot;localTime2: &quot; + localTime2);
+
+	Clock clock2 = Clock.systemDefaultZone();
+	LocalTime localTime3 = LocalTime.now(clock2);
+	System.out.println(&quot;localTime3: &quot; + localTime3);
+    }  
+</code></pre>
+<em>Output</em>
+<pre><code>
+localTime1: 13:37:55.773
+localTime2: 08:07:55.773
+localTime3: 13:37:55.773
+</code></pre>
+</div></div>
+ 
+ <div class="panel panel-primary" id="4"><div class="panel-heading">java.time.LocalDateTime</div><div class="panel-body"><pre><code>
+public void localDateTime() {
+	LocalDateTime localDateTime1 = LocalDateTime.now();
+	System.out.println(&quot;localDateTime1: &quot; + localDateTime1);
+
+	Clock clock1 = Clock.systemUTC();
+	LocalDateTime localDateTime2 = LocalDateTime.now(clock1);
+	System.out.println(&quot;localDateTime2: &quot; + localDateTime2);
+
+	Clock clock2 = Clock.systemDefaultZone();
+	LocalDateTime localDateTime3 = LocalDateTime.now(clock2);
+	System.out.println(&quot;localDateTime3: &quot; + localDateTime3);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+localDateTime1: 2017-01-07T13:38:28.995
+localDateTime2: 2017-01-07T08:08:28.996
+localDateTime3: 2017-01-07T13:38:28.996
+</code></pre>
+</div></div>
+ 
+ <div class="panel panel-primary" id="5"><div class="panel-heading">java.time.ZonedDateTime</div><div class="panel-body"><pre><code>
+public void zonedDateTime() {
+	ZonedDateTime zonedDateTime1 = ZonedDateTime.now();
+	System.out.println(&quot;zonedDateTime1: &quot; + zonedDateTime1);
+
+	Clock clock1 = Clock.systemUTC();
+	ZonedDateTime zonedDateTime2 = ZonedDateTime.now(clock1);
+	System.out.println(&quot;zonedDateTime2: &quot; + zonedDateTime2);
+
+	ZonedDateTime zonedDateTime3 = ZonedDateTime.now(ZoneId.of(&quot;Asia/Calcutta&quot;));
+	System.out.println(&quot;zonedDateTime3: &quot; + zonedDateTime3);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+zonedDateTime1: 2017-01-07T13:38:55.390+05:30[Asia/Calcutta]
+zonedDateTime2: 2017-01-07T08:08:55.391Z
+zonedDateTime3: 2017-01-07T13:38:55.391+05:30[Asia/Calcutta]
+</code></pre>
+</div></div> 
+ 
+ <div class="panel panel-primary" id="6"><div class="panel-heading">java.time.Duration</div><div class="panel-body"><pre><code>
+public void duration() {
+	LocalDateTime localDateTime1 = LocalDateTime.of(2014, Month.NOVEMBER, 27, 15, 50);
+	LocalDateTime localDateTime2 = LocalDateTime.of(2016, Month.NOVEMBER, 27, 15, 50);
+
+	Duration duration1 = Duration.between(localDateTime1, localDateTime2);
+	System.out.println(&quot;duration1: &quot; + duration1);
+	System.out.println(&quot;days: &quot; + duration1.toDays());
+	System.out.println(&quot;months: &quot; + duration1.toDays() / 30);
+	System.out.println(&quot;years: &quot; + (duration1.toDays() / 30) / 12);
+	System.out.println(&quot;hours: &quot; + duration1.toHours());
+	System.out.println(&quot;minutes: &quot; + duration1.toMinutes());
+	System.out.println(&quot;seconds: &quot; + duration1.getSeconds());
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+duration1: PT17544H
+days: 731
+months: 24
+years: 2
+hours: 17544
+minutes: 1052640
+seconds: 63158400
+</code></pre>
+ </div></div>
+ 
+<div class="panel panel-primary" id="31"><div class="panel-heading">java.time.Period</div><div class="panel-body">
+<pre><code>
+import java.time.Period;
+import java.time.LocalDate;
+
+public void javaTimePeriod() {
+		Period tenDays = Period.ofDays(10);
+		System.out.println(&quot;tenDays.getDays(): &quot; + tenDays.getDays());
+
+		Period yearsMonthsDays = Period.of(5, 3, 15);
+		System.out.println(yearsMonthsDays.getYears() + &quot; years, &quot; + yearsMonthsDays.getMonths()
+				+ &quot; months, &quot; + yearsMonthsDays.getDays() + &quot; days&quot;);
+
+		System.out.println(&quot;--- calculation duration --- &quot;);
+		LocalDate oldDate = LocalDate.of(1987, Month.JULY, 20);
+		LocalDate newDate = LocalDate.of(2017, Month.SEPTEMBER, 29);
+
+		System.out.println(&quot;oldDate: &quot; + oldDate);
+		System.out.println(&quot;newDate: &quot; + newDate);
+
+		// check period between dates
+		Period period = Period.between(oldDate, newDate);
+
+		System.out.println(period.getYears() + &quot; years,&quot; + period.getMonths() + &quot; months,&quot; + period.getDays()
+				+ &quot; days&quot;);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+tenDays.getDays(): 10
+5 years, 3 months, 15 days
+--- calculation duration --- 
+oldDate: 1987-07-20
+newDate: 2017-09-29
+30 years,2 months,9 days
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="32"><div class="panel-heading">java.time.temporal.ChronoUnit</div><div class="panel-body">
+<pre><code>
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+public void javaTimeTemporalChronoUnit() {
+		LocalDateTime oldDate = LocalDateTime.of(1987, Month.JULY, 20, 4, 05, 00);
+		LocalDateTime newDate = LocalDateTime.of(2017, Month.SEPTEMBER, 29, 10, 05, 15);
+
+		System.out.println(&quot;oldDate: &quot; + oldDate + &quot;, newDate: &quot; + newDate);
+
+		<em>// calculate duration</em>
+		long years = ChronoUnit.YEARS.between(oldDate, newDate);
+		long months = ChronoUnit.MONTHS.between(oldDate, newDate);
+		long weeks = ChronoUnit.WEEKS.between(oldDate, newDate);
+		long days = ChronoUnit.DAYS.between(oldDate, newDate);
+		long hours = ChronoUnit.HOURS.between(oldDate, newDate);
+		long minutes = ChronoUnit.MINUTES.between(oldDate, newDate);
+		long seconds = ChronoUnit.SECONDS.between(oldDate, newDate);
+		long milis = ChronoUnit.MILLIS.between(oldDate, newDate);
+		long nano = ChronoUnit.NANOS.between(oldDate, newDate);
+
+		System.out.println(years + &quot; years&quot;);
+		System.out.println(months + &quot; months&quot;);
+		System.out.println(weeks + &quot; weeks&quot;);
+		System.out.println(days + &quot; days&quot;);
+		System.out.println(hours + &quot; hours&quot;);
+		System.out.println(minutes + &quot; minutes&quot;);
+		System.out.println(seconds + &quot; seconds&quot;);
+		System.out.println(milis + &quot; milis&quot;);
+		System.out.println(nano + &quot; nano&quot;);
+
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+oldDate: 1987-07-20T04:05, newDate: 2017-09-29T10:05:15
+30 years
+362 months
+1575 weeks
+11029 days
+264702 hours
+15882120 minutes
+952927215 seconds
+952927215000 milis
+952927215000000000 nano
+</code></pre>
+</div></div>
+ 
+ <div class="panel panel-primary" id="7"><div class="panel-heading">Convert java.util.Date to java.time.LocalDate</div><div class="panel-body"><pre><code>
+public void convertUtilDateToLocalDate() {
+	Date date = new Date();
+	System.out.println(&quot;convertUtilDateToLocalDate() date: &quot; + date);
+
+	Instant instant = date.toInstant();
+	System.out.println(&quot;convertUtilDateToLocalDate() instant: &quot; + instant);
+
+	ZoneId systemDefaultZoneId = ZoneId.systemDefault();
+	LocalDate localDate = instant.atZone(systemDefaultZoneId).toLocalDate();
+	System.out.println(&quot;convertUtilDateToLocalDate() localDate: &quot; + localDate);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertUtilDateToLocalDate() date: Sat Jan 07 13:39:51 IST 2017
+convertUtilDateToLocalDate() instant: 2017-01-07T08:09:51.695Z
+convertUtilDateToLocalDate() localDate: 2017-01-07
+</code></pre>
+ </div></div>
+ 
+ <div class="panel panel-primary" id="8"><div class="panel-heading">Convert java.time.LocalDate to java.util.Date</div><div class="panel-body"><pre><code>
+public void convertLocalDateToUtilDate() {
+	LocalDate localDate = LocalDate.now();
+	System.out.println(&quot;convertLocalDateToUtilDate() localDate: &quot; + localDate);
+
+	ZoneId zoneId = ZoneId.systemDefault();
+	Date date = Date.from(localDate.atStartOfDay(zoneId).toInstant());
+	System.out.println(&quot;convertLocalDateToUtilDate() date: &quot; + date);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertLocalDateToUtilDate() localDate: 2017-01-07
+convertLocalDateToUtilDate() date: Sat Jan 07 00:00:00 IST 2017
+</code></pre>
+ </div></div>
+ 
+<div class="panel panel-primary" id="9"><div class="panel-heading">Convert java.util.Date to java.time.LocalDateTime</div><div class="panel-body"><pre><code>
+public void convertUtilDateToLocalDateTime() {
+	Date date = new Date();
+	System.out.println(&quot;convertUtilDateToLocalDateTime() date: &quot; + date);
+
+	Instant instant = date.toInstant();
+	System.out.println(&quot;convertUtilDateToLocalDateTime() instant: &quot; + instant);
+
+	ZoneId systemDefaultZoneId = ZoneId.systemDefault();
+	LocalDateTime localDateTime = instant.atZone(systemDefaultZoneId).toLocalDateTime();
+	System.out.println(&quot;convertUtilDateToLocalDateTime() localDateTime: &quot; + localDateTime);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertUtilDateToLocalDateTime() date: Sat Jan 07 13:41:03 IST 2017
+convertUtilDateToLocalDateTime() instant: 2017-01-07T08:11:03.750Z
+convertUtilDateToLocalDateTime() localDateTime: 2017-01-07T13:41:03.750
+</code></pre>
+ </div></div>
+ 
+ <div class="panel panel-primary" id="10"><div class="panel-heading">Convert java.time.LocalDateTime to java.util.Date</div><div class="panel-body"><pre><code>
+ public void convertLocalDateTimeToUtilDate() {
+	Clock clock = Clock.systemDefaultZone();
+	LocalDateTime localDateTime = LocalDateTime.now(clock);
+	System.out.println(&quot;convertLocalDateTimeToUtilDate() localDateTime: &quot; + localDateTime);
+
+	ZoneId zoneId = ZoneId.systemDefault();
+	Date date = Date.from(localDateTime.atZone(zoneId).toInstant());
+	System.out.println(&quot;convertLocalDateTimeToUtilDate() date: &quot; + date);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertLocalDateTimeToUtilDate() localDateTime: 2017-01-07T13:41:39.015
+convertLocalDateTimeToUtilDate() date: Sat Jan 07 13:41:39 IST 2017
+</code></pre>
+ </div></div>
+ 
+ <div class="panel panel-primary" id="11"><div class="panel-heading">Convert java.util.Date to java.time.LocalTime</div><div class="panel-body"><pre><code>
+public void convertUtilDateToLocalTime() {
+	Date date = new Date();
+	System.out.println(&quot;convertUtilDateToLocalTime() date: &quot; + date);
+
+	Instant instant = date.toInstant();
+	System.out.println(&quot;convertUtilDateToLocalTime() instant: &quot; + instant);
+
+	ZoneId systemDefaultZoneId = ZoneId.systemDefault();
+	LocalTime localTime = instant.atZone(systemDefaultZoneId).toLocalTime();
+	System.out.println(&quot;convertUtilDateToLocalTime() localTime: &quot; + localTime);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertUtilDateToLocalTime() date: Sat Jan 07 13:42:11 IST 2017
+convertUtilDateToLocalTime() instant: 2017-01-07T08:12:11.514Z
+convertUtilDateToLocalTime() localTime: 13:42:11.514
+</code></pre>
+ </div></div>
+ 
+<div class="panel panel-primary" id="12"><div class="panel-heading">Convert java.util.Date to java.time.ZonedDateTime</div><div class="panel-body"><pre><code>
+public void convertUtilDateToZonedDateTime() {
+	Date date = new Date();
+	System.out.println(&quot;convertUtilDateToZonedDateTime() date: &quot; + date);
+
+	Instant instant = date.toInstant();
+	System.out.println(&quot;convertUtilDateToZonedDateTime() instant: &quot; + instant);
+
+	ZoneId zoneId = ZoneId.systemDefault();
+	ZonedDateTime zonedDateTime = instant.atZone(zoneId);
+	System.out.println(&quot;convertUtilDateToZonedDateTime() zonedDateTime: &quot; + zonedDateTime);
+    } 
+ </code></pre>
+ <em>Output</em>
+<pre><code>
+convertUtilDateToZonedDateTime() date: Sat Jan 07 13:42:41 IST 2017
+convertUtilDateToZonedDateTime() instant: 2017-01-07T08:12:41.628Z
+convertUtilDateToZonedDateTime() zonedDateTime: 2017-01-07T13:42:41.628+05:30[Asia/Calcutta]
+</code></pre>
+ </div></div>
+ 
+<div class="panel panel-primary" id="13"><div class="panel-heading">Convert java.time.ZonedDateTime to java.util.Date</div><div class="panel-body"><pre><code>
+public void convertZonedDateTimeToUtilDate() {
+	Clock clock = Clock.systemDefaultZone();
+	ZonedDateTime zonedDateTime = ZonedDateTime.now(clock);
+	System.out.println(&quot;convertZonedDateTimeToUtilDate() zonedDateTime: &quot; + zonedDateTime);
+
+	Date date = Date.from(zonedDateTime.toInstant());
+	System.out.println(&quot;convertZonedDateTimeToUtilDate() date: &quot; + date);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+convertZonedDateTimeToUtilDate() zonedDateTime: 2017-01-07T13:43:16.662+05:30[Asia/Calcutta]
+convertZonedDateTimeToUtilDate() date: Sat Jan 07 13:43:16 IST 2017
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="14"><div class="panel-heading">Convert java.time.LocalDateTime to java.time.ZonedDateTime</div><div class="panel-body"><pre><code>
+public void convertLocalDateTimeToZonedDateTime() {
+	Clock clock = Clock.systemDefaultZone();
+	LocalDateTime localDateTime = LocalDateTime.now(clock);
+	System.out.println(&quot;convertLocalDateTimeToZonedDateTime() localDateTime: &quot; + localDateTime);
+
+	ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+	System.out.println(&quot;convertLocalDateTimeToZonedDateTime() zonedDateTime: &quot; + zonedDateTime);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+convertLocalDateTimeToZonedDateTime() localDateTime: 2017-01-07T13:43:40.808
+convertLocalDateTimeToZonedDateTime() zonedDateTime: 2017-01-07T13:43:40.808+05:30[Asia/Calcutta]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="15"><div class="panel-heading">Convert date formats</div><div class="panel-body">
+<pre><code>
+public void converDateFormat1() throws ParseException {
+	<em>/*convert date from yyyy-mm-dd to mm/dd/yyyy*/</em>
+	DateFormat fromFormat1 = new SimpleDateFormat(&quot;yyyy-mm-dd&quot;);
+	DateFormat toFormat1 = new SimpleDateFormat(&quot;mm/dd/yyyy&quot;);
+
+	Date date = fromFormat1.parse(&quot;2017-01-27&quot;);
+	String convertedDate1 = toFormat1.format(date);
+	System.out.println(&quot;convertedDate: &quot; + convertedDate1);
+
+	<em>/*convert date from yyyy-mm-dd to dd/mm/yyyy*/</em>
+	DateFormat fromFormat2 = new SimpleDateFormat(&quot;yyyy-mm-dd&quot;);
+	DateFormat toFormat2 = new SimpleDateFormat(&quot;dd/mm/yyyy&quot;);
+	Date date2 = fromFormat2.parse(&quot;2017-01-27&quot;);
+	String convertedDate2 = toFormat2.format(date2);
+	System.out.println(&quot;convertedDate2: &quot; + convertedDate2);
+
+	<em>/*convert date from dd/mm/yyyy to yyyy-mm-dd*/</em>
+	DateFormat fromFormat3 = new SimpleDateFormat(&quot;dd/mm/yyyy&quot;);
+	DateFormat toFormat3 = new SimpleDateFormat(&quot;yyyy-mm-dd&quot;);
+	Date date3 = fromFormat3.parse(&quot;27/01/2017&quot;);
+	String convertedDate3 = toFormat3.format(date3);
+	System.out.println(&quot;convertedDate3: &quot; + convertedDate3);
+	
+	<em> /*convert Thu Apr 20 22:52:16 IST 2017 to 2017/04/20*/</em>
+	SimpleDateFormat fromFormat4 = new SimpleDateFormat(&quot;E MMM dd HH:mm:ss Z yyyy&quot;);
+	SimpleDateFormat toFormat4 = new SimpleDateFormat(&quot;yyyy/MM/dd&quot;);
+	Date date4 = fromFormat4.parse(&quot;Thu Apr 20 22:52:16 IST 2017&quot;);
+	String convertedDate4 = toFormat4.format(date4);
+	System.out.println(&quot;convertedDate4: &quot; + convertedDate4);
+
+	<em>/* convert new Date to yyyy/MM/dd*/</em>
+	Date date5 = new Date();
+	DateFormat toFormat5 = new SimpleDateFormat(&quot;yyyy/MM/dd&quot;);
+	String convertedDate5 = toFormat5.format(date5);
+	System.out.println(&quot;convertedDate5: &quot; + convertedDate5);
+    }
+</code></pre>
+<em>Ouptut</em>
+<pre><code>
+convertedDate1: 01/27/2017
+convertedDate2: 27/01/2017
+convertedDate3: 2017-01-27
+convertedDate4: 2017/04/20
+convertedDate5: 2017/04/24
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="16"><div class="panel-heading">Convert String java.util.Date</div><div class="panel-body">
+<pre><code>
+public void convertStringToUtilDate() throws ParseException {
+	<em>// 20-Jul-2017</em>
+	SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat(&quot;dd-MMM-yyyy&quot;);
+	String date1 = &quot;20-Jul-2017&quot;;
+
+	Date convertedDate1 = simpleDateFormat1.parse(date1);
+	System.out.println(&quot;convertedDate1: &quot; + convertedDate1);
+	System.out.println(&quot;simpleDateFormat1.format(convertedDate1): &quot; + simpleDateFormat1.format(convertedDate1));
+
+	<em>// 20/07/2017</em>
+	SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);
+	String date2 = &quot;20/07/2017&quot;;
+	Date convertedDate2 = simpleDateFormat2.parse(date2);
+	System.out.println(&quot;convertedDate2: &quot; + convertedDate2);
+	System.out.println(&quot;simpleDateFormat2.format(convertedDate2): &quot; + simpleDateFormat2.format(convertedDate2));
+
+	<em>//Thu, July 20 2017</em>
+	SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(&quot;E, MMM dd yyyy&quot;);
+	String date3 = &quot;Thu, July 20 2017&quot;;
+	Date convertedDate3 = simpleDateFormat3.parse(date3);
+	System.out.println(&quot;convertedDate3: &quot; + convertedDate3);
+	System.out.println(&quot;simpleDateFormat3.format(convertedDate3): &quot; + simpleDateFormat3.format(convertedDate3));
+
+	<em>//Thursday, July 10 2017 12:10:08 PM</em>
+	SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(&quot;EEEE, MMM dd yyyy HH:mm:ss a&quot;);
+	String date4 = &quot;Thursday, July 20 2017 12:10:08 PM&quot;;
+	Date convertedDate4 = simpleDateFormat4.parse(date4);
+	System.out.println(&quot;convertedDate4: &quot; + convertedDate4);
+	System.out.println(&quot;simpleDateFormat4.format(convertedDate4): &quot; + simpleDateFormat4.format(convertedDate4));
+    }
+</code></pre>
+<em>Ouptut</em>
+<pre><code>
+convertedDate1: Thu Jul 20 00:00:00 IST 2017
+simpleDateFormat1.format(convertedDate1): 20-Jul-2017
+convertedDate2: Thu Jul 20 00:00:00 IST 2017
+simpleDateFormat2.format(convertedDate2): 20/07/2017
+convertedDate3: Thu Jul 20 00:00:00 IST 2017
+simpleDateFormat3.format(convertedDate3): Thu, Jul 20 2017
+convertedDate4: Thu Jul 20 12:10:08 IST 2017
+simpleDateFormat4.format(convertedDate4): Thursday, Jul 20 2017 12:10:08 PM
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="17"><div class="panel-heading">Convert String java.time.LocalDate</div><div class="panel-body">
+<pre><code>
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+
+public void convertStringToLocalDate() {
+	<em>// 10/07/2017</em>
+	String date1 = &quot;20/07/2017&quot;;
+	DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern(&quot;d/MM/yyyy&quot;);
+	LocalDate localDate1 = LocalDate.parse(date1, formatter1);
+	System.out.println(&quot;localDate1: &quot; + localDate1);
+	System.out.println(&quot;formatter1.format(localDate1): &quot; + formatter1.format(localDate1));
+
+	<em>//10-07-2017</em>
+	String date2 = &quot;2017-07-21&quot;;
+	LocalDate localDate2 = LocalDate.parse(date2);
+	System.out.println(&quot;localDate2: &quot; + localDate2);
+
+	<em>// 20-Jul-2017</em>
+	String date3 = &quot;20-Jul-2017&quot;;
+	DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern(&quot;d-MMM-yyyy&quot;);
+	LocalDate localDate3 = LocalDate.parse(date3, formatter2);
+	System.out.println(&quot;localDate3: &quot; + localDate3);
+	System.out.println(&quot;formatter2.format(localDate3): &quot; + formatter2.format(localDate3));
+
+	<em>//Thu, Jul 20 2017</em>
+	String date4 = &quot;Thu, Jul 20 2017&quot;;
+	DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern(&quot;E, MMM d yyyy&quot;);
+	LocalDate localDate4 = LocalDate.parse(date4, formatter3);
+	System.out.println(&quot;localDate4: &quot; + localDate4);
+	System.out.println(&quot;formatter3.format(localDate4): &quot; + formatter3.format(localDate4));
+
+	<em>//Thursday, Jul 10 2017 12:10:08 PM</em>
+	String date5 = &quot;Thursday, Jul 20 2017 12:10:08 PM&quot;;
+	DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern(&quot;EEEE, MMM d yyyy HH:mm:ss a&quot;);
+	LocalDateTime localDate5 = LocalDateTime.parse(date5, formatter4);
+	System.out.println(&quot;localDate5: &quot; + localDate5);
+	System.out.println(&quot;formatter4.format(localDate5): &quot; + formatter4.format(localDate5));
+    }
+</code></pre>
+<em>Ouptut</em>
+<pre><code>
+localDate1: 2017-07-20
+formatter1.format(localDate1): 20/07/2017
+localDate2: 2017-07-21
+localDate3: 2017-07-20
+formatter2.format(localDate3): 20-Jul-2017
+localDate4: 2017-07-20
+formatter3.format(localDate4): Thu, Jul 20 2017
+localDate5: 2017-07-20T12:10:08
+formatter4.format(localDate5): Thursday, Jul 20 2017 12:10:08 PM
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="18"><div class="panel-heading">Print day from date</div><div class="panel-body">
+<pre><code>
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public void getDayOfWeek() {
+		int year = 2015;
+		int month = 8;
+		int day = 5;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month - 1, day);
+		Date date = calendar.getTime();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;EEEE&quot;);
+		System.out.println(simpleDateFormat.format(date));
+
+		SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(&quot;E&quot;);
+		System.out.println(simpleDateFormat2.format(date));
+
+		SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(&quot;EEE&quot;);
+		System.out.println(simpleDateFormat3.format(date));
+
+		// JDK 8
+		LocalDateTime localDateTime = LocalDateTime.of(2017, 9, 27, 8, 24);
+		System.out.println(localDateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+
+		LocalDate localDate = LocalDate.of(2017, 9, 27);
+		System.out.println(localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+	}
+</code></pre>
+<em>Output:</em>
+<pre>
+Wednesday
+Wed
+Wed
+Wednesday
+Wednesday
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="19"><div class="panel-heading">Convert java.time.LocalDateTime to java.sql.Timestamp</div><div class="panel-body">
+<pre><code>
+import java.time.LocalDateTime;
+import java.time.Clock;
+import java.sql.Timestamp;
+import java.time.ZoneOffset;
+
+public void convertLocalDateTimeToTimestamp() {
+ LocalDateTime localDateTime = LocalDateTime.now(Clock.systemDefaultZone());
+ System.out.println(&quot;localDateTime: &quot; + localDateTime);
+ Timestamp timestamp = Timestamp.from(localDateTime.toInstant(ZoneOffset.ofHours(0)));
+ System.out.println(&quot;timestamp: &quot; + timestamp);
+}
+</code></pre>
+<em>Output:</em>
+<pre>
+localDateTime: 2017-05-30T21:29:25.097
+timestamp: 2017-05-31 02:59:25.097
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="21"><div class="panel-heading">Add days, months and years to java.util.Date</div><div class="panel-body">
+<pre><code>
+public void addDayMonthYearToJavaUtilDate() {
+		Calendar calendar = Calendar.getInstance();
+		System.out.println(&quot;Current Date: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.DAY_OF_MONTH, 10);
+		System.out.println(&quot;Add 10 days: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.MONTH, 1);
+		System.out.println(&quot;Add 1 month: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.YEAR, 3);
+		System.out.println(&quot;Add 3 years: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.DAY_OF_MONTH, -5);
+		System.out.println(&quot;Reduce 5 days: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.MONTH, -2);
+		System.out.println(&quot;Reduce 2 months: &quot; + calendar.getTime());
+
+		calendar.add(Calendar.YEAR, -4);
+		System.out.println(&quot;Reduce 4 years: &quot; + calendar.getTime());
+	}
+</code></pre>
+<em>Output: Output may change based on execution date and time</em>
+<pre><code>
+Current Date: Thu Jul 06 20:31:54 IST 2017
+Add 10 days: Sun Jul 16 20:31:54 IST 2017
+Add 1 month: Wed Aug 16 20:31:54 IST 2017
+Add 3 years: Sun Aug 16 20:31:54 IST 2020
+Reduce 5 days: Tue Aug 11 20:31:54 IST 2020
+Reduce 2 months: Thu Jun 11 20:31:54 IST 2020
+Reduce 4 years: Sat Jun 11 20:31:54 IST 2016
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="22"><div class="panel-heading">Check the date is past date or not</div><div class="panel-body">
+<pre><code>
+public void dateFormatPractice() throws ParseException {
+		<em>// method 1</em>
+		String inputDate = &quot;20170710&quot;;
+		DateFormat dateFormat = new SimpleDateFormat(&quot;yyyyMMdd&quot;);
+		Date convertDate = dateFormat.parse(inputDate);
+
+		Instant instant = convertDate.toInstant();
+		ZoneId systemDefaultZoneId = ZoneId.systemDefault();
+		LocalDate localDate = instant.atZone(systemDefaultZoneId).toLocalDate();
+
+		LocalDate today = LocalDate.now(Clock.systemDefaultZone());
+		boolean isPast = localDate.isBefore(today);
+		boolean isFuture = localDate.isAfter(today);
+		System.out.println(&quot;inputDate: &quot; + localDate + &quot;, today: &quot; + today + &quot;, isPast: &quot; + isPast
+				+ &quot;, isFuture: &quot; + isFuture);
+
+		<em>// method 2</em>
+		String inputDate2 = &quot;20190814&quot;;
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);
+		LocalDate localDate2 = LocalDate.parse(inputDate2, dateTimeFormatter);
+		LocalDate today2 = LocalDate.now(Clock.systemDefaultZone());
+		boolean isPast2 = localDate2.isBefore(today2);
+		boolean isFuture2 = localDate2.isAfter(today2);
+		System.out.println(&quot;inputDate2: &quot; + localDate2 + &quot;, today2: &quot; + today2 + &quot;, isPast2: &quot; + isPast2
+				+ &quot;, isFuture: &quot; + isFuture2);
+	}
+</code></pre>
+<em>Output:</em>
+<pre><code>
+inputDate: 2017-07-10, today: 2017-08-14, isPast: true, isFuture: false
+inputDate2: 2019-08-14, today2: 2017-08-14, isPast2: false, isFuture: true
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="23"><div class="panel-heading">Date Validation</div><div class="panel-body">
+<em>Validate using java.util.Date</em>
+<pre><code>
+import java.text.SimpleDateFormat;
+import java.lang.String;
+import java.util.Date;
+import java.text.ParseException;
+
+public void validateUsingUtilDate() {
+		<em>// 20170999 - using java.util.Date</em>
+		try {
+			SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat(&quot;yyyyMMdd&quot;);
+			simpleDateFormat1.setLenient(false);
+			String date1 = &quot;20170999&quot;;
+			Date convertedDate1 = simpleDateFormat1.parse(date1);
+			System.out.println(&quot;convertedDate1: &quot; + convertedDate1);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		<em>// 20170999 - using java.util.Date</em>
+		try {
+			SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(&quot;yyyyMMdd&quot;);
+			String date2 = &quot;20170999&quot;;
+			Date convertedDate2 = simpleDateFormat2.parse(date2);
+			System.out.println(&quot;convertedDate2: &quot; + convertedDate2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+<span class="errorOutput">java.text.ParseException: Unparseable date: &quot;20170999&quot;
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at core.java.DatePractice.validateUsingUtilDate(DatePractice.java:463)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)</span>
+convertedDate2: Fri Dec 08 00:00:00 IST 2017
+</code></pre>
+
+<em>Validate using java.time.LocalDate</em>
+<pre><code>
+import java.lang.String;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.lang.Exception;
+
+public void validateUsingLocalDate() {
+		<em>//  20170999 - using java.time.LocalDate</em>
+		try {
+			String date1 = &quot;20170999&quot;;
+			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);
+			LocalDate localDate1 = LocalDate.parse(date1, formatter1);
+			System.out.println(&quot;localDate1: &quot; + localDate1);
+			System.out.println(&quot;formatter1.format(localDate1): &quot; + formatter1.format(localDate1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+</code></pre>
+<em>Output</em>
+<pre><code class="errorOutput">
+java.time.format.DateTimeParseException: Text '20170999' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 99
+	at java.time.format.DateTimeFormatter.createError(DateTimeFormatter.java:1920)
+	at java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1855)
+	at java.time.LocalDate.parse(LocalDate.java:400)
+	at core.java.DatePractice.validateUsingLocalDate(DatePractice.java:487)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: java.time.DateTimeException: Invalid value for DayOfMonth (valid values 1 - 28/31): 99
+	at java.time.temporal.ValueRange.checkValidIntValue(ValueRange.java:330)
+	at java.time.temporal.ChronoField.checkValidIntValue(ChronoField.java:722)
+	at java.time.chrono.IsoChronology.resolveYMD(IsoChronology.java:551)
+	at java.time.chrono.IsoChronology.resolveYMD(IsoChronology.java:123)
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="24"><div class="panel-heading">Convert LocalDate to String</div><div class="panel-body">
+<pre><code>
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public void convertLocalDateToString() {
+ <em>//MMM-yy</em>
+ LocalDate localDate = LocalDate.now(Clock.systemDefaultZone());
+ DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;MMM-yy&quot;);
+ System.out.println(&quot;localDate: &quot; + localDate + &quot;, convertedDate: &quot; + dateTimeFormatter.format(localDate));
+ 
+ <em>//dd-MM-yy</em>
+ LocalDate localDate2 = LocalDate.now(Clock.systemDefaultZone());
+ DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern(&quot;dd-MMM-yy&quot;);
+ System.out.println(&quot;localDate2: &quot; + localDate2 + &quot;, convertedDate2: &quot; + dateTimeFormatter2.format(localDate2));
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+localDate: 2017-09-01, convertedDate: Sep-17
+localDate2: 2017-09-01, convertedDate2: 01-Sep-17
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="25"><div class="panel-heading">Calculate number of weekends between 2 dates</div><div class="panel-body">
+<em>Using java.time.LocalDate in JDK 8</em>
+<pre><code>
+import java.time.LocalDate;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
+public void calculateNoOfWeekendsBetweenTwoDays() {
+ LocalDate fromDate = LocalDate.of(2017, 9, 12);
+ LocalDate toDate = LocalDate.of(2017, 9, 15);
+ calculateNoOfWeekends(fromDate, toDate);
+
+ fromDate = LocalDate.of(2017, 9, 12);
+ toDate = LocalDate.of(2017, 9, 18);
+ calculateNoOfWeekends(fromDate, toDate);
+
+ fromDate = LocalDate.of(2017, 9, 16);
+ toDate = LocalDate.of(2017, 9, 25);
+ calculateNoOfWeekends(fromDate, toDate);
+}
+
+private void calculateNoOfWeekends(LocalDate fromDate, LocalDate toDate) {
+ System.out.println(&quot;Input -&gt; fromDate: &quot; + fromDate + &quot;, toDate: &quot; + toDate);
+
+ int noOfWeekends = 0;
+ do {
+  DayOfWeek dayOfWeek = fromDate.getDayOfWeek();
+  String weekName = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+  System.out.println(&quot;fromDate: &quot; + fromDate + &quot;, weekName: &quot; + weekName);
+
+  if (&quot;saturday&quot;.equalsIgnoreCase(weekName) || &quot;sunday&quot;.equalsIgnoreCase(weekName)) {
+   noOfWeekends++;
+  }
+  fromDate = fromDate.plusDays(1);
+ } while (fromDate.isBefore(toDate));
+
+ System.out.println(&quot;number of weekends: &quot; + noOfWeekends);
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Input -&gt; fromDate: 2017-09-12, toDate: 2017-09-15
+fromDate: 2017-09-12, weekName: Tuesday
+fromDate: 2017-09-13, weekName: Wednesday
+fromDate: 2017-09-14, weekName: Thursday
+number of weekends: 0
+Input -&gt; fromDate: 2017-09-12, toDate: 2017-09-18
+fromDate: 2017-09-12, weekName: Tuesday
+fromDate: 2017-09-13, weekName: Wednesday
+fromDate: 2017-09-14, weekName: Thursday
+fromDate: 2017-09-15, weekName: Friday
+fromDate: 2017-09-16, weekName: Saturday
+fromDate: 2017-09-17, weekName: Sunday
+number of weekends: 2
+Input -&gt; fromDate: 2017-09-16, toDate: 2017-09-25
+fromDate: 2017-09-16, weekName: Saturday
+fromDate: 2017-09-17, weekName: Sunday
+fromDate: 2017-09-18, weekName: Monday
+fromDate: 2017-09-19, weekName: Tuesday
+fromDate: 2017-09-20, weekName: Wednesday
+fromDate: 2017-09-21, weekName: Thursday
+fromDate: 2017-09-22, weekName: Friday
+fromDate: 2017-09-23, weekName: Saturday
+fromDate: 2017-09-24, weekName: Sunday
+number of weekends: 4
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="26"><div class="panel-heading">Convert java.time.LocalDateTime to java.time.LocalDate</div><div class="panel-body">
+<pre><code>
+public void convertLocalDateTimeToLocalDate() {
+		LocalDateTime localDateTime = LocalDateTime.of(2017, 9, 27, 8, 29);
+		LocalDate localDate = localDateTime.toLocalDate();
+		System.out.println(&quot;localDate: &quot; + localDate);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+localDate: 2017-09-27
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="27"><div class="panel-heading">Convert java.time.LocalDateTime to java.time.LocalTime</div><div class="panel-body">
+<pre><code>
+public void convertLocalDateTimeToLocalTime() {
+		LocalDateTime localDateTime = LocalDateTime.of(2017, 9, 27, 8, 29);
+		LocalTime localTime = localDateTime.toLocalTime();
+		System.out.println(&quot;localDate: &quot; + localTime);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+localTime: 08:29
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="28"><div class="panel-heading">Get Date based of year</div><div class="panel-body">
+<pre><code>
+public void getYearBaseValue() {
+		LocalDate localDate = LocalDate.now(Clock.systemDefaultZone());
+		System.out.println(&quot;date: &quot; + localDate.getDayOfMonth() + &quot;, month: &quot; + localDate.getMonthValue()
+				+ &quot;, year: &quot; + localDate.getYear() + &quot;, dayOfYear: &quot; + localDate.getDayOfYear()
+				+ &quot;, weekOfTheYear: &quot; + localDate.get(WeekFields.of(Locale.ENGLISH).weekOfWeekBasedYear())
+				+ &quot;, weekOfTheMonth: &quot; + localDate.get(WeekFields.of(Locale.ENGLISH).weekOfMonth()));
+
+		ZoneId zoneId = ZoneId.systemDefault();
+		Date date = Date.from(localDate.atStartOfDay(zoneId).toInstant());
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+
+		System.out.println(&quot;date: &quot; + calendar.get(Calendar.DATE) + &quot;, month: &quot;
+				+ (calendar.get(Calendar.MONTH) + 1) + &quot;, year: &quot; + calendar.get(Calendar.YEAR)
+				+ &quot;, dayOfTheYear: &quot; + calendar.get(Calendar.DAY_OF_YEAR) + &quot;, weekOfTheYear: &quot;
+				+ calendar.get(Calendar.WEEK_OF_YEAR) + &quot;, monthOfTheYear: &quot;
+				+ (calendar.get(Calendar.MONTH) + 1) + &quot;, weekOfTheMonth: &quot;
+				+ calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+date: 27, month: 9, year: 2017, dayOfYear: 270, weekOfTheYear: 39, weekOfTheMonth: 5
+date: 27, month: 9, year: 2017, dayOfTheYear: 270, weekOfTheYear: 39, monthOfTheYear: 9, weekOfTheMonth: 4
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="29"><div class="panel-heading">Number of days in a month</div><div class="panel-body">
+<pre><code>
+import java.util.Calendar;
+import java.time.YearMonth;
+
+public void lengthOfTheMonth() {
+		<em>// until JDK 7</em>
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2017, Calendar.SEPTEMBER, 29);
+		int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println(&quot;September: no.of days: &quot; + daysInMonth);
+
+		calendar.set(2017, Calendar.FEBRUARY, 10);
+		daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println(&quot;February: no.of days: &quot; + daysInMonth);
+
+		<em>// JDK 8</em>
+		YearMonth yearMonth = YearMonth.of(2017, 9);
+		daysInMonth = yearMonth.lengthOfMonth();
+		System.out.println(&quot;JDK 8: September: no.of days: &quot; + daysInMonth);
+
+		yearMonth = YearMonth.of(2017, 2);
+		daysInMonth = yearMonth.lengthOfMonth();
+		System.out.println(&quot;JDK 8: February: no.of days: &quot; + daysInMonth);
+	}
+</code></pre>
+<em>Output</em>
+<pre><code>
+September: no.of days: 30
+February: no.of days: 28
+JDK 8: September: no.of days: 30
+JDK 8: February: no.of days: 28
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="30"><div class="panel-heading">Get Dates of all mondays of specific month</div><div class="panel-body">
+<ul>
+	<li>Get all Monday dates of September 2017</li>
+	<li>Get all Sunday dates of February 2017</li>
+</ul>
+<pre><code>
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.YearMonth;
+
+private List&lt;String&gt; getDatesOfDayOfWeekOfMonth(int year, int month, String day) {
+ List&lt;String&gt; dates = new ArrayList&lt;&gt;();
+
+ LocalDate monthFirstDate = LocalDate.of(year, month, 1);
+ LocalDate monthLastDate = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth());
+
+ System.out.println(&quot;monthFirstDate: &quot; + monthFirstDate + &quot;, monthLastDate: &quot; + monthLastDate);
+
+ for (; monthFirstDate.isBefore(monthLastDate); monthFirstDate = monthFirstDate.plusDays(1)) {
+  if (day.equalsIgnoreCase(monthFirstDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH))) {
+				dates.add(monthFirstDate.toString());
+   }
+  }
+ return dates;
+}
+	
+public void getDayOfWeekOfMonth() {
+ System.out.println(&quot;All mondays of september 2017: &quot; + getDatesOfDayOfWeekOfMonth(2017, 9, &quot;monday&quot;));
+ System.out.println(&quot;All sundays of february 2017: &quot; + getDatesOfDayOfWeekOfMonth(2017, 2, &quot;sunday&quot;));
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+monthFirstDate: 2017-09-01, monthLastDate: 2017-09-30
+All mondays of september 2017: [2017-09-04, 2017-09-11, 2017-09-18, 2017-09-25]
+monthFirstDate: 2017-02-01, monthLastDate: 2017-02-28
+All sundays of february 2017: [2017-02-05, 2017-02-12, 2017-02-19, 2017-02-26]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="33"><div class="panel-heading">Convert 12 hours date time format to 24 hours date time format</div><div class="panel-body">
+<pre><code>
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public void convert12HoursDateTimeTo24Hours() throws ParseException {
+<em>// Java 7</em>
+ String date = &quot;10-Aug-2017 07:56:12 PM&quot;;
+ System.out.println(&quot;String: inputDate: &quot; + date);
+ SimpleDateFormat fromFormat = new SimpleDateFormat(&quot;dd-MMM-yyyy hh:mm:ss a&quot;);
+ SimpleDateFormat toFormat = new SimpleDateFormat(&quot;dd-MMM-yyyy HH:mm:ss&quot;);
+
+ Date inputDate = fromFormat.parse(date);
+ System.out.println(&quot;Date: inputDate: &quot; + inputDate);
+
+ String outputDate = toFormat.format(inputDate);
+ System.out.println(&quot;JDK7: outputDate: &quot; + outputDate);
+
+<em>// Java 8</em>
+ String outputDate2 = LocalDateTime.parse(date, DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy hh:mm:ss a&quot;)).format(DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy HH:mm:ss&quot;));
+ System.out.println(&quot;JDK8: outputDate: &quot; + outputDate2);
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+String: inputDate: 10-Aug-2017 07:56:12 PM
+Date: inputDate: Thu Aug 10 19:56:12 IST 2017
+JDK7: outputDate: 10-Aug-2017 19:56:12
+JDK8: outputDate: 10-Aug-2017 19:56:12
+</code></pre>
+</div></div>
+</div>

@@ -1,0 +1,31 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Gradle Installation in local</div><div class="panel-body">
+<pre>
+1. Go <a href="https://gradle.org/gradle-download/" target="_blank">here</a> and download Complete Distribution
+2. extract to any folder
+3. Add <path-to-gradle>/bin to path environmental variable
+4. open cmd, run "gradle --version"
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<pre>
+------------------------------------------------------------
+Gradle 3.3
+------------------------------------------------------------
+
+Build time:   2017-01-03 15:31:04 UTC
+Revision:     075893a3d0798c0c1f322899b41ceca82e4e134b
+
+Groovy:       2.4.7
+Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
+JVM:          1.8.0_65 (Oracle Corporation 25.65-b01)
+OS:           Windows 10 10.0 amd64"
+</pre>
+</div></div>

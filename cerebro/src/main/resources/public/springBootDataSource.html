@@ -1,0 +1,445 @@
+<div class="page-header">
+    <h3>Creating and Accessing data source and perform DB operations - using H2 DB</h3>      
+</div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+<li>Create core java project using maven and add Spring boot annotations</li>
+<li>Add spring-boot-starter-data-jpa, h2 dependencies in pom.xml</li>
+<li>create application.properties file</li>
+<li>Add data source properties in application.properties file</li>
+<li>Create EMP table and EMP_SEQUENCE sequence</li>
+<li>Create Employee class and map to EMP table</li>
+<li>Create EmployeeRepository interface extends JpaRepository. This will integrate with Spring Data JPA to perform DB operations</li>
+<li>Perform DB operations from using EmployeeRepository</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Maven command</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=spring.boot.datasource -DartifactId=SpringBootDataSource -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-springBootDataSource.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.boot.datasource&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringBootDataSource&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;SpringBootDataSource&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;parent&gt;
+		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+		&lt;version&gt;1.3.1.RELEASE&lt;/version&gt;
+	&lt;/parent&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		
+		&lt;!-- Spring Data JPA --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		
+		&lt;!-- h2 DB --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	
+	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;verbose&gt;false&lt;/verbose&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">application.properties</div><div class="panel-body">
+<pre><code>
+## logging properties
+logging.level.org.springframework=INFO
+
+### Server propertis
+server.port=8081
+
+<em>### h2 properties</em>
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2
+
+<em>### data source properties</em>
+spring.datasource.url=jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/Spring/SpringBootProjects/SpringBootDataSource/src/main/resources/db;MV_STORE=FALSE
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=org.h2.Driver
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.show-sql=true
+<em># This is actually a shortcut for the &quot;hibernate.hbm2ddl.auto&quot; property. Default to &quot;create-drop&quot; when using an embedded database, &quot;none&quot; otherwise</em>
+spring.jpa.hibernate.ddl-auto=none
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">db-scripts.sql</div><div class="panel-body">
+<pre><code>
+CREATE SEQUENCE EMP_SEQUENCE
+START WITH 1
+INCREMENT BY 1
+NO CYCLE
+NO CACHE;
+
+CREATE TABLE EMP
+(
+ EMPNO NUMBER(32)
+,ENAME VARCHAR2(50)
+,DEPTNAME VARCHAR2(32)
+,JOB VARCHAR2(50)
+,SAL NUMBER(32)
+,CONSTRAINT EMPNO_PK PRIMARY KEY(EMPNO)
+);
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Employee.java</div><div class="panel-body">
+<pre><code>
+package spring.boot.datasource.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;EMP&quot;)
+public class Employee {
+	private Integer id;
+	private String name;
+	private String job;
+	private Long salary;
+	private String department;
+
+	public Employee() {
+	}
+
+	public Employee(String name, String job, Long salary, Long comm, Integer manager, Date hiredate) {
+		this.name = name;
+		this.job = job;
+		this.salary = salary;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;employeeSequence&quot;)
+	@SequenceGenerator(name = &quot;employeeSequence&quot;, sequenceName = &quot;EMP_SEQUENCE&quot;, allocationSize = 1)
+	@Column(name = &quot;EMPNO&quot;)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;ENAME&quot;)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = &quot;JOB&quot;)
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+
+	@Column(name = &quot;SAL&quot;)
+	public Long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Long salary) {
+		this.salary = salary;
+	}
+
+	@Column(name = &quot;DEPTNAME&quot;)
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeRepository.java</div><div class="panel-body">
+<pre><code>
+package spring.boot.datasource.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import spring.boot.datasource.model.Employee;
+
+@Repository(&quot;employeeRepository&quot;)
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Integer&gt; {
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">AppService.java</div><div class="panel-body">
+<pre><code>
+package spring.boot.datasource.service;
+
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import spring.boot.datasource.model.Employee;
+import spring.boot.datasource.repository.EmployeeRepository;
+
+@Service(&quot;appService&quot;)
+public class AppService {
+
+	@Autowired
+	@Qualifier(&quot;employeeRepository&quot;)
+	private EmployeeRepository employeeRepository;
+
+	/**
+	 * Create operation
+	 * @param employee
+	 * @return
+	 */
+	public Employee save(Employee employee) {
+		System.out.println(&quot;Before save id: &quot; + employee.getId());
+		employee = employeeRepository.save(employee);
+		System.out.println(&quot;After save id: &quot; + employee.getId());
+		return employee;
+	}
+
+	/**
+	 * Read operation
+	 * @return
+	 */
+	public List&lt;Employee&gt; getAllEmployees() {
+		return employeeRepository.findAll();
+	}
+
+	/**
+	 * Update operation
+	 */
+	public Employee updateEmployee(Integer id, Employee updatedEmployee) {
+		Employee employee = employeeRepository.findOne(id);
+		BeanUtils.copyProperties(updatedEmployee, employee);
+		employee = employeeRepository.saveAndFlush(employee);
+		return employee;
+	}
+
+	/**
+	 * Delete operation
+	 */
+	public void delete(Integer id) {
+		employeeRepository.delete(id);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">AppController.java</div><div class="panel-body">
+<pre><code>
+package spring.boot.datasource.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import spring.boot.datasource.model.Employee;
+import spring.boot.datasource.service.AppService;
+
+@RestController
+public class AppController {
+
+	@Autowired
+	@Qualifier(&quot;appService&quot;)
+	private AppService appService;
+
+	<em>/**
+	 * Create Operation
+	 * URL: http://localhost:8081/save
+	 * Request Body: { &quot;id&quot;: 1, &quot;name&quot;: &quot;Jack&quot;, &quot;job&quot;: &quot;SSE&quot;, &quot;salary&quot;: 20000, &quot;department&quot;: &quot;Dev&quot; }
+	 * @param employee
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/save&quot;, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Employee save(@RequestBody Employee employee) {
+		employee = appService.save(employee);
+		return employee;
+	}
+
+	<em>/**
+	 * Read Operation
+	 * URL: http://localhost:8081/allEmployees
+	 * @return
+	 */</em>
+	@RequestMapping(value = &quot;/allEmployees&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List&lt;Employee&gt; getAllEmployees() {
+		List&lt;Employee&gt; employees = appService.getAllEmployees();
+		return employees;
+	}
+
+	<em>/**
+	 * update operation
+	 * URL: http://localhost:8081/update/1
+	 * Request Body: { &quot;id&quot;: 1, &quot;name&quot;: &quot;Jack&quot;, &quot;job&quot;: &quot;SSE&quot;, &quot;salary&quot;: 20000, &quot;department&quot;: &quot;Dev&quot; }
+	 */</em>
+	@RequestMapping(value = &quot;/update/{id}&quot;, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Employee update(@RequestBody Employee employee, @PathVariable(&quot;id&quot;) Integer id) {
+		return appService.updateEmployee(id, employee);
+	}
+
+	<em>/**
+	 * Delete operation
+	 * URL: http://localhost:8081/delete/1
+	 */</em>
+	@RequestMapping(value = &quot;/delete/{id}&quot;, method = RequestMethod.DELETE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public void delete(@PathVariable(&quot;id&quot;) Integer id) {
+		appService.delete(id);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre><code>
+package spring.boot.datasource;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class App {
+	public static void main(String[] args) {
+		SpringApplication.run(App.class, args);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:8081/save</div><div class="panel-body">
+<ul>
+	<li>POST method</li>
+	<li>Request Body: { "id": 1, "name": "Jack", "job": "SE", "salary": 10000, "department": "Dev" }</li>
+	<li>Console Output
+		<pre><code>
+Before save id: 1
+Hibernate: select employee0_.empno as empno1_0_0_, employee0_.deptname as deptname2_0_0_, employee0_.job as job3_0_0_, employee0_.ename as ename4_0_0_, employee0_.sal as sal5_0_0_ from emp employee0_ where employee0_.empno=?
+Hibernate: call next value for EMP_SEQUENCE
+Hibernate: insert into emp (deptname, job, ename, sal, empno) values (?, ?, ?, ?, ?)
+After save id: 3
+		</code></pre>
+	</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/2-springBootDataSource.jpg"/></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:8081/allEmployees</div><div class="panel-body">
+<ul>
+	<li>GET method</li>
+	<li>Console Output
+		<pre><code>
+Hibernate: select employee0_.empno as empno1_0_, employee0_.deptname as deptname2_0_, employee0_.job as job3_0_, employee0_.ename as ename4_0_, employee0_.sal as sal5_0_ from emp employee0_
+		</code></pre>
+	</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/3-springBootDataSource.jpg"/></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:8081/update/3</div><div class="panel-body">
+<ul>
+	<li>PUT method</li>
+	<li>Request Body: {"id":3,"name": "Jack", "job": "SSE", "salary": 20000, "department": "Dev" }</li>
+	<li>Console Output
+		<pre><code>
+Hibernate: select employee0_.empno as empno1_0_0_, employee0_.deptname as deptname2_0_0_, employee0_.job as job3_0_0_, employee0_.ename as ename4_0_0_, employee0_.sal as sal5_0_0_ from emp employee0_ where employee0_.empno=?
+Hibernate: update emp set deptname=?, job=?, ename=?, sal=? where empno=?
+		</code></pre>
+	</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/4-springBootDataSource.jpg"/></li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:8081/delete/3</div><div class="panel-body">
+<ul>
+	<li>DELETE method</li>
+	<li>Console Output
+		<pre><code>
+Hibernate: select employee0_.empno as empno1_0_0_, employee0_.deptname as deptname2_0_0_, employee0_.job as job3_0_0_, employee0_.ename as ename4_0_0_, employee0_.sal as sal5_0_0_ from emp employee0_ where employee0_.empno=?
+Hibernate: delete from emp where empno=?
+		</code></pre>
+	</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/spring/5-springBootDataSource.jpg"/></li>
+</ul>
+</div></div>

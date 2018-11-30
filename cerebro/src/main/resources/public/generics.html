@@ -1,0 +1,373 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Create object of a class which has generic</a></li>
+	<li><a ng-click="navigate(2)">calling method which has generic</a></li>
+	<li><a ng-click="navigate(3)">calling static method which has generic</a></li>
+	<li><a ng-click="navigate(4)">Bounded wild cards</a></li>
+	<li><a ng-click="navigate(5)">wild cards</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create object of a class which has generic</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+1. Creating an instance of a class which has generic.
+2. Created object with String type
+3. Created object with Integer type
+4. we cannot give primitives as generic type
+</pre>
+<em>GenericModel1.java</em>
+<pre>
+package core.java.generics.model;
+
+import java.util.List;
+
+public class GenericModel1&lt;T&gt; {
+
+	public void method1(T t) {
+		System.out.println(&quot;GenericMode&lt;&quot; + t.getClass().getName() + &quot;&gt;.method1(&quot; + t + &quot;)&quot;);
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;GenericModel.method2: &quot; + (t instanceof Integer));
+		return t;
+	}
+
+	public &lt;S&gt; S method3(S s, T t) {
+		System.out.println(&quot;GenericModel.method3:s &quot; + s + &quot;, t: &quot; + t);
+		return s;
+	}
+
+	public static &lt;T&gt; T method4(T t) {
+		System.out.println(&quot;GenericModel1.method4: &quot; + t);
+		return t;
+	}
+
+	public &lt;S extends GenericSuperClass&gt; S method5(S s) {
+		System.out.println(&quot;GenericModel1.method5: &quot; + s.getClass().getName());
+		return s;
+	}
+
+	public void method6(List&lt;?&gt; list) {
+		System.out.println(list);
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import core.java.generics.model.GenericModel1;
+
+public void method1() {
+		// String as generic type
+		GenericModel1&lt;String&gt; stringGenericModel = new GenericModel1&lt;String&gt;();
+		stringGenericModel.method1(&quot;jack&quot;);
+		stringGenericModel.method2(&quot;jack&quot;);
+
+		// String as generic type - from JDK 7 - right side no need to declare generic
+		GenericModel1&lt;String&gt; stringGenericModel2 = new GenericModel1&lt;&gt;();
+		stringGenericModel2.method1(&quot;jill&quot;);
+		stringGenericModel2.method2(&quot;jill&quot;);
+
+		// Integer as generic type
+		GenericModel1&lt;Integer&gt; integerGenricModel = new GenericModel1&lt;&gt;();
+		integerGenricModel.method1(10);
+		integerGenricModel.method2(20);
+	}
+</pre>
+<em>Output</em>
+<pre>
+GenericMode&lt;java.lang.String&gt;.method1(jack)
+GenericModel.method2: false
+GenericMode&lt;java.lang.String&gt;.method1(jill)
+GenericModel.method2: false
+GenericMode&lt;java.lang.Integer&gt;.method1(10)
+GenericModel.method2: true
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">calling method which has generic</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Declaring a method with generic.
+Calling that method by passing different class types.
+</pre>
+<em>GenericModel1.java</em>
+<pre>
+package core.java.generics.model;
+
+import java.util.List;
+
+public class GenericModel1&lt;T&gt; {
+
+	public void method1(T t) {
+		System.out.println(&quot;GenericMode&lt;&quot; + t.getClass().getName() + &quot;&gt;.method1(&quot; + t + &quot;)&quot;);
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;GenericModel.method2: &quot; + (t instanceof Integer));
+		return t;
+	}
+
+	public &lt;S&gt; S method3(S s, T t) {
+		System.out.println(&quot;GenericModel.method3:s &quot; + s + &quot;, t: &quot; + t);
+		return s;
+	}
+
+	public static &lt;T&gt; T method4(T t) {
+		System.out.println(&quot;GenericModel1.method4: &quot; + t);
+		return t;
+	}
+
+	public &lt;S extends GenericSuperClass&gt; S method5(S s) {
+		System.out.println(&quot;GenericModel1.method5: &quot; + s.getClass().getName());
+		return s;
+	}
+
+	public void method6(List&lt;?&gt; list) {
+		System.out.println(list);
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import core.java.generics.model.GenericModel1;
+
+public void method3() {
+		GenericModel1&lt;String&gt; genericModel1 = new GenericModel1&lt;&gt;();
+
+		genericModel1.method3(10, &quot;jack&quot;);
+		genericModel1.method3(&quot;jill&quot;, &quot;john&quot;);
+	}
+</pre>
+<em>Output</em>
+<pre>
+GenericModel.method3:s 10, t: jack
+GenericModel.method3:s jill, t: john
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">calling static method which has generic</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+This is called Type Reference.
+</pre>
+<em>GenericModel1.java</em>
+<pre>
+package core.java.generics.model;
+
+import java.util.List;
+
+public class GenericModel1&lt;T&gt; {
+
+	public void method1(T t) {
+		System.out.println(&quot;GenericMode&lt;&quot; + t.getClass().getName() + &quot;&gt;.method1(&quot; + t + &quot;)&quot;);
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;GenericModel.method2: &quot; + (t instanceof Integer));
+		return t;
+	}
+
+	public &lt;S&gt; S method3(S s, T t) {
+		System.out.println(&quot;GenericModel.method3:s &quot; + s + &quot;, t: &quot; + t);
+		return s;
+	}
+
+	public static &lt;T&gt; T method4(T t) {
+		System.out.println(&quot;GenericModel1.method4: &quot; + t);
+		return t;
+	}
+
+	public &lt;S extends GenericSuperClass&gt; S method5(S s) {
+		System.out.println(&quot;GenericModel1.method5: &quot; + s.getClass().getName());
+		return s;
+	}
+
+	public void method6(List&lt;?&gt; list) {
+		System.out.println(list);
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import java.lang.String;
+import core.java.generics.model.GenericModel1;
+
+public void method4() {
+		// until JDK 7
+		String result1 = GenericModel1.&lt;String&gt; method4(&quot;jack&quot;);
+		System.out.println(&quot;result: &quot; + result1);
+
+		// until JDK 8
+		String result2 = GenericModel1.method4(&quot;jill&quot;);
+		System.out.println(&quot;result2: &quot; + result2);
+	}
+</pre>
+<em>Output</em>
+<pre>
+GenericModel1.method4: jack
+result: jack
+GenericModel1.method4: jill
+result2: jill
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Bounded wild cards</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+1. Bounded wild cards are used to declare super class of a generic. 
+2. Only declared class and it's sub-classes will be accepted
+3. refer method5 in GenericModel1.java
+</pre>
+<em>GenericModel1.java</em>
+<pre>
+package core.java.generics.model;
+
+import java.util.List;
+
+public class GenericModel1&lt;T&gt; {
+
+	public void method1(T t) {
+		System.out.println(&quot;GenericMode&lt;&quot; + t.getClass().getName() + &quot;&gt;.method1(&quot; + t + &quot;)&quot;);
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;GenericModel.method2: &quot; + (t instanceof Integer));
+		return t;
+	}
+
+	public &lt;S&gt; S method3(S s, T t) {
+		System.out.println(&quot;GenericModel.method3:s &quot; + s + &quot;, t: &quot; + t);
+		return s;
+	}
+
+	public static &lt;T&gt; T method4(T t) {
+		System.out.println(&quot;GenericModel1.method4: &quot; + t);
+		return t;
+	}
+
+	public &lt;S extends GenericSuperClass&gt; S method5(S s) {
+		System.out.println(&quot;GenericModel1.method5: &quot; + s.getClass().getName());
+		return s;
+	}
+
+	public void method6(List&lt;?&gt; list) {
+		System.out.println(list);
+	}
+}
+</pre>
+<em>GenericSuperClass.java</em>
+<pre>
+package core.java.generics.model;
+
+public class GenericSuperClass {
+
+}
+</pre>
+<em>GenericSubClass.java</em>
+<pre>
+package core.java.generics.model;
+
+public class GenericSubClass extends GenericSuperClass {
+
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import core.java.generics.model.GenericModel1;
+import core.java.generics.model.GenericSubClass;
+import core.java.generics.model.GenericSuperClass;
+
+public void method5() {
+ GenericModel1&lt;String&gt; genericModel1 = new GenericModel1&lt;&gt;();
+
+ GenericSuperClass genericSuperClass = new GenericSuperClass();
+ GenericSuperClass genericSuperClass2 = genericModel1.method5(genericSuperClass);
+ System.out.println(&quot;genericSuperClass: &quot; + genericSuperClass + &quot;, genericSuperClass2: &quot; + genericSuperClass2);
+
+ GenericSubClass genericSubClass = new GenericSubClass();
+ GenericSubClass genericSubClass2 = genericModel1.method5(genericSubClass);
+ System.out.println(&quot;genericSubClass: &quot; + genericSubClass + &quot;, genericSubClass2: &quot; + genericSubClass2);
+}
+</pre>
+<em>Output</em>
+<pre>
+GenericModel1.method5: core.java.generics.model.GenericSuperClass
+genericSuperClass: core.java.generics.model.GenericSuperClass@7cd62f43, genericSuperClass2: core.java.generics.model.GenericSuperClass@7cd62f43
+GenericModel1.method5: core.java.generics.model.GenericSubClass
+genericSubClass: core.java.generics.model.GenericSubClass@6093dd95, genericSubClass2: core.java.generics.model.GenericSubClass@6093dd95
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">wild cards</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+To declare wild card we need to use ? symbol. That means that generic will accept any class type
+</pre>
+<em>GenericModel1.java</em>
+<pre>
+package core.java.generics.model;
+
+import java.util.List;
+
+public class GenericModel1&lt;T&gt; {
+
+	public void method1(T t) {
+		System.out.println(&quot;GenericMode&lt;&quot; + t.getClass().getName() + &quot;&gt;.method1(&quot; + t + &quot;)&quot;);
+	}
+
+	public T method2(T t) {
+		System.out.println(&quot;GenericModel.method2: &quot; + (t instanceof Integer));
+		return t;
+	}
+
+	public &lt;S&gt; S method3(S s, T t) {
+		System.out.println(&quot;GenericModel.method3:s &quot; + s + &quot;, t: &quot; + t);
+		return s;
+	}
+
+	public static &lt;T&gt; T method4(T t) {
+		System.out.println(&quot;GenericModel1.method4: &quot; + t);
+		return t;
+	}
+
+	public &lt;S extends GenericSuperClass&gt; S method5(S s) {
+		System.out.println(&quot;GenericModel1.method5: &quot; + s.getClass().getName());
+		return s;
+	}
+
+	public void method6(List&lt;?&gt; list) {
+		System.out.println(list);
+	}
+}
+</pre>
+<em>Test Method</em>
+<pre>
+import core.java.generics.model.GenericModel1;
+
+public void method6() {
+		GenericModel1&lt;String&gt; genericModel1 = new GenericModel1&lt;&gt;();
+
+		List&lt;String&gt; names = Arrays.asList(&quot;jack&quot;, &quot;jill&quot;, &quot;john&quot;, &quot;sam&quot;, &quot;kom&quot;, &quot;mill&quot;, &quot;scott&quot;, &quot;matt&quot;);
+		genericModel1.method6(names);
+
+		List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		genericModel1.method6(numbers);
+	}
+</pre>
+<em>Output</em>
+<pre>
+[jack, jill, john, sam, kom, mill, scott, matt]
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</pre>
+</div></div>
+
+</div>

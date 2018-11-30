@@ -1,0 +1,144 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create React Application from cmd</div><div class="panel-body">
+<pre>
+1. Install <em>create-react-app</em> using npm if not installed already
+<em>cmd&gt; npm install -g create-react-app</em>
+2. Create react-bootstrap. This will take some time.
+<em>cmd&gt; create-react-app react-bootstrap</em>
+3. Go inside app created above
+<em>cmd&gt;cd react-bootstrap</em>
+4. Install react and react-dom and save to package.json
+<em>..\react-bootstrapd&gt;npm install --save react react-dom</em>
+5. Install bootstrap
+<em>..\react-bootstrapd&gt;npm install --save bootstrap</em>
+6. Open project folder in any editor (visual-code, sublime etc)
+7. Add <em>import '../node_modules/bootstrap/dist/css/bootstrap.min.css';</em> entry to index.js
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactBootstrap.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.js</div><div class="panel-body">
+<pre>
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+class BootstrapForm extends Component {
+  render() {
+    return (
+      &lt;div class=&quot;container&quot;&gt;
+        &lt;h2&gt;Vertical (basic) form&lt;/h2&gt;
+        &lt;form&gt;
+          &lt;div className=&quot;form-group&quot;&gt;
+            &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+            &lt;input type=&quot;email&quot; className=&quot;form-control&quot; id=&quot;email&quot; placeholder=&quot;Enter email&quot; name=&quot;email&quot;&gt;&lt;/input&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;form-group&quot;&gt;
+            &lt;label for=&quot;pwd&quot;&gt;Password:&lt;/label&gt;
+            &lt;input type=&quot;password&quot; className=&quot;form-control&quot; id=&quot;pwd&quot; placeholder=&quot;Enter password&quot; name=&quot;pwd&quot;&gt;&lt;/input&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;checkbox&quot;&gt;
+            &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;remember&quot; /&gt; Remember me&lt;/label&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;submit&quot; className=&quot;btn btn-default&quot;&gt;Submit&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class BootstrapTable extends Component {
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h2&gt;Hover Rows&lt;/h2&gt;
+        &lt;p&gt;The .table-hover class enables a hover state on table rows:&lt;/p&gt;
+        &lt;table class=&quot;table table-hover&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Firstname&lt;/th&gt;
+              &lt;th&gt;Lastname&lt;/th&gt;
+              &lt;th&gt;Email&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;John&lt;/td&gt;
+              &lt;td&gt;Doe&lt;/td&gt;
+              &lt;td&gt;john@example.com&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;Mary&lt;/td&gt;
+              &lt;td&gt;Moe&lt;/td&gt;
+              &lt;td&gt;mary@example.com&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;July&lt;/td&gt;
+              &lt;td&gt;Dooley&lt;/td&gt;
+              &lt;td&gt;july@example.com&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      &lt;div className=&quot;container&quot;&gt;
+        &lt;img className=&quot;App-logo&quot; src={logo} alt=&quot;Logo&quot; /&gt;
+        &lt;hr /&gt;
+
+        &lt;h3&gt;Button Styles&lt;/h3&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot;&gt;Basic&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot;&gt;Default&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;Primary&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-success&quot;&gt;Success&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-info&quot;&gt;Info&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-warning&quot;&gt;Warning&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-danger&quot;&gt;Danger&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-link&quot;&gt;Link&lt;/button&gt;
+        &lt;hr /&gt;
+
+        &lt;BootstrapForm /&gt;
+        &lt;hr /&gt;
+
+        &lt;BootstrapTable /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">index.js</div><div class="panel-body">
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+registerServiceWorker();
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/2-reactBootstrap.jpg"/>
+<img class="img-responsive" ng-src="images/react/3-reactBootstrap.jpg"/>
+</div></div>

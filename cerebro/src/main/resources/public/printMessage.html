@@ -1,0 +1,43 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Create printMessage.html file</li>
+		<li>Add angular.js file in script tag</li>
+		<li>Create printMessage.js file</li>
+		<li>Add printMessage.js to printMessage.html in script tag</li>
+		<li>Create message variable. Add it to $scope in printMessage.js</li>
+		<li>Print message in printMessage.html</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">printMessage.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;Print Message&lt;/title&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;printMessage.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body ng-controller=&quot;mainController&quot;&gt;
+&lt;h3&gt;&#123;&#123;message&#125; &#125;&lt;/h3&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">printMessage.js</div><div class="panel-body">
+<pre ><code>
+// moduleName is name of the module
+// [] dependencies for this module
+var app = angular.module('moduleName', []);
+
+app.controller('mainController', function($scope){
+    $scope.message = &quot;Angular JS Hello World&quot;;
+});
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/angular1/1-printMessage.jpg"/>
+</div></div>

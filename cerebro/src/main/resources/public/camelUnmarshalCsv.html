@@ -1,0 +1,288 @@
+<div class="page-header">
+    <h3>Unmarshal (converting CSV to List) CSV File using Apache Camel</h3>      
+</div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Web project using Maven</div><div class="panel-body">
+<pre ><code>
+E:\Backup\JavaPrep\practiceProjects\Camel&gt;mvn archetype:generate -DgroupId=camel.csv -DartifactId=CamelCsvToList -Dversion=1.0.SNAPSHOT -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] &gt;&gt;&gt; maven-archetype-plugin:2.4:generate (default-cli) &gt; generate-sources @ standalone-pom &gt;&gt;&gt;
+[INFO]
+[INFO] &lt;&lt;&lt; maven-archetype-plugin:2.4:generate (default-cli) &lt; generate-sources @ standalone-pom &lt;&lt;&lt;
+[INFO]
+[INFO] --- maven-archetype-plugin:2.4:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Batch mode
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-quickstart:1.0
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: basedir, Value: E:\Backup\JavaPrep\practiceProjects\Camel
+[INFO] Parameter: package, Value: camel.csv
+[INFO] Parameter: groupId, Value: camel.csv
+[INFO] Parameter: artifactId, Value: CamelCsvToList
+[INFO] Parameter: packageName, Value: camel.csv
+[INFO] Parameter: version, Value: 1.0.SNAPSHOT
+[INFO] project created from Old (1.x) Archetype in dir: E:\Backup\JavaPrep\practiceProjects\Camel\CamelCsvToList
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 40.787 s
+[INFO] Finished at: 2017-02-08T21:54:08+05:30
+[INFO] Final Memory: 13M/245M
+[INFO] ------------------------------------------------------------------------
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/camel/1-unmarshal-csv.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;camel.csv&lt;/groupId&gt;
+	&lt;artifactId&gt;CamelCsvToList&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;CamelCsvToList&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+			&lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+			&lt;version&gt;2.18.1&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+			&lt;artifactId&gt;camel-csv&lt;/artifactId&gt;
+			&lt;version&gt;2.18.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- CSV dependency --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.opencsv&lt;/groupId&gt;
+			&lt;artifactId&gt;opencsv&lt;/artifactId&gt;
+			&lt;version&gt;3.8&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;CamelCsvToList&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;meminitial&gt;128M&lt;/meminitial&gt;
+					&lt;maxmem&gt;512M&lt;/maxmem&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">WriteCsv.java</div><div class="panel-body">
+<pre><code>
+package camel.csv.util;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+import com.opencsv.CSVWriter;
+
+public class WriteCsv {
+
+	public static void main(String[] args) throws Exception{
+		new WriteCsv().createCSVFile();
+	}
+	
+	public void createCSVFile() throws IOException {
+		// using try-with-resource - CSVWriter implements java.io.Closeable, so we can use try-with-resource
+		try (CSVWriter csvWriter2 = new CSVWriter(new FileWriter(
+			&quot;E:\\Backup\\JavaPrep\\practiceProjects\\Camel\\CamelCsvToList\\src\\main\\resources\\file1.csv&quot;));) {
+		    
+		    String[] row = null;
+		    for(int i=0;i&lt;=20;i++){
+		    	row = new String[11];
+		    	for(int j=0;j&lt;=10;j++){
+		    		row[j] = &quot;value&quot;+i+j;
+		    	}
+		    	csvWriter2.writeNext(row);
+		    }
+		}
+		System.out.println(&quot;OpenCSVPractice -&gt; createCSVFile() -&gt; CSV File creted using try-with-resource&quot;);
+	    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">file1.csv</div><div class="panel-body">
+<pre><code>
+&quot;value00&quot;,&quot;value01&quot;,&quot;value02&quot;,&quot;value03&quot;,&quot;value04&quot;,&quot;value05&quot;,&quot;value06&quot;,&quot;value07&quot;,&quot;value08&quot;,&quot;value09&quot;,&quot;value010&quot;
+&quot;value10&quot;,&quot;value11&quot;,&quot;value12&quot;,&quot;value13&quot;,&quot;value14&quot;,&quot;value15&quot;,&quot;value16&quot;,&quot;value17&quot;,&quot;value18&quot;,&quot;value19&quot;,&quot;value110&quot;
+&quot;value20&quot;,&quot;value21&quot;,&quot;value22&quot;,&quot;value23&quot;,&quot;value24&quot;,&quot;value25&quot;,&quot;value26&quot;,&quot;value27&quot;,&quot;value28&quot;,&quot;value29&quot;,&quot;value210&quot;
+&quot;value30&quot;,&quot;value31&quot;,&quot;value32&quot;,&quot;value33&quot;,&quot;value34&quot;,&quot;value35&quot;,&quot;value36&quot;,&quot;value37&quot;,&quot;value38&quot;,&quot;value39&quot;,&quot;value310&quot;
+&quot;value40&quot;,&quot;value41&quot;,&quot;value42&quot;,&quot;value43&quot;,&quot;value44&quot;,&quot;value45&quot;,&quot;value46&quot;,&quot;value47&quot;,&quot;value48&quot;,&quot;value49&quot;,&quot;value410&quot;
+&quot;value50&quot;,&quot;value51&quot;,&quot;value52&quot;,&quot;value53&quot;,&quot;value54&quot;,&quot;value55&quot;,&quot;value56&quot;,&quot;value57&quot;,&quot;value58&quot;,&quot;value59&quot;,&quot;value510&quot;
+&quot;value60&quot;,&quot;value61&quot;,&quot;value62&quot;,&quot;value63&quot;,&quot;value64&quot;,&quot;value65&quot;,&quot;value66&quot;,&quot;value67&quot;,&quot;value68&quot;,&quot;value69&quot;,&quot;value610&quot;
+&quot;value70&quot;,&quot;value71&quot;,&quot;value72&quot;,&quot;value73&quot;,&quot;value74&quot;,&quot;value75&quot;,&quot;value76&quot;,&quot;value77&quot;,&quot;value78&quot;,&quot;value79&quot;,&quot;value710&quot;
+&quot;value80&quot;,&quot;value81&quot;,&quot;value82&quot;,&quot;value83&quot;,&quot;value84&quot;,&quot;value85&quot;,&quot;value86&quot;,&quot;value87&quot;,&quot;value88&quot;,&quot;value89&quot;,&quot;value810&quot;
+&quot;value90&quot;,&quot;value91&quot;,&quot;value92&quot;,&quot;value93&quot;,&quot;value94&quot;,&quot;value95&quot;,&quot;value96&quot;,&quot;value97&quot;,&quot;value98&quot;,&quot;value99&quot;,&quot;value910&quot;
+&quot;value100&quot;,&quot;value101&quot;,&quot;value102&quot;,&quot;value103&quot;,&quot;value104&quot;,&quot;value105&quot;,&quot;value106&quot;,&quot;value107&quot;,&quot;value108&quot;,&quot;value109&quot;,&quot;value1010&quot;
+&quot;value110&quot;,&quot;value111&quot;,&quot;value112&quot;,&quot;value113&quot;,&quot;value114&quot;,&quot;value115&quot;,&quot;value116&quot;,&quot;value117&quot;,&quot;value118&quot;,&quot;value119&quot;,&quot;value1110&quot;
+&quot;value120&quot;,&quot;value121&quot;,&quot;value122&quot;,&quot;value123&quot;,&quot;value124&quot;,&quot;value125&quot;,&quot;value126&quot;,&quot;value127&quot;,&quot;value128&quot;,&quot;value129&quot;,&quot;value1210&quot;
+&quot;value130&quot;,&quot;value131&quot;,&quot;value132&quot;,&quot;value133&quot;,&quot;value134&quot;,&quot;value135&quot;,&quot;value136&quot;,&quot;value137&quot;,&quot;value138&quot;,&quot;value139&quot;,&quot;value1310&quot;
+&quot;value140&quot;,&quot;value141&quot;,&quot;value142&quot;,&quot;value143&quot;,&quot;value144&quot;,&quot;value145&quot;,&quot;value146&quot;,&quot;value147&quot;,&quot;value148&quot;,&quot;value149&quot;,&quot;value1410&quot;
+&quot;value150&quot;,&quot;value151&quot;,&quot;value152&quot;,&quot;value153&quot;,&quot;value154&quot;,&quot;value155&quot;,&quot;value156&quot;,&quot;value157&quot;,&quot;value158&quot;,&quot;value159&quot;,&quot;value1510&quot;
+&quot;value160&quot;,&quot;value161&quot;,&quot;value162&quot;,&quot;value163&quot;,&quot;value164&quot;,&quot;value165&quot;,&quot;value166&quot;,&quot;value167&quot;,&quot;value168&quot;,&quot;value169&quot;,&quot;value1610&quot;
+&quot;value170&quot;,&quot;value171&quot;,&quot;value172&quot;,&quot;value173&quot;,&quot;value174&quot;,&quot;value175&quot;,&quot;value176&quot;,&quot;value177&quot;,&quot;value178&quot;,&quot;value179&quot;,&quot;value1710&quot;
+&quot;value180&quot;,&quot;value181&quot;,&quot;value182&quot;,&quot;value183&quot;,&quot;value184&quot;,&quot;value185&quot;,&quot;value186&quot;,&quot;value187&quot;,&quot;value188&quot;,&quot;value189&quot;,&quot;value1810&quot;
+&quot;value190&quot;,&quot;value191&quot;,&quot;value192&quot;,&quot;value193&quot;,&quot;value194&quot;,&quot;value195&quot;,&quot;value196&quot;,&quot;value197&quot;,&quot;value198&quot;,&quot;value199&quot;,&quot;value1910&quot;
+&quot;value200&quot;,&quot;value201&quot;,&quot;value202&quot;,&quot;value203&quot;,&quot;value204&quot;,&quot;value205&quot;,&quot;value206&quot;,&quot;value207&quot;,&quot;value208&quot;,&quot;value209&quot;,&quot;value2010&quot;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MyRouteBuilder.java</div><div class="panel-body">
+<pre><code>
+package camel.csv.route;
+
+import org.apache.camel.builder.RouteBuilder;
+
+import camel.csv.bean.MyBean;
+
+public class MyRouteBuilder extends RouteBuilder {
+
+	@Override
+	public void configure() throws Exception {
+		MyBean myBean = new MyBean();
+		String fromRoute = &quot;file:E:/Backup/JavaPrep/practiceProjects/Camel/CamelCsvToList/src/main/resources?fileName=file1.csv&amp;noop=true&quot;;
+		from(fromRoute).unmarshal().csv().bean(myBean, &quot;method1&quot;).bean(myBean, &quot;method2&quot;).end();
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MyBean.java</div><div class="panel-body">
+<pre><code>
+package camel.csv.bean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import camel.csv.model.MyModel;
+
+public class MyBean {
+
+	public List&lt;MyModel&gt; method1(List&lt;List&lt;String&gt;&gt; csvFileRecords) {
+		System.out.println(&quot;method1() -&gt; csvFileRecords: &quot; + csvFileRecords);
+		long i = 1;
+		MyModel myModel = null;
+		List&lt;MyModel&gt; models = new ArrayList&lt;&gt;();
+		for (List&lt;String&gt; csvFileRecord : csvFileRecords) {
+			myModel = new MyModel();
+			myModel.setRowNumber(i++);
+			myModel.setRow(csvFileRecord);
+			models.add(myModel);
+		}
+
+		return models;
+	}
+
+	public String method2(List&lt;MyModel&gt; models) {
+		System.out.println(&quot;method2() -&gt; models: &quot; + models);
+		return &quot;success&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">MyModel.java</div><div class="panel-body">
+<pre><code>
+package camel.csv.model;
+
+import java.util.List;
+
+public class MyModel {
+
+	private Long rowNumber;
+	private List&lt;String&gt; row;
+
+	public Long getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Long rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
+	public List&lt;String&gt; getRow() {
+		return row;
+	}
+
+	public void setRow(List&lt;String&gt; row) {
+		this.row = row;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;MyModel [rowNumber=&quot; + rowNumber + &quot;, row=&quot; + row + &quot;]&quot;;
+	}
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre><code>
+package camel.csv;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.impl.DefaultCamelContext;
+
+import camel.csv.route.MyRouteBuilder;
+
+public class App {
+	public static void main(String[] args) throws Exception {
+		CamelContext context = new DefaultCamelContext();
+		context.addRoutes(new MyRouteBuilder());
+		context.start();
+		Thread.sleep(1000 * 60 * 1);
+		context.stop();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/camel/2-unmarshal-csv.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">References</div><div class="panel-body">
+<ul>
+	<li><a ng-href="http://camel.apache.org/csv.html" target="_blank">Camel Doc 1</a>
+	<li><a ng-href="http://people.apache.org/~dkulp/camel/csv.html" target="_blank">Camel Doc 2</a>
+	<li><a ng-href="http://camel.apache.org/bindy.html" target="_blank">Bindy</a>
+</ul>
+</div></div>

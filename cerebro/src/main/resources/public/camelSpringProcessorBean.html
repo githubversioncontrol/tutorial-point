@@ -1,0 +1,161 @@
+<div class="panel panel-primary"><div class="panel-heading">Contents</div><div class="panel-body">
+	<ul>
+		<li>create a maven project using following command</li>
+		<li>Import project into eclipse as maven project</li>
+		<li>Add dependencies to pom.xml</li>
+		<li>Write Bean</li>
+		<li>Write Processor</li>
+		<li>Create spring config xml with route</li>
+		<li>Write main class</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">create a maven project using following command</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.camel -DartifactId=ApacheCamel -Dversion=1.0-SNAPSHOT -Dpackage=com.camel.hello.world -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<!-- <div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/camel/1-camelSpringProcessorBean.jpg"/>
+</div></div> -->
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.camel&lt;/groupId&gt;
+  &lt;artifactId&gt;ApacheCamel&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;ApacheCamel&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;3.8.1&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!-- http://mvnrepository.com/artifact/org.apache.camel/camel-core --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+    &lt;artifactId&gt;camel-core&lt;/artifactId&gt;
+    &lt;version&gt;2.17.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- camel spring dependencies --&gt;
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+            &lt;artifactId&gt;camel-spring&lt;/artifactId&gt;
+            &lt;version&gt;2.17.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;4.2.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+     &lt;!-- camel spring dependencies --&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+  	&lt;pluginManagement&gt;
+  		&lt;plugins&gt;
+  			&lt;plugin&gt;
+  				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+  				&lt;version&gt;3.5.1&lt;/version&gt;
+  				&lt;configuration&gt;
+  					&lt;source&gt;1.8&lt;/source&gt;
+  					&lt;target&gt;1.8&lt;/target&gt;
+  				&lt;/configuration&gt;
+  			&lt;/plugin&gt;
+  			
+  			&lt;plugin&gt;
+                &lt;groupId&gt;org.apache.camel&lt;/groupId&gt;
+                &lt;artifactId&gt;camel-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.17.1&lt;/version&gt;
+                &lt;!-- the file must be in the classpath --&gt;
+                &lt;configuration&gt;
+                     &lt;applicationContextUri&gt;camel-spring.xml&lt;/applicationContextUri&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+  			
+  		&lt;/plugins&gt;
+  	&lt;/pluginManagement&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">camel-spring.xml</div><div class="panel-body">
+<pre ><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:camel=&quot;http://camel.apache.org/schema/spring&quot;
+    xmlns:util=&quot;http://www.springframework.org/schema/util&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+     http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd&quot;&gt;
+      &lt;bean id=&quot;processor&quot; class=&quot;com.camel.spring.processor.bean.CamelSpringProcessImpl&quot;&gt;&lt;/bean&gt;
+      &lt;bean id=&quot;bean&quot; class=&quot;com.camel.spring.processor.bean.CamelSpringProcessorBean&quot;&gt;&lt;/bean&gt;
+      &lt;camelContext xmlns=&quot;http://camel.apache.org/schema/spring&quot;&gt;
+      	&lt;route&gt;
+     	&lt;from uri=&quot;file:E:/Backup/JavaPrep/Apache_Camel/router_practice_folder/input?noop=true&quot;/&gt;
+      		&lt;process ref=&quot;processor&quot;/&gt;
+      		&lt;bean ref=&quot;bean&quot;/&gt;
+      		&lt;to uri=&quot;file:E:/Backup/JavaPrep/Apache_Camel/router_practice_folder/output5&quot;/&gt;
+      	&lt;/route&gt;
+      &lt;/camelContext&gt;
+&lt;/beans&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">CamelSpringProcessorImpl.java</div><div class="panel-body">
+<pre ><code>
+package com.camel.spring.processor.bean;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+
+public class CamelSpringProcessImpl implements Processor {
+
+	@Override
+	public void process(Exchange exchange) throws Exception {
+		System.out.println(&quot;CamelSpringProcessImpl.process()&quot;);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">CamelSpringProcessorBean.java</div><div class="panel-body">
+<pre ><code>
+package com.camel.spring.processor.bean;
+
+import org.apache.camel.Exchange;
+
+public class CamelSpringProcessorBean {
+
+	public String testBean(Exchange exchange) {
+		System.out.println(&quot;CamelSpringProcessorBean.testBean()&quot;);
+		return &quot;Test Bean&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre ><code>
+package com.camel.spring;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+     public static void main(String[] args) throws InterruptedException {
+          AbstractApplicationContext context = new ClassPathXmlApplicationContext(&quot;camel-spring.xml&quot;);
+	Thread.sleep(1000 * 60 * 2);
+	context.close();
+       }
+}
+</code></pre>
+</div></div>

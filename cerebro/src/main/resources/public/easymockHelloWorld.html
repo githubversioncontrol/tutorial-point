@@ -1,0 +1,252 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.easymock.practice -DartifactId=EasyMockPractice -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/easymock/1-easymockHelloWorld.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.easymock.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;EasyMockPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;EasyMockPractice&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.easymock&lt;/groupId&gt;
+			&lt;artifactId&gt;easymock&lt;/artifactId&gt;
+			&lt;version&gt;3.5&lt;/version&gt;
+			&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">build.gradle</div><div class="panel-body">
+<pre ><code>
+apply plugin: 'java'
+
+sourceSets { 
+	main.java.srcDir 'src/main/java'
+	test.java.srcDir 'src/test/java'
+}
+
+repositories { 
+	mavenCentral()
+}
+
+dependencies { 
+	compile 'junit:junit:4.12'
+	compile 'org.easymock:easymock:3.5'
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Stock</div><div class="panel-body">
+<pre ><code>
+package easy.mock.hello.world;
+
+public class Stock {
+
+	private String stockId;
+	private String name;
+	private Integer quantity;
+
+	public String getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(String stockId) {
+		this.stockId = stockId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Stock [stockId=&quot; + stockId + &quot;, name=&quot; + name + &quot;, quantity=&quot; + quantity + &quot;]&quot;;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">StockService</div><div class="panel-body">
+<pre ><code>
+package easy.mock.hello.world;
+
+public interface StockService {
+
+	public Double getPrice(Stock stock);
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Portfolio</div><div class="panel-body">
+<pre ><code>
+package easy.mock.hello.world;
+
+import java.util.List;
+
+public class Portfolio {
+
+	private StockService stockService;
+	private List&lt;Stock&gt; stocks;
+
+	public StockService getStockService() {
+		return stockService;
+	}
+
+	public void setStockService(StockService stockService) {
+		this.stockService = stockService;
+	}
+
+	public List&lt;Stock&gt; getStocks() {
+		return stocks;
+	}
+
+	public void setStocks(List&lt;Stock&gt; stocks) {
+		this.stocks = stocks;
+	}
+
+	public Double getMarketValue() {
+		Double stockValue = 0.0D;
+
+		for (Stock stock : stocks) {
+			stockValue = stockValue + stockService.getPrice(stock) * stock.getQuantity();
+		}
+
+		return stockValue;
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Test1</div><div class="panel-body">
+<pre ><code>
+package easy.mock.hello.world;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easymock.EasyMock;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class Test1 {
+
+	private static Portfolio portfolio;
+	private static StockService stockService;
+
+	@BeforeClass
+	public static void setup() {
+		portfolio = new Portfolio();
+		stockService = EasyMock.createMock(StockService.class);
+		portfolio.setStockService(stockService);
+	}
+
+	@AfterClass
+	public static void teardown() {
+		portfolio = null;
+		stockService = null;
+	}
+
+	@Test
+	public void getMarketValue() {
+
+		List&lt;Stock&gt; stocks = new ArrayList&lt;&gt;();
+
+		Stock stock = new Stock();
+		stock.setQuantity(1);
+		stock.setName(&quot;stock1&quot;);
+		stock.setStockId(&quot;1&quot;);
+
+		Stock stock2 = new Stock();
+		stock2.setName(&quot;stock2&quot;);
+		stock2.setQuantity(2);
+		stock2.setStockId(&quot;2&quot;);
+
+		stocks.add(stock);
+		stocks.add(stock2);
+
+		portfolio.setStocks(stocks);
+
+		EasyMock.expect(stockService.getPrice(stock)).andReturn(12D);
+		EasyMock.expect(stockService.getPrice(stock2)).andReturn(12D);
+
+		//activate the mock
+		EasyMock.replay(stockService);
+
+		double stockValue = portfolio.getMarketValue();
+		System.out.println(stockValue);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Console Output</div><div class="panel-body">
+<pre >36.0</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Junit View Output</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/easymock/2-easymockHelloWorld.jpg" />
+</div></div>

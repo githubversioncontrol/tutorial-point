@@ -1,0 +1,158 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create React JS Project. Refer <a ng-href="#reactHelloWorld" target="_blank">here</a></li>
+	
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.jsx</div><div class="panel-body">
+<pre>
+import React from 'react';
+
+class App extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            data:
+            [
+                {
+                    &quot;id&quot;: 1,
+                    &quot;name&quot;: &quot;jack&quot;,
+                    &quot;course&quot;: &quot;Java&quot;
+                },
+                {
+                    &quot;id&quot;: 2,
+                    &quot;name&quot;: &quot;jill&quot;,
+                    &quot;course&quot;: &quot;Angular&quot;
+                },
+                {
+                    &quot;id&quot;: 3,
+                    &quot;name&quot;: &quot;john&quot;,
+                    &quot;course&quot;: &quot;React&quot;
+                }
+            ]
+        }
+    }
+    render(){
+        let tableStyle = {
+            border: '1px solid black'
+        };
+
+        return (
+            &lt;div&gt;
+                &lt;hr /&gt;
+                &lt;h3&gt; Header Component&lt;/h3&gt;
+                &lt;Header /&gt;
+                
+                &lt;hr /&gt;
+                &lt;h3&gt;Content Component &lt;/h3&gt;
+                &lt;Content /&gt;
+
+                &lt;hr /&gt;
+                &lt;h3&gt; Display Table &lt;/h3&gt;
+                &lt;table style={tableStyle}&gt;
+                    &lt;tbody&gt;
+                        {this.state.data.map((person, i) =&gt; &lt;TableRow key={i} data={person}/&gt;)}
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+
+                &lt;hr /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+class Header extends React.Component{
+    render(){
+        return(
+            &lt;div&gt;
+                &lt;h2&gt;Header &lt;/h2&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+class Content extends React.Component{
+    render(){
+        let i = 10;
+
+        let myStyle = {
+            color: '#F00'
+        };
+
+        return(
+            &lt;div&gt; 
+                &lt;h1&gt;Hello World&lt;/h1&gt;
+                &lt;h2&gt;Hello World 2&lt;/h2&gt;
+                &lt;h3&gt;Hello World 3&lt;/h3&gt;
+                &lt;p style={myStyle}&gt;This is paragraph with style attribute&lt;/p&gt;    
+                {10+10}
+
+                &lt;h3&gt;{i &gt; 5 ? 'TRUE' : 'FALSE'}&lt;/h3&gt;
+                &lt;h3&gt;{i &gt; 10 ? 'TRUE' : 'FALSE'}&lt;/h3&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+class TableRow extends React.Component{
+    render(){
+        let tableStyle = {
+            border: '1px solid black'
+        };
+
+        return(
+            &lt;tr style={tableStyle}&gt;
+             &lt;td style={tableStyle}&gt;{this.props.data.id}&lt;/td&gt;
+             &lt;td style={tableStyle}&gt;{this.props.data.name}&lt;/td&gt;
+             &lt;td style={tableStyle}&gt;{this.props.data.course}&lt;/td&gt;
+            &lt;/tr&gt;
+        );
+    }
+}
+
+export default App;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Execute application</div><div class="panel-body">
+<pre>
+E:\Backup\JavaPrep\practiceProjects\ReactJsProjects\ReactJSHelloWorld&gt;webpack-dev-server --hot
+Project is running at http://localhost:9092/
+webpack output is served from /
+webpack: wait until bundle finished: /
+Hash: 7bd46f496fb95e791cf3
+Version: webpack 3.8.1
+Time: 20537ms
+   Asset     Size  Chunks                    Chunk Names
+index.js  1.05 MB       0  [emitted]  [big]  main
+   [2] ./node_modules/react/index.js 190 bytes {0} [built]
+  [16] multi (webpack)-dev-server/client?http://localhost:9092 ./main.js 40 bytes {0} [built]
+  [17] (webpack)-dev-server/client?http://localhost:9092 7.95 kB {0} [built]
+  [18] ./node_modules/url/url.js 23.3 kB {0} [built]
+  [25] ./node_modules/strip-ansi/index.js 161 bytes {0} [built]
+  [27] ./node_modules/loglevel/lib/loglevel.js 7.86 kB {0} [built]
+  [28] (webpack)-dev-server/client/socket.js 1.05 kB {0} [built]
+  [30] (webpack)-dev-server/client/overlay.js 3.73 kB {0} [built]
+  [31] ./node_modules/ansi-html/index.js 4.26 kB {0} [built]
+  [32] ./node_modules/html-entities/index.js 231 bytes {0} [built]
+  [35] (webpack)/hot nonrecursive ^\.\/log$ 170 bytes {0} [built]
+  [37] (webpack)/hot/emitter.js 75 bytes {0} [built]
+  [39] ./main.js 470 bytes {0} [built]
+  [43] ./node_modules/react-dom/index.js 1.36 kB {0} [built]
+  [52] ./App.jsx 3.37 kB {0} [built]
+    + 38 hidden modules
+webpack: Compiled successfully.
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/react/1-reactComponents.jpg"/>
+</div></div>

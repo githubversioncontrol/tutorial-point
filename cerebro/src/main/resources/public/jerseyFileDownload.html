@@ -1,0 +1,233 @@
+<div class="page-header">
+    <h3>Jersey File Download</h3>      
+</div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Create Web project using Maven using jersey archetyepe. If we create using Jersey archetype required dependencies will be added to pom.xml</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=jresey.rest.practice -DartifactId=JerseyRestPractice -Dversion=1.0.SNAPSHOT -DarchetypeGroupId=org.glassfish.jersey.archetypes -DarchetypeArtifactId=jersey-quickstart-webapp -DarchetypeVersion=2.2 -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after importing to eclipse</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/1-jersey-file-upload-download.jpg" />
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+	&lt;groupId&gt;jresey.rest.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;JerseyRestPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;version&gt;1.0.SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;JerseyRestPractice&lt;/name&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;JerseyRestPractice&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;2.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+
+	&lt;dependencyManagement&gt;
+		&lt;dependencies&gt;
+			&lt;dependency&gt;
+				&lt;groupId&gt;org.glassfish.jersey&lt;/groupId&gt;
+				&lt;artifactId&gt;jersey-bom&lt;/artifactId&gt;
+				&lt;version&gt;${jersey.version}&lt;/version&gt;
+				&lt;type&gt;pom&lt;/type&gt;
+				&lt;scope&gt;import&lt;/scope&gt;
+			&lt;/dependency&gt;
+		&lt;/dependencies&gt;
+	&lt;/dependencyManagement&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+			&lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
+			&lt;!-- use the following artifactId if you don't need servlet 2.x compatibility --&gt;
+			&lt;!-- artifactId&gt;jersey-container-servlet&lt;/artifactId --&gt;
+		&lt;/dependency&gt;
+		&lt;!-- uncomment this to get JSON support --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+			&lt;artifactId&gt;jersey-media-moxy&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- to support file upload --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+			&lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+	&lt;properties&gt;
+		&lt;jersey.version&gt;2.2&lt;/jersey.version&gt;
+		&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+	&lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">web.xml</div><div class="panel-body">
+<pre ><code>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- This web.xml file is not required when using Servlet 3.0 container, 
+	see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html --&gt;
+&lt;web-app version=&quot;2.5&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+	&lt;servlet&gt;
+		&lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+		&lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;jersey.config.server.provider.packages&lt;/param-name&gt;
+			&lt;!-- package where Jersey will look for REST classes --&gt;
+			&lt;param-value&gt;jersey.rest.practice&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;init-param&gt;
+			&lt;param-name&gt;jersey.config.server.provider.classnames&lt;/param-name&gt;
+			&lt;param-value&gt;org.glassfish.jersey.media.multipart.MultiPartFeature&lt;/param-value&gt;
+		&lt;/init-param&gt;
+		&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+	&lt;/servlet&gt;
+	&lt;servlet-mapping&gt;
+		&lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+		&lt;url-pattern&gt;/webapi/*&lt;/url-pattern&gt;
+	&lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">GetRequest.java</div><div class="panel-body">
+<pre ><code>
+package jersey.rest.practice;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
+
+import jersey.rest.practice.model.Employee;
+
+<em>/**
+ * REST class for all GET requests
+ * 
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+@Path(&quot;gets&quot;)
+public class GetRequestsPractice {
+	 <em>/**
+	 * Download text file
+	 * File should be in class path. In this example it is there in src/main/resources
+	 */</em>
+	@GET
+	@Path(&quot;/downloadTextFile&quot;)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response downloadTextFile() {
+		URL url = getClass().getClassLoader().getResource(&quot;batch.txt&quot;);
+		File file = new File(url.getPath());
+
+		ResponseBuilder responseBuilder = Response.ok((Object) file);
+		responseBuilder.header(&quot;Content-Disposition&quot;,
+				&quot;attachment; filename=\&quot;batch-from-server.txt\&quot;&quot;);
+		return responseBuilder.build();
+	}
+
+	<em>/**
+	 * Download image
+	 * File should be in class path. In this example it is there in src/main/resources
+	 */</em>
+	@GET
+	@Path(&quot;/downloadImage&quot;)
+	@Produces(&quot;image/png&quot;)
+	public Response downloadImage() {
+		URL url = getClass().getClassLoader().getResource(&quot;1__JVM-architecture.png&quot;);
+		File file = new File(url.getPath());
+
+		ResponseBuilder responseBuilder = Response.ok((Object) file);
+		responseBuilder.header(&quot;Content-Disposition&quot;,
+				&quot;attachment; filename=\&quot;JVM-architecture.png\&quot;&quot;);
+		return responseBuilder.build();
+	}
+
+	<em>/**
+	 * Download pdf
+	 * File should be in class path. In this example it is there in src/main/resources
+	 */</em>
+	@GET
+	@Path(&quot;/downloadPdf&quot;)
+	@Produces(&quot;application/pdf&quot;)
+	public Response downloadPdf() {
+		URL url = getClass().getClassLoader().getResource(
+				&quot;SCJP-Sun-Certified-Programmer-for-Java-6.pdf&quot;);
+		File file = new File(url.getPath());
+
+		ResponseBuilder responseBuilder = Response.ok((Object) file);
+		responseBuilder.header(&quot;Content-Disposition&quot;, &quot;attachment; filename=\&quot;SCJP-6.pdf\&quot;&quot;);
+		return responseBuilder.build();
+	}
+
+	<em>/**
+	 * Download excel
+	 * File should be in class path. In this example it is there in src/main/resources
+	 */</em>
+	@GET
+	@Path(&quot;/downloadExcel&quot;)
+	@Produces(&quot;application/vnd.ms-excel&quot;)
+	public Response downloadExcel() {
+		URL url = getClass().getClassLoader().getResource(&quot;2_Definitions.xlsx&quot;);
+		File file = new File(url.getPath());
+
+		ResponseBuilder responseBuilder = Response.ok((Object) file);
+		responseBuilder.header(&quot;Content-Disposition&quot;, &quot;attachment; filename=\&quot;Definitions.xlsx\&quot;&quot;);
+		return responseBuilder.build();
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/downloadTextFile</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/5-jersey-file-upload-download.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/downloadImage</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/4-jersey-file-upload-download.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/downloadPdf</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/6-jersey-file-upload-download.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">http://localhost:9091/JerseyRestPractice/webapi/posts/downloadExcel</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/7-jersey-file-upload-download.jpg"/>
+</div></div>

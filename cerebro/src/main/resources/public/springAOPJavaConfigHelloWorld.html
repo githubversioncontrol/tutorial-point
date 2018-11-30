@@ -1,0 +1,321 @@
+<div class="page-header">
+    <h3>Spring AOP Java Configuration Hello World</h3>      
+  </div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Create Core Java Project using Maven from cmd</div><div class="panel-body">
+<pre ><code>
+mvn archetype:generate -DgroupId=com.hibernate5.example -DartifactId=Hibernate5Example -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  	
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/spring/spring-aop-java-config-hello-world.jpg" title="Spring Java Config Hello World"/>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Add Spring and Spring AOP dependencies</div><div class="panel-body">
+<pre ><code>
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+ &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+ &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+ &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+ &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+ &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Final pom.xml</div><div class="panel-body">
+<pre ><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;spring.aop.hello.world&lt;/groupId&gt;
+	&lt;artifactId&gt;SpringAOPHelloWorld&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;SpringAOPHelloWorld&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;properties&gt;
+		&lt;junit.version&gt;4.12&lt;/junit.version&gt;
+		&lt;spring.version&gt;4.3.5.RELEASE&lt;/spring.version&gt;
+	&lt;/properties&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;${junit.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;!-- Spring dependencies --&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+			&lt;version&gt;${spring.version}&lt;/version&gt;
+		&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+    &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;SpringAOPHelloWorld&lt;/finalName&gt;
+		&lt;pluginManagement&gt;
+			&lt;plugins&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+					&lt;version&gt;3.5.1&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;source&gt;1.8&lt;/source&gt;
+						&lt;target&gt;1.8&lt;/target&gt;
+						&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+						&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+						&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+						&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+			&lt;/plugins&gt;
+		&lt;/pluginManagement&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">HelloWorldConfig.java</div><div class="panel-body">
+<pre ><code>
+package spring.aop.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@Configuration
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages = { &quot;spring.aop&quot; })
+public class HelloWorldConfig {
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">HelloWorldService.java</div><div class="panel-body">
+<pre ><code>
+package spring.aop.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import spring.aop.repository.HelloWorldRepository;
+
+@Service(&quot;helloWorldServiceBean&quot;)
+public class HelloWorldService {
+
+    @Autowired
+    @Qualifier(&quot;helloWorldRepositoryBean&quot;)
+    private HelloWorldRepository helloWorldRepository;
+
+    public void method1() {
+	System.out.println(&quot;HelloWorldService -&gt; method1()&quot;);
+	helloWorldRepository.method1();
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">HelloWorldRepository.java</div><div class="panel-body">
+<pre ><code>
+package spring.aop.repository;
+
+import org.springframework.stereotype.Repository;
+
+@Repository(&quot;helloWorldRepositoryBean&quot;)
+public class HelloWorldRepository {
+
+    public void method1() {
+	System.out.println(&quot;HelloWorldRepository -&gt; method1()&quot;);
+    }
+
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">LoggingAspect.java</div><div class="panel-body">
+<pre ><code>
+package spring.aop.logging;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class LoggingAspect {
+<em>
+/**
+ * Execute this aspect before method with void return type
+ * name: method1
+ * zero arguments
+*/   </em>
+ @Before(&quot;execution(void method1())&quot;)
+  public void beforeMethod() {
+   System.out.println(&quot;LoggingAspect -&gt; beforeMethod()&quot;);
+  }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">HelloWorldConfigTest.java</div><div class="panel-body">
+<pre ><code>
+package spring.aop.config;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import spring.aop.service.HelloWorldService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { HelloWorldConfig.class })
+public class HelloWorldConfigTest {
+
+    @Autowired
+    @Qualifier(&quot;helloWorldServiceBean&quot;)
+    private HelloWorldService helloWorldService;
+
+    @Test
+    public void testInjection() {
+	Assert.assertNotNull(helloWorldService);
+
+	helloWorldService.method1();
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Output</div><div class="panel-body">
+<pre ><code>
+LoggingAspect -> beforeMethod()
+HelloWorldService -> method1()
+LoggingAspect -> beforeMethod()
+HelloWorldRepository -> method1()
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" ><div class="panel-heading">Change LoggingAspect to use wild card</div><div class="panel-body">
+<pre ><code>
+package spring.aop.logging;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class LoggingAspect {
+<em>/** Execute this aspect to any method with any arguments with any return type */</em>
+    @Before(&quot;execution(* *(..))&quot;)
+    public void beforeMethod2() {
+	System.out.println(&quot;LoggingAspect -&gt; beforeMethod2() &quot;);
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Output</div><div class="panel-body">
+<pre ><code>
+LoggingAspect -> beforeMethod2() 
+LoggingAspect -> beforeMethod2() 
+HelloWorldService -> method1()
+LoggingAspect -> beforeMethod2() 
+HelloWorldRepository -> method1()
+</code></pre>
+</div></div>
+
+<hr/>
+<div class="panel panel-primary" ><div class="panel-heading">Change LoggingAspect to use wild card with JoinPoint</div><div class="panel-body">
+<pre ><code>
+package spring.aop.logging;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class LoggingAspect {
+ <em>
+ /**
+     * Execute this aspect to any method with any arguments with any return type
+     * With JoinPoint we can get information before which method this aspect is getting executed.
+     */
+ </em>
+    @Before(&quot;execution(* *(..))&quot;)
+    public void beforeMethod3(JoinPoint joinPoint) {
+	System.out.println(&quot;LoggingAspect -&gt; beforeMethod3() -&gt; &quot; + joinPoint.getStaticPart().getSignature().toString());
+    }
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" ><div class="panel-heading">Output</div><div class="panel-body">
+<pre ><code>
+LoggingAspect -> beforeMethod3() -> void org.springframework.beans.factory.SmartInitializingSingleton.afterSingletonsInstantiated()
+LoggingAspect -> beforeMethod3() -> void spring.aop.service.HelloWorldService.method1()
+HelloWorldService -> method1()
+LoggingAspect -> beforeMethod3() -> void spring.aop.repository.HelloWorldRepository.method1()
+HelloWorldRepository -> method1()
+</code></pre>
+</div></div>

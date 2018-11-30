@@ -1,0 +1,397 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java Project using maven from cmd</div><div class="panel-body">
+<pre>
+mvn archetype:generate -DgroupId=eclipselink.practice2 -DartifactId=EclipseLinkPractice2 -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+h2 dependency: To use H2 Database
+eclipselink dependeny: To use Eclipse link</li>
+org.eclipse.persistence.jpa.modelgen.processor: To generate Meta Model classes on running mvn compile
+</pre>
+<pre>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;eclipselink.practice2&lt;/groupId&gt;
+	&lt;artifactId&gt;EclipseLinkPractice2&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;EclipseLinkPractice2&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.h2database&lt;/groupId&gt;
+			&lt;artifactId&gt;h2&lt;/artifactId&gt;
+			&lt;version&gt;1.4.193&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.eclipse.persistence&lt;/groupId&gt;
+			&lt;artifactId&gt;eclipselink&lt;/artifactId&gt;
+			&lt;version&gt;2.5.1&lt;/version&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.eclipse.persistence&lt;/groupId&gt;
+			&lt;artifactId&gt;org.eclipse.persistence.jpa.modelgen.processor&lt;/artifactId&gt;
+			&lt;version&gt;2.5.1&lt;/version&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+	&lt;build&gt;
+		&lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">persistence.xml</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+JPA xml file with Entity class details and DB details
+</pre>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;persistence xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd&quot;
+    version=&quot;2.0&quot; xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;&gt;
+    
+    &lt;persistence-unit name=&quot;eclipselinkpractice&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
+    	&lt;class&gt;eclipselink.practice.model.Student&lt;/class&gt;
+    	
+    &lt;properties&gt;
+    &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.h2.Driver&quot;/&gt;
+    &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:h2:file:E:/Backup/JavaPrep/practiceProjects/EclipseLink/EclipseLinkPractice/src/main/resources/db;MV_STORE=FALSE&quot;/&gt;
+    &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;admin&quot;/&gt;
+    &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;admin&quot;/&gt;
+    		
+    &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;create-tables&quot;/&gt;
+    	
+    <em>&lt;!-- To see the SQL generated for the databases set eclipselink.ddl-generation.output-mode value from 
+    	&quot;database&quot; to &quot;sql-script&quot; or &quot;both&quot;. Two files will get generated 'createDDL.jdbc' and 'dropDDL.jdbc' --&gt;</em>
+    &lt;property name=&quot;eclipselink.ddl-generation.output-mode&quot; value=&quot;database&quot;/&gt;
+    		
+    <em>&lt;!-- logging properties --&gt;</em>
+    &lt;property name=&quot;eclipselink.weaving&quot; value=&quot;static&quot;/&gt;
+    &lt;property name=&quot;eclipselink.logging.level&quot; value=&quot;FINE&quot;/&gt;
+    &lt;property name=&quot;eclipselink.logging.level.cache&quot; value=&quot;FINE&quot;/&gt;
+    &lt;property name=&quot;eclipslink.logging.parameters&quot; value=&quot;true&quot;/&gt;
+    &lt;property name=&quot;eclipselink.logging.level.sql&quot; value=&quot;FINE&quot;/&gt;
+    &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student.java</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Entity class with annotations
+</pre>
+<pre>
+package eclipselink.practice.model;
+
+import java.time.LocalDate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+<em>/**
+ * Student Entity
+ * @author Avinash Babu Donthu
+ *
+ */</em>
+@Entity
+@Table(name = &quot;STUDENT&quot;)
+public class Student {
+	private Integer id;
+	private String name;
+	private String course;
+	private LocalDate courseStartDate;
+
+	public Student() {
+	}
+
+	public Student(String name, String course, LocalDate courseStartDate) {
+		this.name = name;
+		this.course = course;
+		this.courseStartDate = courseStartDate;
+	}
+
+	@Id
+	@Column(name = &quot;ID&quot;)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = &quot;NAME&quot;)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = &quot;COURSE&quot;)
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	@Column(name = &quot;COURSE_START_DATE&quot;)
+	public LocalDate getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	public void setCourseStartDate(LocalDate courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;Student [id=&quot; + id + &quot;, name=&quot; + name + &quot;, course=&quot; + course + &quot;, courseStartDate=&quot;
+				+ courseStartDate + &quot;]&quot;;
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">mvn clean compile</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Run maven clean compile from cmd. Following is output from cmd.
+Meta model class will be generated now.
+</pre>
+<pre>
+Microsoft Windows [Version 10.0.15063]
+(c) 2017 Microsoft Corporation. All rights reserved.
+
+E:\projectDirectory&gt;mvn clean compile
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building EclipseLinkPractice2 1.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ EclipseLinkPractice2 ---
+[INFO] Deleting E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ EclipseLinkPractice2 ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO]
+[INFO] --- maven-compiler-plugin:3.5.1:compile (default-compile) @ EclipseLinkPractice2 ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes
+[parsing started RegularFileObject[E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\src\main\java\eclipselink\practice\model\Student.java]]
+[parsing completed 254ms]
+[search path for source files: E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\src\main\java,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\generated-sources\annotations]
+[search path for class files: C:\Program Files\Java\jdk1.8.0_65\jre\lib\resources.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\rt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\sunrsasign.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jsse.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jce.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\charsets.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jfr.jar,C:\Program Files\Java\jdk1.8.0_65\jre\classes,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\access-bridge-64.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\cldrdata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\dnsns.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jaccess.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jfxrt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\localedata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\nashorn.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunec.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunjce_provider.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunmscapi.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunpkcs11.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\zipfs.jar,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes,C:\Users\Admin\.m2\repository\com\h2database\h2\1.4.193\h2-1.4.193.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\commonj.sdo\2.1.1\commonj.sdo-2.1.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.modelgen.processor\2.5.1\org.eclipse.persistence.jpa.modelgen.processor-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.core\2.5.1\org.eclipse.persistence.core-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.asm\2.5.1\org.eclipse.persistence.asm-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa\2.5.1\org.eclipse.persistence.jpa-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.antlr\2.5.1\org.eclipse.persistence.antlr-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.jpql\2.5.1\org.eclipse.persistence.jpa.jpql-2.5.1.jar,.]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/LocalDate.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Column.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Entity.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Id.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Table.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Object.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/String.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Override.class)]]
+Round 1:
+        input files: {eclipselink.practice.model.Student}
+        annotations: [javax.persistence.Entity, javax.persistence.Table, javax.persistence.Id, javax.persistence.Column, java.lang.Override]
+        last round: false
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Number.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/CharSequence.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/temporal/Temporal.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/temporal/TemporalAccessor.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/temporal/TemporalAdjuster.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/chrono/ChronoLocalDate.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Embeddable.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/MappedSuperclass.class)]]
+Processor org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor matches [javax.persistence.Entity, javax.persistence.Column, javax.persistence.Table, javax.persistence.Id] and returns false.
+[parsing started RegularFileObject[E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\generated-sources\annotations\eclipselink\practice\model\Student_.java]]
+[parsing completed 2ms]
+[search path for source files: E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\src\main\java,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\generated-sources\annotations]
+[search path for class files: C:\Program Files\Java\jdk1.8.0_65\jre\lib\resources.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\rt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\sunrsasign.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jsse.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jce.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\charsets.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jfr.jar,C:\Program Files\Java\jdk1.8.0_65\jre\classes,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\access-bridge-64.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\cldrdata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\dnsns.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jaccess.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jfxrt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\localedata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\nashorn.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunec.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunjce_provider.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunmscapi.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunpkcs11.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\zipfs.jar,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes,C:\Users\Admin\.m2\repository\com\h2database\h2\1.4.193\h2-1.4.193.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\commonj.sdo\2.1.1\commonj.sdo-2.1.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.modelgen.processor\2.5.1\org.eclipse.persistence.jpa.modelgen.processor-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.core\2.5.1\org.eclipse.persistence.core-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.asm\2.5.1\org.eclipse.persistence.asm-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa\2.5.1\org.eclipse.persistence.jpa-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.antlr\2.5.1\org.eclipse.persistence.antlr-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.jpql\2.5.1\org.eclipse.persistence.jpa.jpql-2.5.1.jar,.]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/LocalDate.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Column.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Entity.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Id.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Table.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Object.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/String.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/javax/annotation/Generated.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/SingularAttribute.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/StaticMetamodel.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Override.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Class.class)]]
+Round 2:
+        input files: {eclipselink.practice.model.Student_}
+        annotations: [javax.annotation.Generated, javax.persistence.metamodel.StaticMetamodel]
+        last round: false
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Embeddable.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/MappedSuperclass.class)]]
+Processor org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor matches [javax.persistence.metamodel.StaticMetamodel] and returns false.
+[search path for source files: E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\src\main\java,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\generated-sources\annotations]
+[search path for class files: C:\Program Files\Java\jdk1.8.0_65\jre\lib\resources.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\rt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\sunrsasign.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jsse.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jce.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\charsets.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jfr.jar,C:\Program Files\Java\jdk1.8.0_65\jre\classes,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\access-bridge-64.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\cldrdata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\dnsns.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jaccess.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jfxrt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\localedata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\nashorn.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunec.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunjce_provider.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunmscapi.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunpkcs11.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\zipfs.jar,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes,C:\Users\Admin\.m2\repository\com\h2database\h2\1.4.193\h2-1.4.193.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\commonj.sdo\2.1.1\commonj.sdo-2.1.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.modelgen.processor\2.5.1\org.eclipse.persistence.jpa.modelgen.processor-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.core\2.5.1\org.eclipse.persistence.core-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.asm\2.5.1\org.eclipse.persistence.asm-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa\2.5.1\org.eclipse.persistence.jpa-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.antlr\2.5.1\org.eclipse.persistence.antlr-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.jpql\2.5.1\org.eclipse.persistence.jpa.jpql-2.5.1.jar,.]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/LocalDate.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Column.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Entity.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Id.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Table.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Object.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/String.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/javax/annotation/Generated.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/SingularAttribute.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/StaticMetamodel.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Override.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Class.class)]]
+Round 3:
+        input files: {}
+        annotations: []
+        last round: true
+[search path for source files: E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\src\main\java,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\generated-sources\annotations]
+[search path for class files: C:\Program Files\Java\jdk1.8.0_65\jre\lib\resources.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\rt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\sunrsasign.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jsse.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jce.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\charsets.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\jfr.jar,C:\Program Files\Java\jdk1.8.0_65\jre\classes,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\access-bridge-64.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\cldrdata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\dnsns.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jaccess.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\jfxrt.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\localedata.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\nashorn.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunec.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunjce_provider.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunmscapi.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\sunpkcs11.jar,C:\Program Files\Java\jdk1.8.0_65\jre\lib\ext\zipfs.jar,E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes,C:\Users\Admin\.m2\repository\com\h2database\h2\1.4.193\h2-1.4.193.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\commonj.sdo\2.1.1\commonj.sdo-2.1.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.modelgen.processor\2.5.1\org.eclipse.persistence.jpa.modelgen.processor-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.core\2.5.1\org.eclipse.persistence.core-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.asm\2.5.1\org.eclipse.persistence.asm-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa\2.5.1\org.eclipse.persistence.jpa-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.antlr\2.5.1\org.eclipse.persistence.antlr-2.5.1.jar,C:\Users\Admin\.m2\repository\org\eclipse\persistence\org.eclipse.persistence.jpa.jpql\2.5.1\org.eclipse.persistence.jpa.jpql-2.5.1.jar,.]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/time/LocalDate.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Column.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Entity.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Id.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\javax.persistence\2.1.0\javax.persistence-2.1.0.jar(javax/persistence/Table.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Object.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Integer.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/String.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/javax/annotation/Generated.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/SingularAttribute.class)]]
+[loading ZipFileIndexFileObject[C:\Users\Admin\.m2\repository\org\eclipse\persistence\eclipselink\2.5.1\eclipselink-2.5.1.jar(javax/persistence/metamodel/StaticMetamodel.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Target.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/ElementType.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Retention.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/RetentionPolicy.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/annotation/Annotation.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Override.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Class.class)]]
+[checking eclipselink.practice.model.Student]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Number.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Comparable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/CharSequence.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/StringBuilder.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/AbstractStringBuilder.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/Appendable.class)]]
+[loading ZipFileIndexFileObject[C:\Program Files\Java\jdk1.8.0_65\lib\ct.sym(META-INF/sym/rt.jar/java/lang/StringBuffer.class)]]
+[wrote RegularFileObject[E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes\eclipselink\practice\model\Student.class]]
+[checking eclipselink.practice.model.Student_]
+[wrote RegularFileObject[E:\Backup\JavaPrep\practiceProjects\EclipseLink\EclipseLinkPractice2\target\classes\eclipselink\practice\model\Student_.class]]
+[total 2697ms]
+[WARNING] Supported source version 'RELEASE_6' from annotation processor 'org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor' less than -source '1.8'
+[INFO] Creating static metadata factory ...
+[INFO] Optional file was not found: META-INF/orm.xml continuing with generation.
+[INFO] Optional file was not found: META-INF/eclipselink-orm.xml continuing with generation.
+[INFO] Optional file was not found: META-INF/orm.xml continuing with generation.
+[INFO] Optional file was not found: META-INF/eclipselink-orm.xml continuing with generation.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 7.299 s
+[INFO] Finished at: 2017-11-08T08:16:08+05:30
+[INFO] Final Memory: 19M/245M
+[INFO] ------------------------------------------------------------------------
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project structure after generating meta model</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/eclipselink/1-eclipselinkGenerateMetaModel.jpg" />
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Student_.java</div><div class="panel-body">
+<em>Explanation</em>
+<pre>
+Generated Meta Model class
+</pre>
+<pre>
+package eclipselink.practice.model;
+
+import java.time.LocalDate;
+import javax.annotation.Generated;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
+
+@Generated(value=&quot;EclipseLink-2.5.1.v20130918-rNA&quot;, date=&quot;2017-11-08T08:16:07&quot;)
+@StaticMetamodel(Student.class)
+public class Student_ { 
+
+    public static volatile SingularAttribute&lt;Student, String&gt; name;
+    public static volatile SingularAttribute&lt;Student, String&gt; course;
+    public static volatile SingularAttribute&lt;Student, Integer&gt; id;
+    public static volatile SingularAttribute&lt;Student, LocalDate&gt; courseStartDate;
+
+}
+</pre>
+</div></div>

@@ -1,0 +1,274 @@
+<div ng-controller="cerebroController"><div ng-if="breadCrumbs.length > 0">
+<ol class="breadcrumb">
+	<li ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+</ol>
+<hr/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Java project using Maven from cmd</div><div class="panel-body">
+<pre >
+mvn archetype:generate -DgroupId=mockito.practice -DartifactId=MockitoPractice -Dversion=1.0-SNAPSHOT -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/mockito/1-mockitoHelloWorld.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre >
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;mockito.practice&lt;/groupId&gt;
+	&lt;artifactId&gt;MockitoPractice&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	&lt;name&gt;MockitoPractice&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+	&lt;properties&gt;
+		&lt;surefire.version&gt;2.17&lt;/surefire.version&gt;
+        &lt;jacoco.version&gt;0.7.2.201409121644&lt;/jacoco.version&gt;
+	&lt;/properties&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.11&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.mockito&lt;/groupId&gt;
+			&lt;artifactId&gt;mockito-core&lt;/artifactId&gt;
+			&lt;version&gt;2.1.0-RC.2&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;pluginManagement&gt;
+			&lt;plugins&gt;
+				 &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${surefire.version}&lt;/version&gt;
+            &lt;/plugin&gt; 
+            
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+                &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${jacoco.version}&lt;/version&gt;
+                                  
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;default-prepare-agent&lt;/id&gt;
+                        &lt;goals&gt;&lt;goal&gt;prepare-agent&lt;/goal&gt;&lt;/goals&gt;
+                    &lt;/execution&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;default-report&lt;/id&gt;
+                        &lt;phase&gt;prepare-package&lt;/phase&gt;
+                        &lt;goals&gt;&lt;goal&gt;report&lt;/goal&gt;&lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+					&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+					&lt;version&gt;3.5.1&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;source&gt;1.8&lt;/source&gt;
+						&lt;target&gt;1.8&lt;/target&gt;
+						&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+						&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+					&lt;/configuration&gt;
+				&lt;/plugin&gt;
+			&lt;/plugins&gt;
+		&lt;/pluginManagement&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeDao.java</div><div class="panel-body">
+<pre >
+package mockito.dependency;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class EmployeeDao {
+
+	public List&lt;String&gt; getEmployeeNames() {
+		List&lt;String&gt; names = Arrays.asList(&quot;jack&quot;, &quot;jill&quot;, &quot;johny&quot;, &quot;depp&quot;);
+		return names;
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeService.java</div><div class="panel-body">
+<pre >
+package mockito.dependency;
+
+import java.util.List;
+
+public class EmployeeService {
+
+	private EmployeeDao	employeeDao;
+
+	public EmployeeDao getEmployeeDao() {
+		return employeeDao;
+	}
+
+	public void setEmployeeDao(EmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
+	}
+
+	public List&lt;String&gt; getEmployeeNames() {
+		System.out.println(&quot;inside getEmployeeNames() method&quot;);
+		return employeeDao.getEmployeeNames();
+	}
+}
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeServiceTest1.java</div><div class="panel-body">
+<pre >
+package mockito.dependency;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+public class EmployeeServiceTest1 {
+
+	private static EmployeeService employeeService = null;
+
+	@BeforeClass
+	public static void setupClass() {
+		employeeService = new EmployeeService();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		employeeService = null;
+	}
+
+	@Test
+	public void testGetEmployeeNames() {
+		List&lt;String&gt; mockNames = Arrays.asList(&quot;ramesh&quot;, &quot;suresh&quot;, &quot;mahesh&quot;, &quot;sunny&quot;, &quot;bunny&quot;);
+
+		EmployeeDao employeeDaoMock = Mockito.mock(EmployeeDao.class);
+		Mockito.when(employeeDaoMock.getEmployeeNames()).thenReturn(mockNames);
+
+		employeeService.setEmployeeDao(employeeDaoMock);
+
+		List&lt;String&gt; actualResult = employeeService.getEmployeeNames();
+		System.out.println(&quot;actualResult: &quot; + actualResult);
+
+		Mockito.verify(employeeDaoMock).getEmployeeNames();
+
+		Assert.assertNotNull(mockNames);
+		Assert.assertEquals(5, mockNames.size());
+		Assert.assertEquals(&quot;ramesh&quot;, mockNames.get(0));
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+inside getEmployeeNames() method
+actualResult: [ramesh, suresh, mahesh, sunny, bunny]
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeServiceTestAnnotations.java</div><div class="panel-body">
+<pre >
+package mockito.dependency;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+public class EmployeeServiceTestAnnotations {
+
+	@InjectMocks
+	private EmployeeService employeeService;
+	@Mock
+	private EmployeeDao employeeDao;
+
+	<em>// we have to use either @org.junit.runner.RunWith(MockitoJUnitRunner.class) or below code</em>
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
+
+	@Test
+	public void testGetEmployeeNames() {
+		System.out.println(&quot;EmployeeServiceTestAnnotations:employeeService: &quot; + employeeService);
+
+		Mockito.when(employeeDao.getEmployeeNames()).thenReturn(
+				Arrays.asList(&quot;ramesh&quot;, &quot;suresh&quot;, &quot;mahesh&quot;, &quot;sunny&quot;, &quot;bunny&quot;));
+
+		List&lt;String&gt; mockNames = employeeService.getEmployeeNames();
+		System.out.println(mockNames);
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+EmployeeServiceTestAnnotations:employeeService: mockito.dependency.EmployeeService@471a9022
+inside getEmployeeNames() method
+[ramesh, suresh, mahesh, sunny, bunny]
+</pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">EmployeeServiceTestAnnotations2.java</div><div class="panel-body">
+<pre >
+package mockito.dependency;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class EmployeeServiceTestAnnotations2 {
+
+	@InjectMocks
+	private EmployeeService employeeService;
+
+	@Mock
+	private EmployeeDao employeeDao;
+
+	@Test
+	public void getEmployeeNames() {
+		System.out.println(&quot;EmployeeServiceTestAnnotations2.getEmployeeNames::employeeService: &quot;
+				+ employeeService);
+
+		Mockito.when(employeeDao.getEmployeeNames()).thenReturn(Arrays.asList(&quot;john&quot;, &quot;jack&quot;));
+
+		List&lt;String&gt; names = employeeService.getEmployeeNames();
+		System.out.println(&quot;EmployeeServiceTestAnnotations2.getEmployeeNames::names: &quot; + names);
+	}
+}
+</pre>
+<em>Output</em>
+<pre>
+EmployeeServiceTestAnnotations2.getEmployeeNames::employeeService: mockito.dependency.EmployeeService@2bec854f
+inside getEmployeeNames() method
+EmployeeServiceTestAnnotations2.getEmployeeNames::names: [john, jack]
+</pre>
+</div></div>

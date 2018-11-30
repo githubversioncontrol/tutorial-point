@@ -1,0 +1,144 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+<ul>
+	<li>Create Core Java project using maven quickstart template</li>
+	<li>Import project to Eclipse</li>
+	<li>Add log4j, jodatime dependencies in pom.xml</li>
+	<li>Add maven-compiler-plugin</li>
+	<li>Add maven-assembly-plugin to create executable jar file</li>
+	<li>Write App.java</li>
+	<li>Write log4j.properties in src/main/resources (create this source folder if not present)</li>
+</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Create Core Java project using maven quickstart template</div><div class="panel-body">
+<pre><code>
+mvn archetype:generate -DgroupId=com.executable.jar.file1 -DartifactId=ExecutableJarFile1 -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Project Structure</div><div class="panel-body">
+<img class="img-responsive" ng-src="images/maven/1-mavenAssemblyPlugin.jpg"/>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">pom.xml</div><div class="panel-body">
+<pre><code>
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.executable.jar.file1&lt;/groupId&gt;
+	&lt;artifactId&gt;ExecutableJarFile1&lt;/artifactId&gt;
+	&lt;packaging&gt;jar&lt;/packaging&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;name&gt;ExecutableJarFile1&lt;/name&gt;
+	&lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.12&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;joda-time&lt;/groupId&gt;
+			&lt;artifactId&gt;joda-time&lt;/artifactId&gt;
+			&lt;version&gt;2.5&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;log4j&lt;/groupId&gt;
+			&lt;artifactId&gt;log4j&lt;/artifactId&gt;
+			&lt;version&gt;1.2.17&lt;/version&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+	&lt;build&gt;
+		&lt;finalName&gt;ExecutableJarFile1&lt;/finalName&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.5.1&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;meminitial&gt;128m&lt;/meminitial&gt;
+					&lt;maxmem&gt;512m&lt;/maxmem&gt;
+					&lt;showDeprecation&gt;true&lt;/showDeprecation&gt;
+					&lt;showWarnings&gt;true&lt;/showWarnings&gt;
+					&lt;encoding&gt;UTF-8&lt;/encoding&gt;
+					&lt;verbose&gt;true&lt;/verbose&gt;
+					&lt;compilerArgument&gt;-Xlint:all&lt;/compilerArgument&gt;
+					&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+
+			&lt;!-- maven-assembly-plugin to extract all dependency jars into raw classes, 
+				and group it together. This hack is workable in project with less dependencies 
+				only, for large project with many dependencies, it will cause Java class 
+				name conflict issue --&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;phase&gt;package&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;single&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+				&lt;configuration&gt;
+					&lt;descriptorRefs&gt;
+						&lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+					&lt;/descriptorRefs&gt;
+					&lt;archive&gt;
+						&lt;manifest&gt;
+							&lt;mainClass&gt;com.executable.jar.file1.App&lt;/mainClass&gt;
+						&lt;/manifest&gt;
+					&lt;/archive&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">log4j.properties</div><div class="panel-body">
+<pre ><code>
+### Root logger operation
+log4j.rootLogger=DEBUG, stdout
+
+### Direct log messages to stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">App.java</div><div class="panel-body">
+<pre ><code>
+package com.executable.jar.file1;
+
+import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
+
+public class App {
+	private static final Logger LOG = Logger.getLogger(App.class);
+
+	public static void main(String[] args) {
+		LocalDate localDate = new LocalDate();
+		LOG.debug(&quot;App.main() -&gt; localDate: &quot; + localDate);
+	}
+}
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+<ul>
+	<li>mvn package</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/maven/2-mavenAssemblyPlugin.jpg"/></li><br/>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/maven/3-mavenAssemblyPlugin.jpg"/></li>
+	<li>java -jar target\ExecutableJarFile1-jar-with-dependencies.jar</li>
+	<li class="noBullet"><img class="img-responsive" ng-src="images/maven/4-mavenAssemblyPlugin.jpg"/></li>
+</ul>
+</div></div>

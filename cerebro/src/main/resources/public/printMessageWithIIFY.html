@@ -1,0 +1,45 @@
+<div class="panel panel-primary"><div class="panel-heading">Steps</div><div class="panel-body">
+	<ul>
+		<li>Create printMessageWithIIFY.html file</li>
+		<li>Add angular.js file in script src</li>
+		<li>Create printMessageWithIIFY.js file</li>
+		<li>Add printMessageWithIIFY.js to html in script tag</li>
+		<li>Create message variable. Add it to $scope in printMessageWithIIFY.js</li>
+		<li>Print message in printMessageWithIIFY.html using angular directive</li>
+	</ul>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">printMessage.html</div><div class="panel-body">
+<pre ><code>
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;moduleName&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;ISO-8859-1&quot;&gt;
+&lt;title&gt;IIFY&lt;/title&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;printMessageWithIIFY.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body ng-controller=&quot;controllerName&quot;&gt;
+We are using Angular 1.5.6 for this example.&lt;br/&gt;
+Angular 1.4.x is giving an error if we use IIFY
+&lt;h3&gt;&#123;&#123;message&#125; &#125;&lt;/h3&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">printMessage.js</div><div class="panel-body">
+<pre ><code>
+(function () {
+    var app = angular.module(&quot;moduleName&quot;, []);
+
+    app.controller(&quot;controllerName&quot;, function ($scope) {
+        $scope.message = &quot;Welcome to IIFY. IIFY: Immediately Invoked Functional Expression. IIFY is used to avoid global variables&quot;;
+    });
+}());
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary"><div class="panel-heading">Output</div><div class="panel-body">
+	<img class="img-responsive" ng-src="images/angular1/1-printMessageWithIIFY.jpg"/>
+</div></div>

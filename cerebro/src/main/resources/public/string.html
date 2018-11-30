@@ -1,0 +1,309 @@
+<link rel="stylesheet" href="css/leftNav.css">
+<ul>
+	<li><a class="active" ng-href="#home" ng-click="popBreadCrumb(-1)"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+	
+	<!-- Bread Crumbs -->
+	<li class="subGroupHeading" ng-if="breadCrumbs.length > 0">Navigation</li>
+	<li ng-controller="cerebroController" ng-repeat="breadCrumb in breadCrumbs"><a ng-href="{{breadCrumb.link}}" ng-click="popBreadCrumb($index)">{{breadCrumb.name}}</a></li>
+	
+	<li class="subGroupHeading">Examples</li>
+	<li><a ng-click="navigate(1)">Get byte array from String</a></li>
+	<li><a ng-click="navigate(2)">Get Asci value of each Character in a String</a></li>
+	<li><a ng-click="navigate(3)">Convert byte array to String</a></li>
+	<li><a ng-click="navigate(4)">Divide String based on delimeter</a></li>
+	<li><a ng-click="navigate(5)">Convert asci number to String</a></li>
+	<li><a ng-click="navigate(6)">Capitalize first character</a></li>
+	<li><a ng-click="navigate(7)">String Characters left shift and right shift</a></li>
+	<li><a ng-click="navigate(8)">Print all substrings of specified length of a given String</a></li>
+	<li><a ng-click="navigate(9)">Convert the case of String</a></li>
+	<li><a ng-click="navigate(10)">Find the substring in a String</a></li>
+	<li><a ng-click="navigate(11)">Sort words in Sentence by length</a></li>
+</ul>
+
+<div style="margin-left:30%;padding:1px 16px;">
+
+<div class="panel panel-primary" id="1"><div class="panel-heading">Get byte array from String</div><div class="panel-body">
+<pre>
+public void getbyteArrayFromString() {
+	String string = &quot;Hello World&quot;;
+
+	<em>// method 1</em>
+	byte[] byteArray1 = string.getBytes();
+	System.out.println(&quot;byteArray1: &quot; + byteArray1);
+	System.out.println(&quot;Arrays.toString(byteArray1): &quot; + Arrays.toString(byteArray1));
+
+	<em>//method 2</em>
+	byte[] byteArray2 = string.getBytes(Charset.forName(&quot;UTF-8&quot;));
+	System.out.println(&quot;byteArray2: &quot; + byteArray2);
+	System.out.println(&quot;Arrays.toString(byteArray2): &quot; + Arrays.toString(byteArray2));
+
+	<em>// method 3 - from java 7</em>
+	byte[] byteArray3 = string.getBytes(StandardCharsets.UTF_8);
+	System.out.println(&quot;byteArray3: &quot; + byteArray3);
+	System.out.println(&quot;Arrays.toString(byteArray3): &quot; + Arrays.toString(byteArray3));
+    }  	
+</pre>
+<em>Output</em>
+<pre><code>
+byteArray1: [B@1d56ce6a
+Arrays.toString(byteArray1): [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+byteArray2: [B@5197848c
+Arrays.toString(byteArray2): [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+byteArray3: [B@17f052a3
+Arrays.toString(byteArray3): [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]		
+</code></pre>  	
+</div></div>
+
+<div class="panel panel-primary" id="2"><div class="panel-heading">Get Asci value of each Character in a String</div><div class="panel-body">
+<pre ><code>
+public void getAsciValueOfCharsInString() {
+	String str = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+	byte[] strByteArray = str.getBytes();
+	System.out.println(&quot;asciValues: &quot; + Arrays.toString(strByteArray));
+    }  	
+</code></pre>
+<em>Output</em>
+<pre><code>
+asciValues: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="3"><div class="panel-heading">Convert byte array to String</div><div class="panel-body">
+<pre ><code>
+ public void convertByteArrayToString() {
+	String str = &quot;Hello World&quot;;
+	byte[] byteArray = str.getBytes();
+	System.out.println(&quot;str: &quot; + str);
+	System.out.println(&quot;byteArray: &quot; + byteArray);
+
+	String strFromByteArray = new String(byteArray);
+	System.out.println(&quot;strFromByteArray: &quot; + strFromByteArray);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+str: Hello World
+byteArray: [B@1d56ce6a
+strFromByteArray: Hello World
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="4"><div class="panel-heading">Divide String based on delimeter</div><div class="panel-body">
+<pre ><code>
+public void divideString() {
+ String str = &quot;Hello-Java-World-Welcome-to-Java&quot;;
+ String[] strs = str.split(&quot;-&quot;);
+ for (String s : strs) {
+   System.out.println(s);
+ }
+ 
+ // using StringTokenizer
+ System.out.println(&quot;------- Using StringTokenizer -------- &quot;);
+ StringTokenizer stringTokenizer = new StringTokenizer(str, &quot;-&quot;);
+ for (;; stringTokenizer.hasMoreTokens()) {
+  System.out.println(stringTokenizer.nextToken());
+ }
+}
+</code></pre>
+<em>Output</em>
+<pre><code>
+Hello
+Java
+World
+Welcome
+to
+Java
+------- Using StringTokenizer -------- 
+Hello
+Java
+World
+Welcome
+to
+Java
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="9"><div class="panel-heading">Convert the case of String</div><div class="panel-body">
+<pre ><code>
+public void convertCase() {
+ String str = &quot;hello world&quot;;
+ String capitalStr = str.toUpperCase();
+ System.out.println(&quot;capitalStr: &quot; + capitalStr);
+
+ String lowerStr = capitalStr.toLowerCase();
+ System.out.println(&quot;lowerStr: &quot; + lowerStr);
+}
+</code></pre>
+<em>Output</em>
+<pre>
+capitalStr: HELLO WORLD
+lowerStr: hello world
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="10"><div class="panel-heading">Find the substring in a String</div><div class="panel-body">
+<pre ><code>
+public void stringSubString() {
+ String str = &quot;Hello World&quot;;
+
+ String substr1 = str.substring(6);
+ String substr2 = str.substring(0, 6);
+
+ System.out.println(&quot;substr1: &quot; + substr1 + &quot;, substr2: &quot; + substr2);
+}
+</code></pre>
+<em>Output</em>
+<pre>
+substr1: World, substr2: Hello 
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="5"><div class="panel-heading">Convert asci number to String</div><div class="panel-body">
+<pre ><code>
+public void convertStringToCharArray() {
+	String str = &quot;Hello World&quot;;
+	byte[] byteArray = str.getBytes();
+	String byteString = Arrays.toString(byteArray);
+	System.out.println(byteString);
+
+	byteString = byteString.substring(1, byteString.length() - 1);
+	System.out.println(byteString);
+
+	String[] asciValues = byteString.split(&quot;,&quot;);
+
+	List&lt;String&gt; charsList = new ArrayList&lt;&gt;();
+
+	for (String asciValue : asciValues) {
+	    String c = String.valueOf((char) Integer.parseInt(asciValue.trim()));
+	    charsList.add(c);
+	}
+
+	System.out.println(charsList);
+    }
+</code></pre>
+<em>Output</em>
+<pre><code>
+[72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100
+[H, e, l, l, o,  , W, o, r, l, d]
+</code></pre>
+</div></div>
+
+<div class="panel panel-primary" id="6"><div class="panel-heading">Capitalize first character</div><div class="panel-body">
+<pre ><code>
+public void capitalizeFirstChar() {
+	String hello = &quot;hello&quot;;
+
+	String result = hello.substring(0, 1).toUpperCase() + hello.substring(1, hello.length());
+	System.out.println(result);
+    }
+</code></pre>
+<em>Output:</em>
+<pre>
+Hello
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="7"><div class="panel-heading">String Characters left shift and right shift</div><div class="panel-body">
+<pre ><code>
+public void stringShift() {
+	String s = &quot;abcd&quot;;
+	if (s.isEmpty()) {
+	    return;
+	}
+	int leftShift = 1;
+	while (leftShift &gt; s.length()) {
+	    leftShift = leftShift - s.length();
+	}
+	String leftShiftResult = s.substring(leftShift) + s.substring(0, leftShift);
+	System.out.println(leftShiftResult);
+
+	int rightShift = 3;
+	int length = 0;
+	if (leftShiftResult.length() &gt; rightShift)
+	    length = leftShiftResult.length() - rightShift;
+	else
+	    length = rightShift - leftShiftResult.length();
+
+	String rightShiftResult = leftShiftResult.substring(length) + leftShiftResult.substring(0, length);
+	System.out.println(rightShiftResult);
+
+    }
+</code></pre>
+<em>Output:</em>
+<pre>
+bcda
+cdab
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="8"><div class="panel-heading">Print all substrings of specified length of a given String</div><div class="panel-body">
+<pre ><code>
+public void printAllSubStringsOfSpecifiedLength() {
+	String s = &quot;welcometojava&quot;;
+
+	// substring of length 3
+	List&lt;String&gt; subStrings = new ArrayList&lt;&gt;();
+	for (int i = 0; i &lt;= s.length() - 3; i++) {
+	    subStrings.add(s.substring(i, i + 3));
+	}
+	System.out.println(subStrings);
+
+	// substring of length 4
+	List&lt;String&gt; subStrings2 = new ArrayList&lt;&gt;();
+	for (int i = 0; i &lt;= s.length() - 4; i++) {
+	    subStrings2.add(s.substring(i, i + 4));
+	}
+	System.out.println(subStrings2);
+
+	// substring of length 5
+	List&lt;String&gt; subStrings3 = new ArrayList&lt;&gt;();
+	for (int i = 0; i &lt;= s.length() - 5; i++) {
+	    subStrings3.add(s.substring(i, i + 5));
+	}
+	System.out.println(subStrings3);
+    }
+</code></pre>
+<em>Output:</em>
+<pre>
+[wel, elc, lco, com, ome, met, eto, toj, oja, jav, ava]
+[welc, elco, lcom, come, omet, meto, etoj, toja, ojav, java]
+[welco, elcom, lcome, comet, ometo, metoj, etoja, tojav, ojava]
+</pre>
+</div></div>
+
+<div class="panel panel-primary" id="11"><div class="panel-heading">Sort words in Sentence by length</div><div class="panel-body">
+<pre >
+import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Collections;
+
+public void sortStringsInSentnceByLength() {
+		String str = &quot;Welcome to hacker rank test&quot;;
+		String[] strs = str.split(&quot; &quot;);
+
+		List&lt;String&gt; strList = Arrays.asList(strs);
+
+		System.out.println(&quot;strList: &quot; + strList);
+
+		Comparator&lt;String&gt; lengthComparator = new Comparator&lt;String&gt;() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				return Integer.valueOf(o1.length()).compareTo(Integer.valueOf(o2.length()));
+			}
+		};
+
+		Collections.sort(strList, lengthComparator);
+		System.out.println(&quot;sort by length: &quot; + strList);
+	}
+</pre>
+<em>Output</em>
+<pre>
+strList: [Welcome, to, hacker, rank, test]
+sort by length: [to, rank, test, hacker, Welcome]
+</pre>
+</div></div>
+
+</div>
